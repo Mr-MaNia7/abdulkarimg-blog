@@ -24,6 +24,7 @@ public/sitemap.xml
 
 # rss feed
 /public/feed.xml
+/public/tags/
 
 # search
 /public/search.json

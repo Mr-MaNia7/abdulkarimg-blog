@@ -1,59 +1,53 @@
+import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import { slug } from 'github-slugger'
-import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
+import Link from '@/components/Link'
+import SectionContainer from '@/components/SectionContainer'
+import PageIntro from '@/components/index/PageIntro'
+import YearArchive from '@/components/index/YearArchive'
 import siteMetadata from '@/data/siteMetadata'
-import ListLayout from '@/layouts/ListLayoutWithTags'
-import { allBlogs } from 'contentlayer/generated'
-import tagData from 'app/tag-data.json'
+import { countLine, posts, tagCounts } from '@/lib/content'
 import { genPageMetadata } from 'app/seo'
-import { Metadata } from 'next'
 
-const POSTS_PER_PAGE = 5
+type Props = { params: Promise<{ tag: string }> }
 
-export async function generateMetadata(props: {
-  params: Promise<{ tag: string }>
-}): Promise<Metadata> {
-  const params = await props.params
-  const tag = decodeURI(params.tag)
+const find = (s: string) => tagCounts().find((t) => t.slug === decodeURI(s))
+
+export const generateStaticParams = async () => tagCounts().map((t) => ({ tag: t.slug }))
+
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const tag = find((await props.params).tag)
   return genPageMetadata({
-    title: tag,
-    description: `${siteMetadata.title} ${tag} tagged content`,
+    title: tag ? `Tagged “${tag.name}”` : 'Tag',
+    description: tag ? `Everything in ${siteMetadata.title} tagged ${tag.name}.` : undefined,
     alternates: {
       canonical: './',
-      types: {
-        'application/rss+xml': `${siteMetadata.siteUrl}/tags/${tag}/feed.xml`,
-      },
+      types: tag
+        ? { 'application/rss+xml': `${siteMetadata.siteUrl}/tags/${tag.slug}/feed.xml` }
+        : undefined,
     },
   })
 }
 
-export const generateStaticParams = async () => {
-  const tagCounts = tagData as Record<string, number>
-  const tagKeys = Object.keys(tagCounts)
-  return tagKeys.map((tag) => ({
-    tag: encodeURI(tag),
-  }))
-}
-
-export default async function TagPage(props: { params: Promise<{ tag: string }> }) {
-  const params = await props.params
-  const tag = decodeURI(params.tag)
-  const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
-  const filteredPosts = allCoreContent(
-    sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)))
-  )
-  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
-  const initialDisplayPosts = filteredPosts.slice(0, POSTS_PER_PAGE)
-  const pagination = {
-    currentPage: 1,
-    totalPages: totalPages,
-  }
-
+export default async function TagPage(props: Props) {
+  const tag = find((await props.params).tag)
+  if (!tag) return notFound()
+  const list = posts.filter((p) => (p.tags ?? []).some((t) => slug(t) === tag.slug))
   return (
-    <ListLayout
-      posts={filteredPosts}
-      initialDisplayPosts={initialDisplayPosts}
-      pagination={pagination}
-      title={title}
-    />
+    <SectionContainer>
+      <div className="index-page">
+        <PageIntro
+          title={tag.name}
+          lede={`Everything tagged ${tag.name}.`}
+          meta={
+            <>
+              {countLine(list)} · <Link href="/tags">All tags</Link> ·{' '}
+              <a href={`/tags/${tag.slug}/feed.xml`}>RSS</a>
+            </>
+          }
+        />
+        <YearArchive posts={list} />
+      </div>
+    </SectionContainer>
   )
 }

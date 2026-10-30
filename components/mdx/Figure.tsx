@@ -20,6 +20,7 @@ export default function Figure({ src, alt, width, height, caption, credit, wide 
         alt={alt}
         width={width}
         height={height}
+        unoptimized={src.endsWith('.svg')}
         sizes={wide ? '(min-width: 64rem) 56rem, 100vw' : '(min-width: 48rem) 44rem, 100vw'}
       />
       {(caption || credit) && (

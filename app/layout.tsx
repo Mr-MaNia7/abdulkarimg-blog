@@ -96,13 +96,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
-          <SectionContainer>
-            <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+          <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+            <SectionContainer>
               <Header />
-              <main id="main-content" tabIndex={-1} className="mb-auto outline-none">
-                {children}
-              </main>
-            </SearchProvider>
+            </SectionContainer>
+            <main id="main-content" tabIndex={-1} className="mb-auto outline-none">
+              {children}
+            </main>
+          </SearchProvider>
+          <SectionContainer>
             <Footer />
           </SectionContainer>
           <Toaster

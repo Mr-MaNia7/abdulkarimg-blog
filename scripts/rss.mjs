@@ -1,4 +1,4 @@
-import { writeFileSync, mkdirSync } from 'fs'
+import { writeFileSync, mkdirSync, rmSync } from 'fs'
 import path from 'path'
 import { slug } from 'github-slugger'
 import { escape } from 'pliny/utils/htmlEscaper.js'
@@ -46,6 +46,10 @@ async function generateRSS(config, allBlogs, page = 'feed.xml') {
   }
 
   if (publishPosts.length > 0) {
+    // public/tags holds only generated feeds; clear it so deleted tags do not linger.
+    // (In an export, out/tags also holds the tag pages, and `next build` recreates out/.)
+    if (outputFolder === 'public')
+      rmSync(path.join('public', 'tags'), { recursive: true, force: true })
     for (const tag of Object.keys(tagData)) {
       const filteredPosts = allBlogs.filter((post) => post.tags.map((t) => slug(t)).includes(tag))
       const rss = generateRss(config, filteredPosts, `tags/${tag}/${page}`)
