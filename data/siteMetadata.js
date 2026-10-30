@@ -1,30 +1,32 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Next.js Starter Blog',
-  author: 'Tails Azimuth',
-  headerTitle: 'TailwindBlog',
-  description: 'A blog created with Next.js and Tailwind.css',
-  language: 'en-us',
+  title: 'Ḥāshiya',
+  author: 'Abdulkarim G. Mohammed',
+  headerTitle: 'Ḥāshiya',
+  // One-line mission, shown on the home cover and in search results. Edit freely.
+  description:
+    'Essays on God, scripture and the religions of the book, with careful answers to questions about Islam.',
+  language: 'en',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
-  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
+  siteUrl: 'https://blog.abdulkarimg.com',
+  siteRepo: 'https://github.com/Mr-MaNia7/abdulkarimg-blog',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
-  mastodon: 'https://mastodon.social/@mastodonuser',
-  email: 'address@yoursite.com',
-  github: 'https://github.com',
-  x: 'https://twitter.com/x',
-  // twitter: 'https://twitter.com/Twitter',
-  facebook: 'https://facebook.com',
-  youtube: 'https://youtube.com',
-  linkedin: 'https://www.linkedin.com',
-  threads: 'https://www.threads.net',
-  instagram: 'https://www.instagram.com',
-  medium: 'https://medium.com',
-  bluesky: 'https://bsky.app/',
+  // Social links: leave a value empty to hide it in the footer.
+  email: '',
+  github: '',
+  x: '',
+  youtube: '',
+  linkedin: '',
+  mastodon: '',
+  bluesky: '',
+  threads: '',
+  instagram: '',
+  facebook: '',
+  medium: '',
   locale: 'en-US',
-  // set to true if you want a navbar fixed to the top
-  stickyNav: false,
+  // The masthead stays at the top and condenses on scroll.
+  stickyNav: true,
   analytics: {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.

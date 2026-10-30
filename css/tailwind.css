@@ -1,30 +1,139 @@
 @import 'tailwindcss';
-@plugin "@tailwindcss/forms";
+@plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 @source '../node_modules/pliny';
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Core theme configuration */
-@theme {
-  /* Font families */
-  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+/*
+  Ḥāshiya — Library Edition
+  Lapis cloth frames white paper; gold is reserved for scripture.
+  All sizes are rem/em/ch. px only for hairlines, focus rings and shadows.
+*/
 
-  /* Colors */
-  /* Copied from https://tailwindcss.com/docs/theme#default-theme-variable-reference */
-  --color-primary-50: oklch(0.971 0.014 343.198);
-  --color-primary-100: oklch(0.948 0.028 342.258);
-  --color-primary-200: oklch(0.899 0.061 343.231);
-  --color-primary-300: oklch(0.823 0.12 346.018);
-  --color-primary-400: oklch(0.718 0.202 349.761);
-  --color-primary-500: oklch(0.656 0.241 354.308);
-  --color-primary-600: oklch(0.592 0.249 0.584);
-  --color-primary-700: oklch(0.525 0.223 3.958);
-  --color-primary-800: oklch(0.459 0.187 3.815);
-  --color-primary-900: oklch(0.408 0.153 2.432);
-  --color-primary-950: oklch(0.284 0.109 3.907);
+/* ───────────────────────── Palette ───────────────────────── */
 
-  --color-gray-50: oklch(0.985 0.002 247.839);
+:root {
+  color-scheme: light;
+
+  --bg: #f9f8f5;
+  --surface: #f1efea;
+  --surface-raised: #ffffff;
+  --ink: #1a1d26;
+  --ink-muted: #484d5a;
+  --ink-faint: #636875;
+  --border-subtle: #e2dfd8;
+  --border-strong: #8e8a80;
+  --accent: #1f4aa8;
+  --accent-ink: #ffffff;
+  --scripture: #7a5712;
+  --scripture-wash: #f4eedf;
+  --selection: #d6def2;
+  --focus-ring: #1f4aa8;
+
+  /* The binding: home cover and colophon only. */
+  --cloth: #1c2f5e;
+  --cloth-ink: #f9f8f5;
+  --cloth-muted: #c3cbe0;
+  --gilt: #d9bc74;
+
+  --code-bg: #182030;
+
+  /* Font stacks. Amiri follows each Latin stack so ﷺ and stray Arabic always resolve. */
+  --stack-serif: var(--font-literata), var(--font-amiri), 'Iowan Old Style', Georgia, serif;
+  --stack-sans: var(--font-commissioner), var(--font-amiri), ui-sans-serif, system-ui, sans-serif;
+  --stack-mono: var(--font-source-code-pro), ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --stack-arabic: var(--font-amiri), 'Noto Naskh Arabic', 'Geeza Pro', serif;
+  --stack-quran: var(--font-amiri-quran), var(--font-amiri), 'Geeza Pro', serif;
+
+  /* Reading preferences (set on <html> by the Aa popover). */
+  --reading-scale: 1;
+  --font-reading: var(--stack-serif);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --bg: #11161f;
+  --surface: #171d28;
+  --surface-raised: #1e2532;
+  --ink: #e4e1d9;
+  --ink-muted: #abafb8;
+  --ink-faint: #8c919c;
+  --border-subtle: #262d3a;
+  --border-strong: #646c7e;
+  --accent: #93abeb;
+  --accent-ink: #0f1524;
+  --scripture: #d8b76a;
+  --scripture-wash: #1d1f22;
+  --selection: #2b3a63;
+  --focus-ring: #93abeb;
+
+  --cloth: #1a2848;
+  --cloth-ink: #e4e1d9;
+  --cloth-muted: #a9b4d0;
+  --gilt: #d8b76a;
+
+  --code-bg: #0c1018;
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --ink-muted: #2c303a;
+    --ink-faint: #3f4450;
+    --border-subtle: #b9b5ab;
+    --border-strong: #5c594f;
+  }
+  .dark {
+    --ink-muted: #d3d5db;
+    --ink-faint: #b9bcc4;
+    --border-subtle: #4a5366;
+    --border-strong: #8a93a6;
+  }
+}
+
+html[data-reading-size='sm'] {
+  --reading-scale: 0.9;
+}
+html[data-reading-size='lg'] {
+  --reading-scale: 1.125;
+}
+html[data-reading-size='xl'] {
+  --reading-scale: 1.25;
+}
+html[data-reading-font='sans'] {
+  --font-reading: var(--stack-sans);
+}
+
+/* ───────────────────────── Theme ───────────────────────── */
+
+@theme inline {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-scripture: var(--scripture);
+  --color-scripture-wash: var(--scripture-wash);
+  --color-selection: var(--selection);
+  --color-focus-ring: var(--focus-ring);
+  --color-cloth: var(--cloth);
+  --color-cloth-ink: var(--cloth-ink);
+  --color-cloth-muted: var(--cloth-muted);
+  --color-gilt: var(--gilt);
+  --color-code-bg: var(--code-bg);
+
+  /* Starter grays, kept only until Phases 3–5 replace the components using them. */
   --color-gray-100: oklch(0.967 0.003 264.542);
   --color-gray-200: oklch(0.928 0.006 264.531);
   --color-gray-300: oklch(0.872 0.01 258.338);
@@ -35,87 +144,334 @@
   --color-gray-800: oklch(0.278 0.033 256.848);
   --color-gray-900: oklch(0.21 0.034 264.665);
   --color-gray-950: oklch(0.13 0.028 261.692);
+  --color-green-500: oklch(0.723 0.219 149.579);
+  --color-red-500: oklch(0.637 0.237 25.331);
 
-  /* Line heights */
-  --line-height-11: 2.75rem;
-  --line-height-12: 3rem;
-  --line-height-13: 3.25rem;
-  --line-height-14: 3.5rem;
+  --font-serif: var(--stack-serif);
+  --font-sans: var(--stack-sans);
+  --font-mono: var(--stack-mono);
+  --font-arabic: var(--stack-arabic);
+  --font-quran: var(--stack-quran);
+}
 
-  /* Z-index values */
+@theme {
+  /* Fluid type scale (rem + vw, never vw alone, so zoom still works). */
+  --text-meta: clamp(0.78rem, 0.76rem + 0.1vw, 0.84rem);
+  --text-meta--line-height: 1.5;
+  --text-ui: clamp(0.875rem, 0.85rem + 0.12vw, 0.97rem);
+  --text-ui--line-height: 1.5;
+  --text-body: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --text-body--line-height: 1.7;
+  --text-h3: clamp(1.3rem, 1.2rem + 0.45vw, 1.56rem);
+  --text-h3--line-height: 1.3;
+  --text-h2: clamp(1.6rem, 1.4rem + 0.9vw, 1.95rem);
+  --text-h2--line-height: 1.2;
+  --text-title: clamp(2.1rem, 1.6rem + 2vw, 3.05rem);
+  --text-title--line-height: 1.1;
+  --text-cover: clamp(2.8rem, 1.8rem + 4.5vw, 5.2rem);
+  --text-cover--line-height: 1;
+
+  --tracking-display: -0.025em;
+  --tracking-caps: 0.14em;
+
+  --container-measure: 68ch;
+  --container-page: 76rem;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  --default-transition-duration: 180ms;
+
   --z-60: 60;
   --z-70: 70;
   --z-80: 80;
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+/* ───────────────────────── Base ───────────────────────── */
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--border-subtle);
   }
 
-  a,
-  button {
-    outline-color: var(--color-primary-500);
+  html {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--stack-serif);
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
+    scrollbar-color: var(--border-strong) var(--bg);
+    hanging-punctuation: first;
   }
 
-  a:focus-visible,
-  button:focus-visible {
-    outline: 2px solid;
-    border-radius: var(--radius-sm);
-    outline-color: var(--color-primary-500);
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    caret-color: var(--accent);
+  }
+
+  ::selection {
+    background-color: var(--selection);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
+  table,
+  time,
+  .tabular {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  /* Arabic: any run marked lang="ar" gets the Naskh face at reading size. */
+  :lang(ar) {
+    font-family: var(--stack-arabic);
+    font-size: 1.35em;
+    line-height: 2.1;
+    font-style: normal;
+    letter-spacing: 0;
+    word-spacing: 0.05em;
+  }
+
+  /* Inline Arabic must not stretch the line box of the Latin around it. */
+  :not(:lang(ar)) > :lang(ar):where(span, i, em, b, strong) {
+    line-height: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
+
+/* ───────────────────────── Prose ───────────────────────── */
 
 @layer utilities {
-  .prose {
-    & a {
-      color: var(--color-primary-500);
-      &:hover {
-        color: var(--color-primary-600);
-      }
-      & code {
-        color: var(--color-primary-400);
-      }
-    }
-    & :where(h1, h2) {
-      font-weight: 700;
-      letter-spacing: var(--tracking-tight);
-    }
-    & h3 {
-      font-weight: 600;
-    }
-    & :where(code):not(pre code) {
-      color: var(--color-indigo-500);
-    }
+  :root .prose {
+    --tw-prose-body: var(--ink);
+    --tw-prose-headings: var(--ink);
+    --tw-prose-lead: var(--ink-muted);
+    --tw-prose-links: var(--accent);
+    --tw-prose-bold: var(--ink);
+    --tw-prose-counters: var(--ink-faint);
+    --tw-prose-bullets: var(--ink-faint);
+    --tw-prose-hr: var(--border-subtle);
+    --tw-prose-quotes: var(--ink);
+    --tw-prose-quote-borders: var(--border-strong);
+    --tw-prose-captions: var(--ink-muted);
+    --tw-prose-kbd: var(--ink);
+    --tw-prose-kbd-shadows: var(--border-strong);
+    --tw-prose-code: var(--ink);
+    --tw-prose-pre-code: #dfe3ea;
+    --tw-prose-pre-bg: var(--code-bg);
+    --tw-prose-th-borders: var(--border-strong);
+    --tw-prose-td-borders: var(--border-subtle);
+
+    /* Theme switching is done by the tokens, so invert maps to the same values. */
+    --tw-prose-invert-body: var(--ink);
+    --tw-prose-invert-headings: var(--ink);
+    --tw-prose-invert-lead: var(--ink-muted);
+    --tw-prose-invert-links: var(--accent);
+    --tw-prose-invert-bold: var(--ink);
+    --tw-prose-invert-counters: var(--ink-faint);
+    --tw-prose-invert-bullets: var(--ink-faint);
+    --tw-prose-invert-hr: var(--border-subtle);
+    --tw-prose-invert-quotes: var(--ink);
+    --tw-prose-invert-quote-borders: var(--border-strong);
+    --tw-prose-invert-captions: var(--ink-muted);
+    --tw-prose-invert-kbd: var(--ink);
+    --tw-prose-invert-kbd-shadows: var(--border-strong);
+    --tw-prose-invert-code: var(--ink);
+    --tw-prose-invert-pre-code: #dfe3ea;
+    --tw-prose-invert-pre-bg: var(--code-bg);
+    --tw-prose-invert-th-borders: var(--border-strong);
+    --tw-prose-invert-td-borders: var(--border-subtle);
+
+    font-family: var(--font-reading);
+    font-size: calc(var(--text-body) * var(--reading-scale));
+    line-height: 1.7;
+    max-width: var(--container-measure);
+    font-variant-ligatures: common-ligatures;
   }
 
-  .prose-invert {
-    & a {
-      color: var(--color-primary-500);
-      &:hover {
-        color: var(--color-primary-400);
-      }
-      & code {
-        color: var(--color-primary-400);
-      }
-    }
-    & :where(h1, h2, h3, h4, h5, h6) {
-      color: var(--color-gray-100);
-    }
+  .prose :where(p, ul, ol, blockquote, figure, table, pre) {
+    margin-block: 0 1.15em;
+  }
+
+  .prose :where(h2, h3, h4) {
+    font-family: var(--stack-serif);
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    scroll-margin-top: 6rem;
+  }
+
+  .prose :where(h2) {
+    font-size: var(--text-h2);
+    line-height: 1.2;
+    margin-block: 2.4em 0.7em;
+  }
+
+  .prose :where(h3) {
+    font-size: var(--text-h3);
+    line-height: 1.3;
+    margin-block: 1.9em 0.55em;
+  }
+
+  .prose :where(h4) {
+    font-size: 1em;
+    font-style: italic;
+    font-weight: 500;
+    margin-block: 1.6em 0.4em;
+  }
+
+  .prose :where(a):not(:where(.not-prose *, .content-header-link)) {
+    color: var(--accent);
+    font-weight: inherit;
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in oklab, var(--accent) 40%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 180ms var(--ease-out-quint);
+  }
+
+  .prose :where(a):not(:where(.not-prose *, .content-header-link)):hover {
+    text-decoration-color: currentColor;
+  }
+
+  .prose :where(strong) {
+    font-weight: 650;
+  }
+
+  .prose :where(em, i, cite) {
+    font-style: italic;
+  }
+
+  /* Plain markdown quotes: a quiet hairline, never a scripture style. */
+  .prose :where(blockquote):not(:where(.not-prose *)) {
+    font-style: normal;
+    font-weight: 400;
+    color: var(--ink-muted);
+    border-inline-start: 1px solid var(--border-strong);
+    padding-inline-start: 1.25em;
+    quotes: none;
+  }
+
+  .prose :where(blockquote p:first-of-type)::before,
+  .prose :where(blockquote p:last-of-type)::after {
+    content: none;
+  }
+
+  .prose :where(ul > li)::marker {
+    color: var(--ink-faint);
+  }
+
+  .prose :where(ol > li)::marker {
+    color: var(--ink-faint);
+    font-family: var(--stack-mono);
+    font-size: 0.8em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .prose :where(code):not(:where(pre code, .not-prose *)) {
+    font-family: var(--stack-mono);
+    font-size: 0.86em;
+    font-weight: 400;
+    background-color: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 2px;
+    padding: 0.1em 0.3em;
+  }
+
+  .prose :where(code):not(:where(pre code))::before,
+  .prose :where(code):not(:where(pre code))::after {
+    content: none;
+  }
+
+  .prose :where(pre) {
+    font-size: 0.82em;
+    line-height: 1.65;
+    border-radius: 2px;
+  }
+
+  /* Ornamental break instead of a plain rule. */
+  .prose :where(hr):not(:where(.not-prose *)) {
+    border: 0;
+    height: auto;
+    margin-block: 2.6em;
+    text-align: center;
+    overflow: visible;
+  }
+
+  .prose :where(hr):not(:where(.not-prose *))::after {
+    content: '⁂';
+    display: inline-block;
+    color: var(--accent);
+    font-family: var(--stack-serif);
+    font-size: 1.15em;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .prose :where(table) {
+    font-family: var(--stack-sans);
+    font-size: 0.85em;
+    line-height: 1.5;
+  }
+
+  .prose :where(thead th) {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .prose :where(figcaption) {
+    font-family: var(--stack-sans);
+    font-size: var(--text-ui);
+    color: var(--ink-muted);
+  }
+
+  .prose :where(img) {
+    border-radius: 2px;
+  }
+
+  .prose :where(:lang(ar)) {
+    font-family: var(--stack-arabic);
   }
 }
+
+/* ───────────────────── Starter features kept ───────────────────── */
 
 .task-list-item::before {
   @apply hidden;
@@ -125,8 +481,14 @@
   @apply list-none;
 }
 
+/* GFM footnotes and the bibliography: base treatment; margin placement comes in Phase 3. */
 .footnotes {
-  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
+  margin-top: 3.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--stack-serif);
+  font-size: 0.88em;
+  color: var(--ink-muted);
 }
 
 .data-footnote-backref {
@@ -134,7 +496,9 @@
 }
 
 .csl-entry {
-  @apply my-5;
+  margin-block: 0.9rem;
+  padding-inline-start: 2em;
+  text-indent: -2em;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -142,8 +506,8 @@
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
@@ -158,18 +522,33 @@ input:-webkit-autofill:focus {
   overflow: auto hidden;
 }
 
+.content-header {
+  position: relative;
+}
+
+/* The anchor icon hangs in the margin so headings align with the text. */
 .content-header-link {
+  position: absolute;
+  inset-inline-end: 100%;
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  padding-inline-end: 0.35em;
+  font-size: 0.7em;
+  line-height: 1;
   opacity: 0;
-  margin-left: -24px;
-  padding-right: 4px;
+  color: var(--ink-faint);
+  transition: opacity 180ms var(--ease-out-quint);
 }
 
 .content-header:hover .content-header-link,
-.content-header-link:hover {
+.content-header-link:hover,
+.content-header-link:focus-visible {
   opacity: 1;
 }
 
 .linkicon {
   display: inline-block;
   vertical-align: middle;
+  inline-size: 1em;
+  block-size: 1em;
 }

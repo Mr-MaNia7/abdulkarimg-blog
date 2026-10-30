@@ -1,4 +1,9 @@
-import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer2/source-files'
+import {
+  defineDocumentType,
+  defineNestedType,
+  ComputedFields,
+  makeSource,
+} from 'contentlayer2/source-files'
 import { writeFileSync } from 'fs'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
@@ -93,6 +98,49 @@ function createSearchIndex(allBlogs) {
   }
 }
 
+export const POST_TYPES = ['essay', 'qa', 'note'] as const
+export const CATEGORIES = [
+  'Theology',
+  'Comparative Religion',
+  'Questions on Islam',
+  'Notes',
+] as const
+
+const Series = defineNestedType(() => ({
+  name: 'Series',
+  fields: {
+    name: { type: 'string', required: true },
+    part: { type: 'number', required: true },
+  },
+}))
+
+/**
+ * Fail the build on frontmatter the type system cannot express:
+ * Q&A posts need their question and short answer, and series parts must be unique.
+ */
+function validatePosts(allBlogs) {
+  const problems: string[] = []
+  const seriesParts = new Map<string, string>()
+  allBlogs.forEach((post) => {
+    const file = post._raw.sourceFilePath
+    if (post.type === 'qa' && (!post.question || !post.short_answer)) {
+      problems.push(`${file}: type "qa" requires both \`question\` and \`short_answer\``)
+    }
+    if (post.type !== 'qa' && (post.question || post.short_answer)) {
+      problems.push(`${file}: \`question\` and \`short_answer\` are only used when type is "qa"`)
+    }
+    if (post.series) {
+      const key = `${post.series.name}#${post.series.part}`
+      const other = seriesParts.get(key)
+      if (other) problems.push(`${file}: series part ${key} is also used by ${other}`)
+      seriesParts.set(key, file)
+    }
+  })
+  if (problems.length) {
+    throw new Error(`Invalid post frontmatter:\n  - ${problems.join('\n  - ')}`)
+  }
+}
+
 export const Blog = defineDocumentType(() => ({
   name: 'Blog',
   filePathPattern: 'blog/**/*.mdx',
@@ -109,9 +157,24 @@ export const Blog = defineDocumentType(() => ({
     layout: { type: 'string' },
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
+    // Ḥāshiya additions
+    type: { type: 'enum', options: [...POST_TYPES], default: 'essay' },
+    category: { type: 'enum', options: [...CATEGORIES] },
+    series: { type: 'nested', of: Series },
+    question: { type: 'string' },
+    short_answer: { type: 'string' },
+    featured: { type: 'boolean', default: false },
   },
   computedFields: {
     ...computedFields,
+    categorySlug: {
+      type: 'string',
+      resolve: (doc) => (doc.category ? slug(doc.category) : undefined),
+    },
+    seriesSlug: {
+      type: 'string',
+      resolve: (doc) => (doc.series?.name ? slug(doc.series.name) : undefined),
+    },
     structuredData: {
       type: 'json',
       resolve: (doc) => ({
@@ -150,6 +213,9 @@ export const Authors = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: 'data',
   documentTypes: [Blog, Authors],
+  // Contentlayer's own discriminator moves to `documentType`, so the
+  // frontmatter field `type` (essay | qa | note) belongs to the author.
+  fieldOptions: { bodyFieldName: 'body', typeFieldName: 'documentType' },
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
@@ -181,6 +247,7 @@ export default makeSource({
   },
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
+    validatePosts(allBlogs)
     createTagCount(allBlogs)
     createSearchIndex(allBlogs)
   },
