@@ -1,11 +1,8 @@
 import 'css/tailwind.css'
-import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
 
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
-import { SearchProvider, SearchConfig } from 'pliny/search'
-import Header from '@/components/Header'
-import SectionContainer from '@/components/SectionContainer'
+import Masthead from '@/components/masthead/Masthead'
 import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
@@ -13,6 +10,7 @@ import { Metadata } from 'next'
 import { Toaster } from 'sonner'
 
 import { fontVariables } from './fonts'
+import { applyPrefsScript } from '@/lib/reading-prefs'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.siteUrl),
@@ -63,50 +61,48 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${fontVariables} scroll-smooth`}
       suppressHydrationWarning
     >
-      <link
-        rel="apple-touch-icon"
-        sizes="76x76"
-        href={`${basePath}/static/favicons/apple-touch-icon.png`}
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href={`${basePath}/static/favicons/favicon-32x32.png`}
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="16x16"
-        href={`${basePath}/static/favicons/favicon-16x16.png`}
-      />
-      <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} />
-      <link
-        rel="mask-icon"
-        href={`${basePath}/static/favicons/safari-pinned-tab.svg`}
-        color="#1c2f5e"
-      />
-      <meta name="msapplication-TileColor" content="#1c2f5e" />
-      <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9f8f5" />
-      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#11161f" />
-      <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
+      <head>
+        {/* Saved reading preferences, applied before first paint. */}
+        <script dangerouslySetInnerHTML={{ __html: applyPrefsScript }} />
+        <link
+          rel="apple-touch-icon"
+          sizes="76x76"
+          href={`${basePath}/static/favicons/apple-touch-icon.png`}
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href={`${basePath}/static/favicons/favicon-32x32.png`}
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href={`${basePath}/static/favicons/favicon-16x16.png`}
+        />
+        <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} />
+        <link
+          rel="mask-icon"
+          href={`${basePath}/static/favicons/safari-pinned-tab.svg`}
+          color="#1c2f5e"
+        />
+        <meta name="msapplication-TileColor" content="#1c2f5e" />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9f8f5" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#11161f" />
+        <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
+      </head>
       <body className="bg-bg text-ink antialiased">
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
-          <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-            <SectionContainer>
-              <Header />
-            </SectionContainer>
-            <main id="main-content" tabIndex={-1} className="mb-auto outline-none">
-              {children}
-            </main>
-          </SearchProvider>
-          <SectionContainer>
-            <Footer />
-          </SectionContainer>
+          <Masthead />
+          <main id="main-content" tabIndex={-1} className="mb-auto outline-none">
+            {children}
+          </main>
+          <Footer />
           <Toaster
             position="bottom-center"
             toastOptions={{ unstyled: true, classNames: { toast: 'toast' } }}

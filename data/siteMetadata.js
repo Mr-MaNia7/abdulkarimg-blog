@@ -52,8 +52,13 @@ const siteMetadata = {
     // },
   },
   newsletter: {
-    // supports mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus, beehive
-    // Please add your .env file and modify it according to your selection
+    // Static site (Cloudflare Pages): paste your provider's hosted form URL into
+    // formAction, e.g. Buttondown's https://buttondown.com/api/emails/embed-subscribe/<username>.
+    // The footer form then posts there directly and works without JavaScript.
+    formAction: '',
+    fieldName: 'email',
+    // Server deployments only: pliny's /api/newsletter route with one of
+    // mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus, beehive (see .env.example).
     provider: 'buttondown',
   },
   comments: {
@@ -87,18 +92,9 @@ const siteMetadata = {
     },
   },
   search: {
-    provider: 'kbar', // kbar or algolia
-    kbarConfig: {
-      searchDocumentsPath: `${process.env.BASE_PATH || ''}/search.json`, // path to load documents to search
-    },
-    // provider: 'algolia',
-    // algoliaConfig: {
-    //   // The application ID provided by Algolia
-    //   appId: 'R2IYF7ETH7',
-    //   // Public API key: it is safe to commit it
-    //   apiKey: '599cec31baffa4868cae4e79f180729b',
-    //   indexName: 'docsearch',
-    // },
+    // Pagefind: a static index built after `yarn build` (scripts/postbuild.mjs),
+    // queried by the ⌘K palette. Supports Arabic.
+    provider: 'pagefind',
   },
 }
 

@@ -5,7 +5,7 @@ import type { SeriesContext } from '@/lib/posts'
 /** The parts of a multi-part essay, with the current one marked. */
 export function SeriesContents({ series }: { series: SeriesContext }) {
   return (
-    <nav className="series-box" aria-labelledby="series-heading">
+    <nav className="series-box" aria-labelledby="series-heading" data-pagefind-ignore="all">
       <p id="series-heading" className="series-heading">
         Part {series.part} of {series.parts.length} in{' '}
         <Link href={`/series/${series.slug}`}>{typeset(series.name)}</Link>
@@ -32,7 +32,11 @@ export function SeriesPager({ series }: { series: SeriesContext }) {
   const next = series.parts[i + 1]
   if (!prev && !next) return null
   return (
-    <nav className="pager pager-series" aria-label={`${series.name}: other parts`}>
+    <nav
+      data-pagefind-ignore="all"
+      className="pager pager-series"
+      aria-label={`${series.name}: other parts`}
+    >
       {prev && (
         <Link href={`/${prev.path}`} className="pager-link pager-prev" rel="prev">
           <span className="pager-dir">Part {prev.part}</span>

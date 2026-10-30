@@ -49,3 +49,6 @@ yarn-error.log*
 
 # typescript incremental output
 *.tsbuildinfo
+
+# search index (built by scripts/postbuild.mjs)
+/public/pagefind/

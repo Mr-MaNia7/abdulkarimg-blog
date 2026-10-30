@@ -158,7 +158,7 @@ export function rehypeMarginFootnotes() {
         next.push({
           type: 'element',
           tagName: 'span',
-          properties: { className: ['margin-note'], ariaHidden: 'true' },
+          properties: { className: ['margin-note'], ariaHidden: 'true', dataPagefindIgnore: 'all' },
           children: [span({ className: ['margin-note-num'] }, number), ...inline],
         })
       }

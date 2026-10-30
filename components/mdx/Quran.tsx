@@ -1,4 +1,5 @@
 import CopyButton from './CopyButton'
+import SearchCopy from './SearchCopy'
 
 type Props = {
   /**
@@ -30,6 +31,7 @@ export default function Quran(props: Props) {
         {arabic}
         {single && <span className="quran-ayah">{` ۝${toArabicDigits(single[1])}`}</span>}
       </p>
+      <SearchCopy text={arabic} />
       <blockquote className="scripture-translation">
         <p>{translation}</p>
       </blockquote>

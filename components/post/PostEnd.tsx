@@ -20,7 +20,7 @@ type Props = {
 export default function PostEnd({ slug: postSlug, filePath, tags, prev, next, related }: Props) {
   const editUrl = `${siteMetadata.siteRepo}/blob/main/data/${filePath}`
   return (
-    <footer className="post-end">
+    <footer className="post-end" data-pagefind-ignore="all">
       <div className="post-filing">
         {tags && tags.length > 0 && (
           <p>

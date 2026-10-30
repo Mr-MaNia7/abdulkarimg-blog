@@ -66,6 +66,8 @@ module.exports = () => {
   return plugins.reduce((acc, next) => next(acc), {
     output,
     basePath,
+    // Client code (the search palette) needs the base path to load /pagefind.
+    env: { NEXT_PUBLIC_BASE_PATH: basePath || '' },
     reactStrictMode: true,
     trailingSlash: true,
     turbopack: {
@@ -79,12 +81,6 @@ module.exports = () => {
     },
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     images: {
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'picsum.photos',
-        },
-      ],
       unoptimized,
     },
     async headers() {

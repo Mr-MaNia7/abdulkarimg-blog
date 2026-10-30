@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { typeset } from '@/lib/typeset'
+import SearchCopy from './SearchCopy'
 
 type Grade = 'Sahih' | 'Hasan' | "Da'if" | 'Daif' | string
 
@@ -32,6 +33,7 @@ export default function Hadith({ collection, number, grade, narrator, arabic, ch
           {arabic}
         </p>
       )}
+      <SearchCopy text={arabic} />
       <blockquote className="scripture-translation">{children}</blockquote>
       <figcaption className="scripture-caption">
         <cite className="scripture-ref">

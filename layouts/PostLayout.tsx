@@ -35,8 +35,13 @@ export default function PostLayout({
   return (
     <>
       <ReadingProgress />
-      <article className="post post-margins" data-post-type={content.type}>
-        <aside className="post-aside">
+      <article
+        className="post post-margins"
+        data-post-type={content.type}
+        data-pagefind-body
+        data-pagefind-meta={`type:${content.type ?? 'essay'}`}
+      >
+        <aside className="post-aside" data-pagefind-ignore="all">
           <TableOfContents toc={toc} />
         </aside>
         <div className="post-main">

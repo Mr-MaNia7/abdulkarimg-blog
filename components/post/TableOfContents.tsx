@@ -41,7 +41,7 @@ export default function TableOfContents({ toc }: { toc: TocItem[] }) {
 export function TocInline({ toc }: { toc: TocItem[] }) {
   if (!enough(toc)) return null
   return (
-    <details className="toc toc-inline">
+    <details className="toc toc-inline" data-pagefind-ignore="all">
       <summary className="toc-heading">Contents</summary>
       <TocList toc={toc} />
     </details>

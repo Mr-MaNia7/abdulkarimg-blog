@@ -23,7 +23,12 @@ export default function PostBanner({
   return (
     <>
       <ReadingProgress />
-      <article className="post post-simple post-banner" data-post-type={content.type}>
+      <article
+        className="post post-simple post-banner"
+        data-post-type={content.type}
+        data-pagefind-body
+        data-pagefind-meta={`type:${content.type ?? 'essay'}`}
+      >
         {plate && (
           <figure className="post-plate">
             <Image

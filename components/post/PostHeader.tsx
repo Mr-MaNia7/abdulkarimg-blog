@@ -12,7 +12,7 @@ export function PostMeta({ content }: Props) {
   const { date, lastmod, readingTime, category, type } = content
   const minutes = Math.max(1, Math.round(readingTime?.minutes ?? 0))
   return (
-    <p className="post-meta">
+    <p className="post-meta" data-pagefind-ignore="all">
       <time dateTime={date}>{formatDate(date)}</time>
       <span aria-hidden="true"> · </span>
       <span>{minutes} min read</span>

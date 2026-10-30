@@ -19,7 +19,12 @@ export default function PostSimple({
   return (
     <>
       <ReadingProgress />
-      <article className="post post-simple" data-post-type={content.type}>
+      <article
+        className="post post-simple"
+        data-post-type={content.type}
+        data-pagefind-body
+        data-pagefind-meta={`type:${content.type ?? 'essay'}`}
+      >
         <div className="post-main">
           <PostHeader content={content} />
           {series && <SeriesContents series={series} />}

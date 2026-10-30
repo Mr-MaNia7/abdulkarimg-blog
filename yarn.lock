@@ -3184,6 +3184,55 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pagefind/darwin-arm64@npm:1.5.2":
+  version: 1.5.2
+  resolution: "@pagefind/darwin-arm64@npm:1.5.2"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@pagefind/darwin-x64@npm:1.5.2":
+  version: 1.5.2
+  resolution: "@pagefind/darwin-x64@npm:1.5.2"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@pagefind/freebsd-x64@npm:1.5.2":
+  version: 1.5.2
+  resolution: "@pagefind/freebsd-x64@npm:1.5.2"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@pagefind/linux-arm64@npm:1.5.2":
+  version: 1.5.2
+  resolution: "@pagefind/linux-arm64@npm:1.5.2"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@pagefind/linux-x64@npm:1.5.2":
+  version: 1.5.2
+  resolution: "@pagefind/linux-x64@npm:1.5.2"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@pagefind/windows-arm64@npm:1.5.2":
+  version: 1.5.2
+  resolution: "@pagefind/windows-arm64@npm:1.5.2"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@pagefind/windows-x64@npm:1.5.2":
+  version: 1.5.2
+  resolution: "@pagefind/windows-x64@npm:1.5.2"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@pkgr/core@npm:^0.2.9":
   version: 0.2.9
   resolution: "@pkgr/core@npm:0.2.9"
@@ -3333,6 +3382,39 @@ __metadata:
     "@types/react":
       optional: true
   checksum: f928e02b7913626e2ebae127e9400847390ec6d6c2aa627a527dafa9cca153a54d56696994240b76399660f588b451f6a60d1fb78cb1d7e323280e6cffff1bbf
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-dialog@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@radix-ui/react-dialog@npm:1.3.1"
+  dependencies:
+    "@radix-ui/primitive": 1.2.0
+    "@radix-ui/react-compose-refs": 1.1.5
+    "@radix-ui/react-context": 1.3.0
+    "@radix-ui/react-dismissable-layer": 1.2.1
+    "@radix-ui/react-focus-guards": 1.2.0
+    "@radix-ui/react-focus-scope": 1.3.1
+    "@radix-ui/react-id": 1.1.4
+    "@radix-ui/react-portal": 1.2.0
+    "@radix-ui/react-presence": 1.1.11
+    "@radix-ui/react-primitive": 2.2.0
+    "@radix-ui/react-slot": 1.5.0
+    "@radix-ui/react-use-controllable-state": 1.3.0
+    "@radix-ui/react-use-layout-effect": 1.1.4
+    aria-hidden: ^1.2.4
+    react-remove-scroll: ^2.7.2
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: e8d632df1e1397f8fbcce440bbbedf4875ec6e71174fdc4d569d9f9342b8a1ade5ce6bff5e70cd4e69f90b37832917306317f5ed5d1ac5155f3ded0c82442b29
   languageName: node
   linkType: hard
 
@@ -10000,6 +10082,38 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pagefind@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "pagefind@npm:1.5.2"
+  dependencies:
+    "@pagefind/darwin-arm64": 1.5.2
+    "@pagefind/darwin-x64": 1.5.2
+    "@pagefind/freebsd-x64": 1.5.2
+    "@pagefind/linux-arm64": 1.5.2
+    "@pagefind/linux-x64": 1.5.2
+    "@pagefind/windows-arm64": 1.5.2
+    "@pagefind/windows-x64": 1.5.2
+  dependenciesMeta:
+    "@pagefind/darwin-arm64":
+      optional: true
+    "@pagefind/darwin-x64":
+      optional: true
+    "@pagefind/freebsd-x64":
+      optional: true
+    "@pagefind/linux-arm64":
+      optional: true
+    "@pagefind/linux-x64":
+      optional: true
+    "@pagefind/windows-arm64":
+      optional: true
+    "@pagefind/windows-x64":
+      optional: true
+  bin:
+    pagefind: lib/runner/bin.cjs
+  checksum: f52917d363a6b1e65d8f56a207b110c3e9ba2e3387236cc0e1ef8fe60d2284b4c0c1be52b6129ea8788e101dc39544d792aeb924b1b24a13ecd8391984c961f8
+  languageName: node
+  linkType: hard
+
 "parent-module@npm:^1.0.0":
   version: 1.0.1
   resolution: "parent-module@npm:1.0.1"
@@ -12064,6 +12178,7 @@ __metadata:
     "@eslint/js": ^9.18.0
     "@headlessui/react": 2.2.9
     "@next/bundle-analyzer": 15.5.12
+    "@radix-ui/react-dialog": ^1.3.1
     "@radix-ui/react-popover": ^1.3.1
     "@svgr/webpack": ^8.1.0
     "@tailwindcss/forms": ^0.5.11
@@ -12091,6 +12206,7 @@ __metadata:
     next: 15.5.12
     next-contentlayer2: 0.5.8
     next-themes: ^0.4.6
+    pagefind: ^1.5.2
     pliny: 0.4.1
     postcss: ^8.5.6
     prettier: ^3.8.1
