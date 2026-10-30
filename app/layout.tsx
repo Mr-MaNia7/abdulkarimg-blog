@@ -10,6 +10,7 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
+import { Toaster } from 'sonner'
 
 import { fontVariables } from './fonts'
 
@@ -90,15 +91,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#11161f" />
       <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
       <body className="bg-bg text-ink antialiased">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
               <Header />
-              <main className="mb-auto">{children}</main>
+              <main id="main-content" tabIndex={-1} className="mb-auto outline-none">
+                {children}
+              </main>
             </SearchProvider>
             <Footer />
           </SectionContainer>
+          <Toaster
+            position="bottom-center"
+            toastOptions={{ unstyled: true, classNames: { toast: 'toast' } }}
+          />
         </ThemeProviders>
       </body>
     </html>

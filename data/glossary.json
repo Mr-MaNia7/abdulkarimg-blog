@@ -1,0 +1,98 @@
+[
+  {
+    "id": "tawhid",
+    "translit": "tawḥīd",
+    "ar": "توحيد",
+    "definition": "The oneness and uniqueness of God: that God alone is Lord, alone deserves worship, and is unlike anything in creation. The foundation of Islamic belief."
+  },
+  {
+    "id": "aqida",
+    "translit": "ʿaqīda",
+    "ar": "عقيدة",
+    "definition": "Creed: the body of beliefs a Muslim holds about God, prophethood, revelation and the unseen, and the discipline that studies them."
+  },
+  {
+    "id": "shirk",
+    "translit": "shirk",
+    "ar": "شرك",
+    "definition": "Associating partners with God, in worship or in attributes that belong to God alone. The opposite of tawḥīd."
+  },
+  {
+    "id": "hadith",
+    "translit": "ḥadīth",
+    "ar": "حديث",
+    "definition": "A report of what the Prophet Muḥammad said, did or approved, transmitted with a chain of narrators."
+  },
+  {
+    "id": "isnad",
+    "translit": "isnād",
+    "ar": "إسناد",
+    "definition": "The chain of narrators through which a ḥadīth reached its compiler. Scholars examine each link to judge a report's reliability."
+  },
+  {
+    "id": "matn",
+    "translit": "matn",
+    "ar": "متن",
+    "definition": "The text of a report itself, as distinct from its chain of narrators; also the base text on which a commentary is written."
+  },
+  {
+    "id": "hashiya",
+    "translit": "ḥāshiya",
+    "ar": "حاشية",
+    "definition": "A marginal gloss: commentary written beside or around a text, a central genre of classical Islamic scholarship. The name of this journal."
+  },
+  {
+    "id": "sunna",
+    "translit": "sunna",
+    "ar": "سنة",
+    "definition": "The normative practice and teaching of the Prophet, known chiefly through ḥadīth; the second source of Islamic law after the Qurʾān."
+  },
+  {
+    "id": "tafsir",
+    "translit": "tafsīr",
+    "ar": "تفسير",
+    "definition": "Exegesis of the Qurʾān: explaining its meaning through language, context, other verses, prophetic reports and the views of early scholars."
+  },
+  {
+    "id": "fiqh",
+    "translit": "fiqh",
+    "ar": "فقه",
+    "definition": "Islamic jurisprudence: the human understanding and derivation of practical rulings from the sources of the law."
+  },
+  {
+    "id": "iman",
+    "translit": "īmān",
+    "ar": "إيمان",
+    "definition": "Faith: affirmation in the heart, expressed on the tongue and borne out in action."
+  },
+  {
+    "id": "ihsan",
+    "translit": "iḥsān",
+    "ar": "إحسان",
+    "definition": "Excellence in worship and conduct: to worship God as though one sees Him, knowing that He sees you."
+  },
+  {
+    "id": "wahy",
+    "translit": "waḥy",
+    "ar": "وحي",
+    "definition": "Revelation: God's communication of His word and guidance to a prophet."
+  },
+  {
+    "id": "sahih",
+    "translit": "ṣaḥīḥ",
+    "ar": "صحيح",
+    "definition": "Sound: the highest grade of ḥadīth, with an unbroken chain of trustworthy, precise narrators and no hidden defect or irregularity."
+  },
+  {
+    "id": "hasan",
+    "translit": "ḥasan",
+    "ar": "حسن",
+    "definition": "Good: a ḥadīth grade just below ṣaḥīḥ, where a narrator's precision is slightly lesser but the report is still accepted as evidence."
+  },
+  {
+    "id": "daif",
+    "translit": "ḍaʿīf",
+    "ar": "ضعيف",
+    "definition": "Weak: a ḥadīth that fails one or more conditions of acceptance, such as a broken chain or an unreliable narrator."
+  }
+]

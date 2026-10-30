@@ -1,78 +1,56 @@
-import { ReactNode } from 'react'
 import Image from '@/components/Image'
-import Bleed from 'pliny/ui/Bleed'
-import { CoreContent } from 'pliny/utils/contentlayer'
-import type { Blog } from 'contentlayer/generated'
-import Comments from '@/components/Comments'
-import Link from '@/components/Link'
-import PageTitle from '@/components/PageTitle'
-import SectionContainer from '@/components/SectionContainer'
-import siteMetadata from '@/data/siteMetadata'
-import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import PostHeader from '@/components/post/PostHeader'
+import PostEnd from '@/components/post/PostEnd'
+import ReadingProgress from '@/components/post/ReadingProgress'
+import { SeriesContents, SeriesPager } from '@/components/post/SeriesNav'
+import type { PostLayoutProps } from './PostLayout'
 
-interface LayoutProps {
-  content: CoreContent<Blog>
-  children: ReactNode
-  next?: { path: string; title: string }
-  prev?: { path: string; title: string }
-}
-
-export default function PostMinimal({ content, next, prev, children }: LayoutProps) {
-  const { slug, title, images } = content
-  const displayImage =
-    images && images.length > 0 ? images[0] : 'https://picsum.photos/seed/picsum/800/400'
+/**
+ * The simple column opened by a wide plate: the first image in `images`.
+ * Without an image it is identical to PostSimple.
+ */
+export default function PostBanner({
+  content,
+  next,
+  prev,
+  series,
+  related = [],
+  children,
+}: PostLayoutProps) {
+  const images = typeof content.images === 'string' ? [content.images] : content.images
+  const plate: string | undefined = images?.[0]
 
   return (
-    <SectionContainer>
-      <ScrollTopAndComment />
-      <article>
-        <div>
-          <div className="space-y-1 pb-10 text-center dark:border-gray-700">
-            <div className="w-full">
-              <Bleed>
-                <div className="relative aspect-2/1 w-full">
-                  <Image src={displayImage} alt={title} fill className="object-cover" />
-                </div>
-              </Bleed>
-            </div>
-            <div className="relative pt-10">
-              <PageTitle>{title}</PageTitle>
-            </div>
-          </div>
-          <div className="prose dark:prose-invert max-w-none py-4">{children}</div>
-          {siteMetadata.comments && (
-            <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300" id="comment">
-              <Comments slug={slug} />
-            </div>
-          )}
-          <footer>
-            <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
-              {prev && prev.path && (
-                <div className="pt-4 xl:pt-8">
-                  <Link
-                    href={`/${prev.path}`}
-                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                    aria-label={`Previous post: ${prev.title}`}
-                  >
-                    &larr; {prev.title}
-                  </Link>
-                </div>
-              )}
-              {next && next.path && (
-                <div className="pt-4 xl:pt-8">
-                  <Link
-                    href={`/${next.path}`}
-                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                    aria-label={`Next post: ${next.title}`}
-                  >
-                    {next.title} &rarr;
-                  </Link>
-                </div>
-              )}
-            </div>
-          </footer>
+    <>
+      <ReadingProgress />
+      <article className="post post-simple post-banner" data-post-type={content.type}>
+        {plate && (
+          <figure className="post-plate">
+            <Image
+              src={plate}
+              alt=""
+              width={1600}
+              height={800}
+              priority
+              sizes="(min-width: 76rem) 72rem, 100vw"
+            />
+          </figure>
+        )}
+        <div className="post-main">
+          <PostHeader content={content} />
+          {series && <SeriesContents series={series} />}
+          <div className="prose post-body">{children}</div>
+          {series && <SeriesPager series={series} />}
+          <PostEnd
+            slug={content.slug}
+            filePath={content.filePath}
+            tags={content.tags}
+            prev={prev}
+            next={next}
+            related={related}
+          />
         </div>
       </article>
-    </SectionContainer>
+    </>
   )
 }

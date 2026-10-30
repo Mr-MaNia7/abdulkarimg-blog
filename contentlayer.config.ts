@@ -30,6 +30,7 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
+import { rehypeScripts, rehypeMarginFootnotes, rehypeRefAlias } from './lib/rehype-hashiya'
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
@@ -212,6 +213,16 @@ export const Authors = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'data',
+  // glossary.json is plain data for <Term> and /glossary, not a document.
+  contentDirExclude: [
+    'node_modules',
+    '.git',
+    '.yarn',
+    '.cache',
+    '.next',
+    '.contentlayer',
+    'glossary.json',
+  ],
   documentTypes: [Blog, Authors],
   // Contentlayer's own discriminator moves to `documentType`, so the
   // frontmatter field `type` (essay | qa | note) belongs to the author.
@@ -227,6 +238,7 @@ export default makeSource({
       remarkAlert,
     ],
     rehypePlugins: [
+      rehypeRefAlias,
       rehypeSlug,
       [
         rehypeAutolinkHeadings,
@@ -242,8 +254,21 @@ export default makeSource({
       rehypeKatexNoTranslate,
       [rehypeCitation, { path: path.join(root, 'data') }],
       [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
+      rehypeScripts,
+      rehypeMarginFootnotes,
       rehypePresetMinify,
     ],
+    mdxOptions: (options) => {
+      // A visible, plainly named heading for the notes section.
+      options.remarkRehypeOptions = {
+        ...options.remarkRehypeOptions,
+        footnoteLabel: 'Notes',
+        footnoteLabelTagName: 'h2',
+        footnoteLabelProperties: { className: ['footnotes-label'] },
+        footnoteBackLabel: (n) => `Back to reference ${n + 1}`,
+      }
+      return options
+    },
   },
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
