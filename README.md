@@ -248,17 +248,17 @@ The site is fully static. Cloudflare serves `out/`, applies `out/_headers`, and 
 2. In the Cloudflare dashboard: **Workers & Pages → Create → Import a repository**, and choose `Mr-MaNia7/abdulkarimg-blog`.
 3. Settings:
 
-   | Setting                              | Value                                           |
-   | ------------------------------------ | ----------------------------------------------- |
-   | Project name                         | `abdulkarimg-blog`                              |
-   | Build command                        | `EXPORT=1 UNOPTIMIZED=1 yarn build`             |
-   | Deploy command                       | `npx wrangler deploy`                           |
-   | Preview command | keep Cloudflare's default (e.g. `npx wrangler preview`) |
-   | Build variable (Advanced settings)   | `NODE_VERSION` = `22` (also read from `.nvmrc`) |
+   | Setting                            | Value                                                   |
+   | ---------------------------------- | ------------------------------------------------------- |
+   | Project name                       | `abdulkarimg-blog`                                      |
+   | Build command                      | `EXPORT=1 UNOPTIMIZED=1 yarn build`                     |
+   | Deploy command                     | `npx wrangler deploy`                                   |
+   | Preview command                    | keep Cloudflare's default (e.g. `npx wrangler preview`) |
+   | Build variable (Advanced settings) | `NODE_VERSION` = `22` (also read from `.nvmrc`)         |
 
    Leave "Protect with Cloudflare Access" off, or the public will be asked to log in.
 
-4. Deploy, then check the `*.workers.dev` URL: search (⌘K), a post, `/questions`, `/glossary`, `/feed.xml`.
+4. Deploy, then check the site: search (⌘K), a post, `/questions`, `/glossary`, `/feed.xml`. `wrangler.jsonc` sets `workers_dev: false`, so once the custom domain below is attached the site is served only there; per-version preview URLs (`preview_urls: true`) stay available for branches.
 5. **Custom domain**: in the Worker, **Settings → Domains & Routes → Add → Custom domain → `blog.abdulkarimg.com`**. Because `abdulkarimg.com` is already on Cloudflare, the DNS record and certificate are created for you.
 6. Each push to `main` deploys; other branches get preview URLs.
 

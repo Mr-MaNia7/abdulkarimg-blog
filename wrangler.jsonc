@@ -4,6 +4,10 @@
 {
   "name": "abdulkarimg-blog",
   "compatibility_date": "2026-10-01",
+  // The site lives at blog.abdulkarimg.com (custom domain); no second copy on workers.dev.
+  "workers_dev": false,
+  // Per-version preview URLs stay on, for checking branches before they go live.
+  "preview_urls": true,
   "assets": {
     "directory": "./out",
     // Pages are exported as /path/index.html and linked with a trailing slash.
