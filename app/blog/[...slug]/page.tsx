@@ -12,6 +12,7 @@ import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
+import { preload } from 'react-dom'
 import { getRelated, getSeries } from '@/lib/posts'
 import { ldScript, ogImage, postJsonLd, postUrl } from '@/lib/jsonld'
 import SectionContainer from '@/components/SectionContainer'
@@ -82,6 +83,16 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
     const authorResults = allAuthors.find((p) => p.slug === author)
     return coreContent(authorResults as Authors)
   })
+  // Preload the Arabic faces only where the post uses them, so Arabic text is
+  // laid out once in its own face instead of reflowing when the font arrives.
+  const raw = `${post.title} ${post.body.raw}`
+  if (/[\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(raw)) {
+    preload('/fonts/v1/Amiri-Regular.woff2', { as: 'font', type: 'font/woff2', crossOrigin: '' })
+  }
+  if (/<Quran\b/.test(post.body.raw)) {
+    preload('/fonts/v1/AmiriQuran.woff2', { as: 'font', type: 'font/woff2', crossOrigin: '' })
+  }
+
   const mainContent = coreContent(post)
   const jsonLd = postJsonLd(mainContent)
 

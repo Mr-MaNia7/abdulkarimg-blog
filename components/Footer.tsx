@@ -38,10 +38,10 @@ export default function Footer() {
       <SectionContainer>
         <div className="colophon-grid">
           <div className="colophon-brand">
-            <Link href="/" className="colophon-mark">
+            <Link href="/" className="colophon-mark" translate="no">
               {typeset(siteMetadata.title)}
             </Link>
-            <p className="colophon-arabic" lang="ar" dir="rtl">
+            <p className="colophon-arabic" lang="ar" dir="rtl" translate="no">
               حاشية
             </p>
             <p className="colophon-line">{siteMetadata.description}</p>

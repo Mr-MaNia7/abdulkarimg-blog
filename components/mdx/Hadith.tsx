@@ -29,7 +29,7 @@ export default function Hadith({ collection, number, grade, narrator, arabic, ch
     <figure className="scripture scripture-hadith not-prose">
       {narrator && <p className="hadith-narrator">{typeset(narrator)}</p>}
       {arabic && (
-        <p className="hadith-arabic" lang="ar" dir="rtl">
+        <p className="hadith-arabic" lang="ar" dir="rtl" translate="no">
           {arabic}
         </p>
       )}

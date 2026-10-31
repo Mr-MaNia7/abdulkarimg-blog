@@ -47,6 +47,8 @@ const securityHeaders = [
 // Long-lived caching for files whose names change when their content does.
 const cacheRules = [
   { path: '/_next/static/*', value: 'public, max-age=31536000, immutable' },
+  // Versioned path (public/fonts/v1): bump the folder when a font changes.
+  { path: '/fonts/*', value: 'public, max-age=31536000, immutable' },
   { path: '/pagefind/*', value: 'public, max-age=3600' },
   { path: '/og/*', value: 'public, max-age=86400' },
   { path: '/static/*', value: 'public, max-age=86400' },

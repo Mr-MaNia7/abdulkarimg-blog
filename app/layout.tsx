@@ -7,7 +7,7 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
-import { Toaster } from 'sonner'
+import ToastHost from '@/components/ToastHost'
 
 import { fontVariables } from './fonts'
 import { applyPrefsScript } from '@/lib/reading-prefs'
@@ -54,6 +54,12 @@ export const metadata: Metadata = {
   },
 }
 
+// Render analytics only once a provider id is actually configured; otherwise the
+// script would load with no site id and trip the content security policy.
+const analyticsEnabled = Object.values(siteMetadata.analytics ?? {}).some((config) =>
+  Object.values(config ?? {}).some(Boolean)
+)
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const basePath = process.env.BASE_PATH || ''
 
@@ -81,17 +87,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <ThemeProviders>
-          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+          {analyticsEnabled && (
+            <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+          )}
           <Masthead />
-          <main id="main-content" tabIndex={-1} className="mb-auto outline-none">
+          <main id="main-content" className="mb-auto">
             {children}
           </main>
           <Footer />
           <RevealOnNavigate />
-          <Toaster
-            position="bottom-center"
-            toastOptions={{ unstyled: true, classNames: { toast: 'toast' } }}
-          />
+          <ToastHost />
         </ThemeProviders>
       </body>
     </html>

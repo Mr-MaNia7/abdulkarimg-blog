@@ -7,7 +7,6 @@ import { useCallback, useEffect, useState } from 'react'
 const SearchPalette = dynamic(() => import('@/components/search/SearchPalette'), { ssr: false })
 
 export default function SearchTrigger() {
-  const [ready, setReady] = useState(false)
   const [open, setOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [mac, setMac] = useState(true)
@@ -18,7 +17,6 @@ export default function SearchTrigger() {
   }, [])
 
   useEffect(() => {
-    setReady(true)
     setMac(/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent))
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement
@@ -40,11 +38,11 @@ export default function SearchTrigger() {
     <>
       <button
         type="button"
-        className="search-trigger"
+        className="search-trigger js-only"
         onClick={show}
         onPointerEnter={() => setLoaded(true)}
         onFocus={() => setLoaded(true)}
-        hidden={!ready}
+        aria-label="Search"
         aria-keyshortcuts={mac ? 'Meta+K' : 'Control+K'}
       >
         <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
@@ -53,7 +51,8 @@ export default function SearchTrigger() {
         </svg>
         <span className="search-trigger-label">Search</span>
         <kbd className="search-trigger-kbd" aria-hidden="true">
-          {mac ? '⌘' : 'Ctrl'} K
+          {mac ? '⌘' : 'Ctrl'}
+          {'\u00A0'}K
         </kbd>
       </button>
       {loaded && <SearchPalette open={open} onOpenChange={setOpen} />}

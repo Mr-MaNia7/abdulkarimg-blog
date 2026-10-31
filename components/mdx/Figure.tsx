@@ -21,6 +21,8 @@ export default function Figure({ src, alt, width, height, caption, credit, wide 
         width={width}
         height={height}
         unoptimized={src.endsWith('.svg')}
+        // Reserve the box before the image loads, whatever the browser does with SVG sizing.
+        style={{ aspectRatio: `${width} / ${height}` }}
         sizes={wide ? '(min-width: 64rem) 56rem, 100vw' : '(min-width: 48rem) 44rem, 100vw'}
       />
       {(caption || credit) && (

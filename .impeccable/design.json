@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 2,
+  "northStar": "The Library Edition: lapis cloth frames white paper; the gloss lives in the margin; gold is reserved for scripture.",
+  "colorMeta": {
+    "paper": { "displayName": "Paper", "dark": "#11161f", "role": "ground" },
+    "surface": { "displayName": "Board", "dark": "#171d28", "role": "surface" },
+    "surface-raised": { "displayName": "Leaf", "dark": "#1e2532", "role": "floating surface" },
+    "ink": { "displayName": "Iron ink", "dark": "#e4e1d9", "role": "text" },
+    "ink-muted": { "displayName": "Faded ink", "dark": "#abafb8", "role": "secondary text" },
+    "ink-faint": { "displayName": "Pencil", "dark": "#8c919c", "role": "metadata" },
+    "rule-subtle": { "displayName": "Hairline", "dark": "#262d3a", "role": "decorative rule" },
+    "rule-strong": { "displayName": "Rule", "dark": "#646c7e", "role": "structural rule, 3:1" },
+    "lapis": { "displayName": "Lapis", "dark": "#93abeb", "role": "the one accent" },
+    "scripture-gold": {
+      "displayName": "Scripture gold",
+      "dark": "#d8b76a",
+      "role": "scripture only"
+    },
+    "scripture-wash": {
+      "displayName": "Gold wash",
+      "dark": "#1f1d19",
+      "role": "Qur'an block ground"
+    },
+    "cloth": {
+      "displayName": "Lapis cloth",
+      "dark": "#1a2848",
+      "role": "cover and colophon field"
+    },
+    "gilt": { "displayName": "Gilt", "dark": "#d8b76a", "role": "stamping on cloth" }
+  },
+  "extensions": {
+    "motion": {
+      "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "micro": "150-240ms",
+      "reveal": "opacity 0→1, translateY(6px)→0, 420ms, 50ms stagger capped at 7 steps, index lists only, once",
+      "reducedMotion": "all transitions and animations removed; content always visible"
+    },
+    "breakpoints": {
+      "sm": "40rem",
+      "nav": "56rem",
+      "notes-margin": "64rem",
+      "contents-margin": "80rem"
+    },
+    "elevation": {
+      "rest": "none: tone steps and 1px hairlines",
+      "floating": "0 0.6rem 1.6rem -0.6rem rgb(0 0 0 / 0.3)"
+    },
+    "focus": {
+      "ring": "2px solid var(--focus-ring), offset 3px",
+      "onCloth": "outline-color: var(--gilt)"
+    }
+  },
+  "components": {
+    "quran-block": {
+      "html": "<figure class=\"scripture scripture-quran\"><p class=\"quran-arabic\" lang=\"ar\" dir=\"rtl\" translate=\"no\">قُلْ هُوَ ٱللَّهُ أَحَدٌ</p><blockquote class=\"scripture-translation\"><p>Say, “He is Allah, [who is] One.”</p></blockquote><figcaption class=\"scripture-caption\"><cite class=\"scripture-ref\">QUR’AN 112:1</cite><span>Sahih International</span></figcaption></figure>",
+      "css": ".scripture-quran{padding:1.5em 1.6em 1.1em;background:#f4eedf;border-block:1px solid rgba(122,87,18,.38)}.quran-arabic{font-family:'Amiri Quran',serif;font-size:1.5em;line-height:2.3;margin:0 0 .85em}.scripture-ref{font-family:'Source Code Pro',monospace;font-style:normal;color:#7a5712;letter-spacing:.03em}"
+    },
+    "term": {
+      "html": "<a class=\"term\" href=\"/glossary#tawhid\">the doctrine of God’s oneness</a>",
+      "css": ".term{color:inherit;text-decoration:underline dotted #1f4aa8 1px;text-underline-offset:.25em}"
+    },
+    "button-gilt": {
+      "html": "<button class=\"newsletter-button\">Subscribe</button>",
+      "css": ".newsletter-button{padding:.6rem 1rem;font-family:Commissioner,sans-serif;font-weight:600;color:#1c2f5e;background:#d9bc74;border:0;border-radius:2px}"
+    }
+  },
+  "notCanonized": []
+}

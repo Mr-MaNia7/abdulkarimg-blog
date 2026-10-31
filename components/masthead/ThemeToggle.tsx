@@ -9,14 +9,22 @@ export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
+  // Keep the browser chrome colour in step with a manually chosen theme.
+  useEffect(() => {
+    if (!resolvedTheme) return
+    const bg = resolvedTheme === 'dark' ? '#11161f' : '#f9f8f5'
+    document
+      .querySelectorAll('meta[name="theme-color"]')
+      .forEach((m) => m.setAttribute('content', bg))
+  }, [resolvedTheme])
+
   const dark = mounted && resolvedTheme === 'dark'
   return (
     <button
       type="button"
-      className="tool-button"
+      className="tool-button js-only"
       onClick={() => setTheme(dark ? 'light' : 'dark')}
       aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}
-      hidden={!mounted}
     >
       <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
         {dark ? (

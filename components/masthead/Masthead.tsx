@@ -16,7 +16,12 @@ export default function Masthead() {
   return (
     <header className="masthead">
       <div className="masthead-inner">
-        <Link href="/" className="masthead-mark" aria-label={`${siteMetadata.title}, front page`}>
+        <Link
+          href="/"
+          className="masthead-mark"
+          translate="no"
+          aria-label={`${siteMetadata.title}, front page`}
+        >
           {typeset(siteMetadata.title)}
         </Link>
 

@@ -22,6 +22,8 @@ module.exports = () => {
     // Client code (the search palette) needs the base path to load /pagefind.
     env: { NEXT_PUBLIC_BASE_PATH: basePath || '' },
     reactStrictMode: true,
+    // Inline the (small) stylesheet so first paint does not wait on CSS requests.
+    experimental: { inlineCss: true },
     trailingSlash: true,
     turbopack: {
       root: process.cwd(),

@@ -1,60 +1,50 @@
-import { Literata, Commissioner, Source_Code_Pro, Amiri, Amiri_Quran } from 'next/font/google'
+import localFont from 'next/font/local'
 
-// Every Latin face below was checked for full transliteration coverage
-// (ā ī ū ḥ ṣ ḍ ṭ ẓ ʿ ʾ). `subsets` only decides what is preloaded: next/font
-// still declares every subset with its unicode-range, so the `latin-ext` file
-// (dot-below letters, ʿ ʾ) downloads on demand when a page uses those letters.
+/*
+  Self-hosted, trimmed fonts (assets/fonts/web, SIL Open Font License).
+  - Latin faces keep only the weight axis, pinned at text optical size, and
+    carry every character the site sets (ā ī ū ḥ ṣ ḍ ṭ ẓ ʿ ʾ …) in one file.
+  - Only Literata is preloaded; the rest swap in behind metric-matched fallbacks.
+  - Arabic faces (Amiri, Amiri Quran) live in public/fonts/v1 and are declared
+    in css/tailwind.css with an Arabic unicode-range, so they download only on
+    pages that render Arabic; posts containing Arabic preload them
+    (app/blog/[...slug]/page.tsx) so the text never reflows when they arrive.
+  No network fetch at build time.
+*/
 
-/** Prose and headings. Above the fold on every page, so preloaded. */
-export const literata = Literata({
-  subsets: ['latin'],
-  style: ['normal', 'italic'],
-  axes: ['opsz'],
+/** Prose and headings. */
+export const literata = localFont({
+  src: [
+    { path: '../assets/fonts/web/Literata.woff2', weight: '400 700', style: 'normal' },
+    { path: '../assets/fonts/web/Literata-Italic.woff2', weight: '400 600', style: 'italic' },
+  ],
   display: 'swap',
   variable: '--font-literata',
+  adjustFontFallback: 'Times New Roman',
 })
 
 /** Interface: navigation, buttons, labels. */
-export const commissioner = Commissioner({
-  subsets: ['latin'],
+export const commissioner = localFont({
+  src: '../assets/fonts/web/Commissioner.woff2',
+  weight: '400 600',
   display: 'swap',
+  preload: false,
   variable: '--font-commissioner',
+  adjustFontFallback: 'Arial',
 })
 
 /** Metadata and references only. */
-export const sourceCodePro = Source_Code_Pro({
-  subsets: ['latin'],
+export const sourceCodePro = localFont({
+  src: '../assets/fonts/web/SourceCodePro.woff2',
+  weight: '400 500',
   display: 'swap',
   preload: false,
   variable: '--font-source-code-pro',
-})
-
-// Arabic faces are not preloaded. Their @font-face rules carry the Arabic
-// unicode-range, so the browser downloads them only on pages that render
-// Arabic, including ﷺ (U+FDFA), which no Latin face here contains.
-
-/** Naskh for all Arabic outside Qur'an blocks, and the honorific fallback. */
-export const amiri = Amiri({
-  subsets: ['arabic'],
-  weight: ['400', '700'],
-  display: 'swap',
-  preload: false,
-  variable: '--font-amiri',
-})
-
-/** Qur'anic text only. */
-export const amiriQuran = Amiri_Quran({
-  subsets: ['arabic'],
-  weight: '400',
-  display: 'swap',
-  preload: false,
-  variable: '--font-amiri-quran',
+  adjustFontFallback: false,
 })
 
 export const fontVariables = [
   literata.variable,
   commissioner.variable,
   sourceCodePro.variable,
-  amiri.variable,
-  amiriQuran.variable,
 ].join(' ')

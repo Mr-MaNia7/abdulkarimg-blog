@@ -29,10 +29,10 @@ export default function Home() {
       <section className="cover" aria-labelledby="cover-title">
         <SectionContainer>
           <div className="cover-panel">
-            <h1 id="cover-title" className="cover-title">
+            <h1 id="cover-title" className="cover-title" translate="no">
               {typeset(siteMetadata.title)}
             </h1>
-            <p className="cover-arabic" lang="ar" dir="rtl">
+            <p className="cover-arabic" lang="ar" dir="rtl" translate="no">
               حاشية
             </p>
             <p className="cover-mission">{siteMetadata.description}</p>

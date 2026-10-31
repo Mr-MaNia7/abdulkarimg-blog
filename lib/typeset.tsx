@@ -7,8 +7,12 @@ const TOKEN =
  * The same typesetting the MDX pipeline applies (lib/rehype-hashiya.ts),
  * for plain strings such as frontmatter titles.
  */
-export function typeset(text: string): ReactNode {
-  if (!text) return text
+/** Typographer's apostrophe for frontmatter strings: Qur'an → Qur’an. */
+const curl = (s: string) => s.replace(/(\p{L})'(\p{L})/gu, '$1\u2019$2')
+
+export function typeset(raw: string): ReactNode {
+  if (!raw) return raw
+  const text = curl(raw)
   const out: ReactNode[] = []
   let last = 0
   let key = 0

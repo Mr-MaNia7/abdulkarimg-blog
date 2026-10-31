@@ -24,6 +24,7 @@ export default function Scripture(props: Props) {
       {original && (
         <p
           className="scripture-original"
+          translate="no"
           lang={originalLang}
           dir={originalLang && RTL.test(originalLang) ? 'rtl' : 'ltr'}
         >

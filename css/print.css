@@ -90,7 +90,7 @@
     margin-block-start: 0.6rem;
     font-family: var(--stack-mono);
     font-size: 8.5pt;
-    color: #555;
+    color: var(--ink-faint);
   }
 
   .prose :where(h2, h3, h4) {
@@ -108,7 +108,7 @@
 
   /* Washes do not print; frame the Qur'an block instead. */
   .scripture-quran {
-    border: 1px solid #999;
+    border: 1px solid var(--border-strong);
   }
 
   /* Side notes print inline, as small set-off notes. */
@@ -119,21 +119,21 @@
     inline-size: auto !important;
     margin: 0.4em 0 0.8em !important;
     padding-inline-start: 0.8em !important;
-    border-inline-start: 1px solid #999 !important;
+    border-inline-start: 1px solid var(--border-strong) !important;
     font-size: 9pt;
   }
 
   /* Links: plain ink, with the address after external ones in the text. */
   a,
   .term {
-    color: #000 !important;
+    color: var(--ink) !important;
     text-decoration: none !important;
   }
 
   .prose a[href^='http']:not([data-footnote-ref]):not(.term)::after {
     content: ' (' attr(href) ')';
     font-size: 8.5pt;
-    color: #555;
+    color: var(--ink-faint);
     word-break: break-all;
   }
 
@@ -149,7 +149,7 @@
   /* Index pages and the home page print as plain lists. */
   .cover {
     background: none;
-    color: #000;
+    color: var(--ink);
   }
 
   .cover-panel {
@@ -160,7 +160,7 @@
 
   .cover-title,
   .cover-arabic {
-    color: #000;
+    color: var(--ink);
   }
 
   .questions-band {

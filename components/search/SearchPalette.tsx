@@ -194,6 +194,8 @@ export default function SearchPalette({
               ref={inputRef}
               className="palette-input"
               type="search"
+              name="q"
+              aria-label="Search the journal"
               role="combobox"
               aria-expanded={ordered.length > 0}
               aria-controls={listId}

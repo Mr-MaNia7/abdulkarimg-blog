@@ -11,6 +11,7 @@ import { fromHtmlIsomorphic } from 'hast-util-from-html-isomorphic'
 // Remark packages
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
+import remarkSmartypants from 'remark-smartypants'
 import { remarkAlert } from 'remark-github-blockquote-alert'
 import {
   remarkExtractFrontmatter,
@@ -180,6 +181,7 @@ export default makeSource({
     remarkPlugins: [
       remarkExtractFrontmatter,
       remarkGfm,
+      remarkSmartypants,
       remarkCodeTitles,
       remarkMath,
       remarkImgToJsx,
@@ -214,6 +216,8 @@ export default makeSource({
         footnoteLabelTagName: 'h2',
         footnoteLabelProperties: { className: ['footnotes-label'] },
         footnoteBackLabel: (n) => `Back to reference ${n + 1}`,
+        // U+FE0E keeps ↩ a text glyph rather than an emoji on iOS.
+        footnoteBackContent: '\u21A9\uFE0E',
       }
       return options
     },

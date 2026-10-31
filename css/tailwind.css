@@ -15,6 +15,30 @@
   All sizes are rem/em/ch. px only for hairlines, focus rings and shadows.
 */
 
+/* ───────────────────────── Arabic faces ─────────────────────────
+   Self-hosted (public/fonts/v1, OFL). The unicode-range means they are fetched
+   only when Arabic is on the page; posts with Arabic also preload them. */
+
+@font-face {
+  font-family: 'Hashiya Amiri';
+  src: url('/fonts/v1/Amiri-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+25CC, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'Hashiya Amiri Quran';
+  src: url('/fonts/v1/AmiriQuran.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+25CC, U+FB50-FDFF, U+FE70-FEFF;
+}
+
 /* ───────────────────────── Palette ───────────────────────── */
 
 :root {
@@ -42,13 +66,23 @@
   --gilt: #d9bc74;
 
   --code-bg: #182030;
+  --code-ink: #dfe3ea;
+  --code-muted: #abafb8;
+  --code-comment: #8c919c;
+  --code-keyword: #93abeb;
+  --code-string: #d8b76a;
+  --code-number: #c3cbe0;
+
+  /* Floating layers only: one shadow, one scrim. */
+  --shadow-float: 0 0.6rem 1.6rem -0.6rem rgb(0 0 0 / 0.3);
+  --scrim: rgb(10 14 22 / 0.45);
 
   /* Font stacks. Amiri follows each Latin stack so ﷺ and stray Arabic always resolve. */
-  --stack-serif: var(--font-literata), var(--font-amiri), 'Iowan Old Style', Georgia, serif;
-  --stack-sans: var(--font-commissioner), var(--font-amiri), ui-sans-serif, system-ui, sans-serif;
+  --stack-serif: var(--font-literata), 'Hashiya Amiri', 'Iowan Old Style', Georgia, serif;
+  --stack-sans: var(--font-commissioner), 'Hashiya Amiri', ui-sans-serif, system-ui, sans-serif;
   --stack-mono: var(--font-source-code-pro), ui-monospace, 'SFMono-Regular', Menlo, monospace;
-  --stack-arabic: var(--font-amiri), 'Noto Naskh Arabic', 'Geeza Pro', serif;
-  --stack-quran: var(--font-amiri-quran), var(--font-amiri), 'Geeza Pro', serif;
+  --stack-arabic: 'Hashiya Amiri', 'Noto Naskh Arabic', 'Geeza Pro', serif;
+  --stack-quran: 'Hashiya Amiri Quran', 'Hashiya Amiri', 'Geeza Pro', serif;
 
   /* Reading preferences (set on <html> by the Aa popover). */
   --reading-scale: 1;
@@ -203,6 +237,9 @@ html[data-reading-font='sans'] {
   }
 
   html {
+    /* Anchor jumps and keyboard focus land below the sticky masthead. */
+    scroll-padding-block-start: 5rem;
+    -webkit-tap-highlight-color: color-mix(in oklab, var(--accent) 18%, transparent);
     background-color: var(--bg);
     color: var(--ink);
     font-family: var(--stack-serif);
@@ -220,6 +257,12 @@ html[data-reading-font='sans'] {
     caret-color: var(--accent);
   }
 
+  /* Controls that need JavaScript: shown from first paint when the head
+     script has marked <html class="js">, never shown without it. */
+  html:not(.js) .js-only {
+    display: none !important;
+  }
+
   ::selection {
     background-color: var(--selection);
     color: var(--ink);
@@ -234,6 +277,15 @@ html[data-reading-font='sans'] {
   a {
     text-underline-offset: 0.2em;
     text-decoration-thickness: 1px;
+  }
+
+  a,
+  button,
+  summary,
+  label,
+  input,
+  [role='option'] {
+    touch-action: manipulation;
   }
 
   h1,
@@ -300,7 +352,7 @@ html[data-reading-font='sans'] {
     --tw-prose-kbd: var(--ink);
     --tw-prose-kbd-shadows: var(--border-strong);
     --tw-prose-code: var(--ink);
-    --tw-prose-pre-code: #dfe3ea;
+    --tw-prose-pre-code: var(--code-ink);
     --tw-prose-pre-bg: var(--code-bg);
     --tw-prose-th-borders: var(--border-strong);
     --tw-prose-td-borders: var(--border-subtle);
@@ -320,7 +372,7 @@ html[data-reading-font='sans'] {
     --tw-prose-invert-kbd: var(--ink);
     --tw-prose-invert-kbd-shadows: var(--border-strong);
     --tw-prose-invert-code: var(--ink);
-    --tw-prose-invert-pre-code: #dfe3ea;
+    --tw-prose-invert-pre-code: var(--code-ink);
     --tw-prose-invert-pre-bg: var(--code-bg);
     --tw-prose-invert-th-borders: var(--border-strong);
     --tw-prose-invert-td-borders: var(--border-subtle);
@@ -330,6 +382,7 @@ html[data-reading-font='sans'] {
     line-height: 1.7;
     max-width: var(--container-measure);
     font-variant-ligatures: common-ligatures;
+    overflow-wrap: break-word;
   }
 
   .prose :where(p, ul, ol, blockquote, figure, table, pre) {

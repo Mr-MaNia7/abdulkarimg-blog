@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { slug } from 'github-slugger'
 import glossary from '@/data/glossary.json'
-import TermPopover from './TermPopover'
+import TermTrigger from './TermTrigger'
 import { typeset } from '@/lib/typeset'
 
 export type GlossaryEntry = {
@@ -47,5 +47,5 @@ export default function Term({ ar, translit, id, children }: Props) {
   if (!entry && process.env.NODE_ENV !== 'production') {
     console.warn(`<Term>: no glossary entry "${key}" in data/glossary.json`)
   }
-  return <TermPopover entry={data}>{children ?? <i>{typeset(data.translit)}</i>}</TermPopover>
+  return <TermTrigger entry={data}>{children ?? <i>{typeset(data.translit)}</i>}</TermTrigger>
 }

@@ -30,7 +30,24 @@ export default function QuestionsIndex({ items, tags }: { items: QuestionItem[];
   const [tag, setTag] = useState<string | null>(null)
   const deferred = useDeferredValue(query)
   const id = useId()
-  useEffect(() => setReady(true), [])
+  // Read ?q= and ?topic= on load, so filtered views can be linked and survive reload.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setQuery(params.get('q') ?? '')
+    const t = params.get('topic')
+    if (t && tags.includes(t)) setTag(t)
+    setReady(true)
+  }, [tags])
+
+  // Mirror the filters into the URL without adding history entries.
+  useEffect(() => {
+    if (!ready) return
+    const params = new URLSearchParams()
+    if (query.trim()) params.set('q', query.trim())
+    if (tag) params.set('topic', tag)
+    const qs = params.toString()
+    window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname)
+  }, [query, tag, ready])
 
   const haystacks = useMemo(
     () =>
@@ -47,7 +64,7 @@ export default function QuestionsIndex({ items, tags }: { items: QuestionItem[];
 
   return (
     <div className="qindex">
-      <div className="qindex-controls" hidden={!ready}>
+      <div className="qindex-controls js-only">
         <label htmlFor={`${id}-q`} className="sr-only">
           Search questions
         </label>
@@ -55,7 +72,8 @@ export default function QuestionsIndex({ items, tags }: { items: QuestionItem[];
           id={`${id}-q`}
           type="search"
           className="qindex-search"
-          placeholder="Search the questions"
+          name="q"
+          placeholder="Search the questions…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           autoComplete="off"

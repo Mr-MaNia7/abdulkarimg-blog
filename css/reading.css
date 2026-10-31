@@ -73,7 +73,7 @@
     font-family: var(--stack-sans);
     font-size: var(--text-ui);
     border-radius: 3px;
-    box-shadow: 0 0.6rem 1.6rem -0.6rem rgb(0 0 0 / 0.35);
+    box-shadow: var(--shadow-float);
   }
 
   /* Transliteration marks sit tight against their letters. Literata draws ʿ ʾ
@@ -846,7 +846,7 @@
     color: var(--ink);
     border: 1px solid var(--border-strong);
     border-radius: 3px;
-    box-shadow: 0 0.6rem 1.6rem -0.6rem rgb(0 0 0 / 0.3);
+    box-shadow: var(--shadow-float);
     font-family: var(--stack-serif);
     font-size: 1rem;
     line-height: 1.5;

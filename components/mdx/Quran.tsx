@@ -27,7 +27,7 @@ export default function Quran(props: Props) {
 
   return (
     <figure className="scripture scripture-quran not-prose">
-      <p className="quran-arabic" lang="ar" dir="rtl">
+      <p className="quran-arabic" lang="ar" dir="rtl" translate="no">
         {arabic}
         {single && <span className="quran-ayah">{` ۝${toArabicDigits(single[1])}`}</span>}
       </p>
