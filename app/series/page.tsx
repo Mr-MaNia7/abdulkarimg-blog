@@ -20,7 +20,7 @@ export default function SeriesIndex() {
           lede="Essays written in several parts, best read in order."
           meta={plural(all.length, 'series', 'series')}
         />
-        <ul className="subject-list">
+        <ul className="subject-list" data-reveal suppressHydrationWarning>
           {all.map((s) => (
             <li key={s.slug}>
               <h2 className="subject-list-name">

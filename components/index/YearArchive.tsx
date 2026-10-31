@@ -27,7 +27,7 @@ export default function YearArchive({
           <H id={`y-${year}`} className="archive-year-heading">
             {year}
           </H>
-          <ul className="archive-list">
+          <ul className="archive-list" data-reveal suppressHydrationWarning>
             {list.map((p) => (
               <li key={p.path} className="archive-row">
                 <time dateTime={p.date} className="archive-date">

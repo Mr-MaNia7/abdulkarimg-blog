@@ -86,7 +86,7 @@ export default function QuestionsIndex({ items, tags }: { items: QuestionItem[];
       </div>
 
       {shown.length ? (
-        <ol className="qindex-list">
+        <ol className="qindex-list" data-reveal suppressHydrationWarning>
           {shown.map((q) => (
             <li key={q.path} className="qindex-item">
               <h2 className="qindex-title">

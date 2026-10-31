@@ -19,7 +19,7 @@ export default function TagsPage() {
           lede="Every topic the journal has touched, most frequent first."
           meta={plural(tags.length, 'tag', 'tags')}
         />
-        <ul className="tag-cloud">
+        <ul className="tag-cloud" data-reveal suppressHydrationWarning>
           {tags.map((t) => (
             <li key={t.slug}>
               <Link href={`/tags/${t.slug}`}>

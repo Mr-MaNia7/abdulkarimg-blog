@@ -4,6 +4,7 @@ import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
 import { typeset } from '@/lib/typeset'
 import { formatDate, TYPE_LABEL } from '@/lib/posts'
+import { postUrl } from '@/lib/jsonld'
 
 type Props = { content: CoreContent<Blog> }
 
@@ -43,6 +44,9 @@ export default function PostHeader({ content }: Props) {
     <header className="post-header">
       <h1 className="post-title">{typeset(title)}</h1>
       <PostMeta content={content} />
+      <p className="post-print-url" data-pagefind-ignore="all">
+        {postUrl(content)}
+      </p>
       {showQuestion && <p className="post-question">{typeset(question!)}</p>}
       {!isQa && summary && <p className="post-dek">{typeset(summary)}</p>}
       {isQa && short_answer && (

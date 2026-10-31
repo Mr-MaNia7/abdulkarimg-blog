@@ -86,7 +86,7 @@ export default function Home() {
                 The full archive
               </Link>
             </div>
-            <ol className="latest-list">
+            <ol className="latest-list" data-reveal suppressHydrationWarning>
               {latest.map((p, i) => (
                 <li key={p.path} className="latest-row">
                   <span className="latest-index" aria-hidden="true">
@@ -121,7 +121,7 @@ export default function Home() {
                 All {plural(questions.length, 'question', 'questions')}
               </Link>
             </div>
-            <ul className="question-grid">
+            <ul className="question-grid" data-reveal suppressHydrationWarning>
               {questions.slice(0, QUESTIONS).map((q) => (
                 <li key={q.path}>
                   <Link href={`/${q.path}`} className="question-title">
@@ -140,7 +140,7 @@ export default function Home() {
           <h2 id="subjects-heading" className="home-heading">
             Browse by subject
           </h2>
-          <ul className="subject-grid">
+          <ul className="subject-grid" data-reveal suppressHydrationWarning>
             {categories.map((c) => (
               <li key={c.slug}>
                 <Link href={`/category/${slug(c.name)}`} className="subject-name">

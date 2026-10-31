@@ -2,6 +2,8 @@
 @import './reading.css';
 @import './pages.css';
 @import './chrome.css';
+@import './motion.css';
+@import './print.css';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 @source '../node_modules/pliny';
@@ -461,7 +463,7 @@ html[data-reading-font='sans'] {
     display: inline-block;
     color: var(--accent);
     font-family: var(--stack-serif);
-    font-size: 1.15em;
+    font-size: 1.4em;
     line-height: 1;
     letter-spacing: 0;
   }

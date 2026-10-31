@@ -1,0 +1,179 @@
+/*
+  Ḥāshiya — print. An essay prints as a clean paper document: title, metadata,
+  the text with its scripture, notes and bibliography, and the address it came
+  from. No navigation, no controls, black on white whatever the screen theme.
+*/
+
+@media print {
+  @page {
+    margin: 2cm 2.2cm 2.2cm;
+  }
+
+  /* html.* outranks the screen theme's :root and .dark, whatever the source order. */
+  html:root,
+  html.dark {
+    color-scheme: light;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --ink: #000000;
+    --ink-muted: #333333;
+    --ink-faint: #555555;
+    --border-subtle: #bbbbbb;
+    --border-strong: #777777;
+    --accent: #000000;
+    --scripture: #4a3608;
+    --scripture-wash: #ffffff;
+    --reading-scale: 1;
+  }
+
+  html {
+    font-size: 11pt;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  /* Chrome and controls. */
+  .masthead,
+  .colophon,
+  .skip-link,
+  .reading-progress,
+  .post-aside,
+  .toc-inline,
+  .series-box,
+  .pager,
+  .post-filing,
+  .related,
+  .post-comments,
+  .scripture-copy,
+  .sidenote-toggle,
+  .content-header-link,
+  .margin-note,
+  [data-sonner-toaster],
+  .qindex-controls,
+  .archive-tabs,
+  .cover-meta {
+    display: none !important;
+  }
+
+  .post,
+  .post-margins,
+  .post-margins .post-main,
+  .post-simple .post-main {
+    display: block;
+    max-inline-size: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .post {
+    font-size: 11pt;
+  }
+
+  .prose {
+    max-inline-size: none;
+    font-size: 11pt;
+    line-height: 1.55;
+    orphans: 3;
+    widows: 3;
+  }
+
+  .post-title {
+    font-size: 24pt;
+  }
+
+  .post-print-url {
+    display: block !important;
+    margin-block-start: 0.6rem;
+    font-family: var(--stack-mono);
+    font-size: 8.5pt;
+    color: #555;
+  }
+
+  .prose :where(h2, h3, h4) {
+    break-after: avoid;
+  }
+
+  .scripture,
+  .compare,
+  .callout,
+  .figure,
+  .pullquote,
+  .prose :where(pre, table, blockquote) {
+    break-inside: avoid;
+  }
+
+  /* Washes do not print; frame the Qur'an block instead. */
+  .scripture-quran {
+    border: 1px solid #999;
+  }
+
+  /* Side notes print inline, as small set-off notes. */
+  .sidenote,
+  .post-margins .sidenote {
+    display: block !important;
+    float: none !important;
+    inline-size: auto !important;
+    margin: 0.4em 0 0.8em !important;
+    padding-inline-start: 0.8em !important;
+    border-inline-start: 1px solid #999 !important;
+    font-size: 9pt;
+  }
+
+  /* Links: plain ink, with the address after external ones in the text. */
+  a,
+  .term {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  .prose a[href^='http']:not([data-footnote-ref]):not(.term)::after {
+    content: ' (' attr(href) ')';
+    font-size: 8.5pt;
+    color: #555;
+    word-break: break-all;
+  }
+
+  .footnotes,
+  .csl-bib-body {
+    font-size: 9pt;
+  }
+
+  .footnotes {
+    break-before: auto;
+  }
+
+  /* Index pages and the home page print as plain lists. */
+  .cover {
+    background: none;
+    color: #000;
+  }
+
+  .cover-panel {
+    min-block-size: 0;
+    border: 0;
+    outline: 0;
+  }
+
+  .cover-title,
+  .cover-arabic {
+    color: #000;
+  }
+
+  .questions-band {
+    background: none;
+  }
+
+  [data-reveal] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* The post's own address: hidden on screen, printed under the title. */
+.post-print-url {
+  display: none;
+}

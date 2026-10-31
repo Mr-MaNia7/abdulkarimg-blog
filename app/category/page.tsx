@@ -14,7 +14,7 @@ export default function CategoriesPage() {
     <SectionContainer>
       <div className="index-page">
         <PageIntro title="Subjects" lede="The four subjects the journal is organised by." />
-        <ul className="subject-list">
+        <ul className="subject-list" data-reveal suppressHydrationWarning>
           {categories.map((c) => (
             <li key={c.slug}>
               <h2 className="subject-list-name">

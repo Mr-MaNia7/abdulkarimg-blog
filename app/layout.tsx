@@ -11,6 +11,8 @@ import { Toaster } from 'sonner'
 
 import { fontVariables } from './fonts'
 import { applyPrefsScript } from '@/lib/reading-prefs'
+import { revealScript } from '@/lib/reveal'
+import RevealOnNavigate from '@/components/RevealOnNavigate'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.siteUrl),
@@ -64,6 +66,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* Saved reading preferences, applied before first paint. */}
         <script dangerouslySetInnerHTML={{ __html: applyPrefsScript }} />
+        {/* First-view reveal for index lists; runs before hydration. */}
+        <script dangerouslySetInnerHTML={{ __html: revealScript }} />
         <link rel="icon" href={`${basePath}/static/favicons/favicon.ico`} sizes="32x32" />
         <link rel="icon" type="image/svg+xml" href={`${basePath}/static/favicons/icon.svg`} />
         <link rel="apple-touch-icon" href={`${basePath}/static/favicons/apple-touch-icon.png`} />
@@ -83,6 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
+          <RevealOnNavigate />
           <Toaster
             position="bottom-center"
             toastOptions={{ unstyled: true, classNames: { toast: 'toast' } }}

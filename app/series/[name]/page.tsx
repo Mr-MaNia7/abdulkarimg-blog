@@ -38,7 +38,7 @@ export default async function SeriesPage(props: Props) {
             </>
           }
         />
-        <ol className="series-toc">
+        <ol className="series-toc" data-reveal suppressHydrationWarning>
           {s.parts.map((p) => (
             <li key={p.path}>
               <p className="series-toc-part">Part {p.series!.part}</p>
