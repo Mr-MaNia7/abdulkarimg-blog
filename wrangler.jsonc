@@ -1,0 +1,14 @@
+// Cloudflare Workers deployment: the site is fully static, so the Worker only
+// serves the files `EXPORT=1 UNOPTIMIZED=1 yarn build` writes to out/.
+// out/_headers (security and cache headers) is applied by Workers static assets.
+{
+  "name": "abdulkarimg-blog",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./out",
+    // Pages are exported as /path/index.html and linked with a trailing slash.
+    "html_handling": "auto-trailing-slash",
+    // Unknown URLs get the site's own 404 page.
+    "not_found_handling": "404-page"
+  }
+}

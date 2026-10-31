@@ -9,7 +9,7 @@ Built on Next.js (App Router, static export), Tailwind CSS 4, Contentlayer2 and 
 - [Components](#components)
 - [What happens automatically](#what-happens-automatically)
 - [Configuration](#configuration)
-- [Deploying to Cloudflare Pages](#deploying-to-cloudflare-pages)
+- [Deploying to Cloudflare](#deploying-to-cloudflare)
 - [Project map](#project-map)
 
 ## Running it
@@ -238,26 +238,35 @@ Put images in `public/static/images/`. `wide` lets a figure extend into the righ
 - **`data/glossary.json`**: glossary terms. **`data/authors/default.mdx`**: the About page.
 - **Fonts** are self-hosted in `assets/fonts/web` and `public/fonts/v1` (SIL Open Font License), so builds need no network. If you change an Arabic font file, bump `v1` to `v2`; it is cached for a year.
 
-## Deploying to Cloudflare Pages
+## Deploying to Cloudflare
 
-The site is fully static. Cloudflare serves `out/` and applies `out/_headers`.
+The site is fully static. Cloudflare serves `out/`, applies `out/_headers`, and uses `out/404.html` for unknown URLs. `wrangler.jsonc` tells Cloudflare exactly that.
 
-1. Push this repository to GitHub.
-2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**, and choose the repository.
-3. Build settings:
+### Workers (Cloudflare's default for new projects)
 
-   | Setting                | Value                                           |
-   | ---------------------- | ----------------------------------------------- |
-   | Framework preset       | None                                            |
-   | Build command          | `EXPORT=1 UNOPTIMIZED=1 yarn build`             |
-   | Build output directory | `out`                                           |
-   | Environment variable   | `NODE_VERSION` = `22` (also read from `.nvmrc`) |
+1. Push this repository to GitHub, including `wrangler.jsonc`.
+2. In the Cloudflare dashboard: **Workers & Pages → Create → Import a repository**, and choose `Mr-MaNia7/abdulkarimg-blog`.
+3. Settings:
 
-   Yarn 3 comes from `.yarn/releases`, so the build image's own Yarn version does not matter. Add `NEXT_PUBLIC_GISCUS_*` or analytics variables here when you enable them.
+   | Setting                              | Value                                           |
+   | ------------------------------------ | ----------------------------------------------- |
+   | Project name                         | `abdulkarimg-blog`                              |
+   | Build command                        | `EXPORT=1 UNOPTIMIZED=1 yarn build`             |
+   | Deploy command                       | `npx wrangler deploy`                           |
+   | Preview command | keep Cloudflare's default (e.g. `npx wrangler preview`) |
+   | Build variable (Advanced settings)   | `NODE_VERSION` = `22` (also read from `.nvmrc`) |
 
-4. Deploy. Check the `*.pages.dev` preview: search (⌘K), a post, `/questions`, `/glossary`, `/feed.xml`.
-5. **Custom domain**: in the Pages project, **Custom domains → Set up a custom domain → `blog.abdulkarimg.com`**. Because `abdulkarimg.com` is already on Cloudflare, it creates the DNS record for you; the certificate is issued automatically.
+   Leave "Protect with Cloudflare Access" off, or the public will be asked to log in.
+
+4. Deploy, then check the `*.workers.dev` URL: search (⌘K), a post, `/questions`, `/glossary`, `/feed.xml`.
+5. **Custom domain**: in the Worker, **Settings → Domains & Routes → Add → Custom domain → `blog.abdulkarimg.com`**. Because `abdulkarimg.com` is already on Cloudflare, the DNS record and certificate are created for you.
 6. Each push to `main` deploys; other branches get preview URLs.
+
+### Pages (alternative)
+
+Under **Workers & Pages → Create → Pages → Connect to Git**: build command `EXPORT=1 UNOPTIMIZED=1 yarn build`, output directory `out`, `NODE_VERSION=22`. Pages ignores `wrangler.jsonc` and reads `out/_headers` directly.
+
+Yarn 3 comes from `.yarn/releases`, so the build image's own Yarn version does not matter. Add `NEXT_PUBLIC_GISCUS_*` or analytics variables to the build variables when you enable them.
 
 After the first deploy, confirm the headers are live:
 
