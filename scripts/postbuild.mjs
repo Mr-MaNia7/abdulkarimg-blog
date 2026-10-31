@@ -1,5 +1,6 @@
 import rss from './rss.mjs'
-import { rmSync } from 'fs'
+import { rmSync, writeFileSync } from 'fs'
+import headers from '../security-headers.js'
 import { createIndex, close } from 'pagefind'
 
 /**
@@ -26,9 +27,17 @@ async function buildSearchIndex() {
   )
 }
 
+/** Cloudflare Pages reads security and cache headers from out/_headers. */
+function writeHeaders() {
+  if (!process.env.EXPORT) return
+  writeFileSync('out/_headers', headers.cloudflareHeaders())
+  console.log('Headers → out/_headers')
+}
+
 async function postbuild() {
   await rss()
   await buildSearchIndex()
+  writeHeaders()
 }
 
 postbuild()

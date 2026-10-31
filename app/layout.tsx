@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description: siteMetadata.description,
     url: './',
     siteName: siteMetadata.title,
-    images: [siteMetadata.socialBanner],
+    images: [{ url: siteMetadata.socialBanner, width: 1200, height: 630, alt: siteMetadata.title }],
     locale: 'en_US',
     type: 'website',
   },
@@ -64,30 +64,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* Saved reading preferences, applied before first paint. */}
         <script dangerouslySetInnerHTML={{ __html: applyPrefsScript }} />
-        <link
-          rel="apple-touch-icon"
-          sizes="76x76"
-          href={`${basePath}/static/favicons/apple-touch-icon.png`}
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href={`${basePath}/static/favicons/favicon-32x32.png`}
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href={`${basePath}/static/favicons/favicon-16x16.png`}
-        />
+        <link rel="icon" href={`${basePath}/static/favicons/favicon.ico`} sizes="32x32" />
+        <link rel="icon" type="image/svg+xml" href={`${basePath}/static/favicons/icon.svg`} />
+        <link rel="apple-touch-icon" href={`${basePath}/static/favicons/apple-touch-icon.png`} />
         <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} />
-        <link
-          rel="mask-icon"
-          href={`${basePath}/static/favicons/safari-pinned-tab.svg`}
-          color="#1c2f5e"
-        />
-        <meta name="msapplication-TileColor" content="#1c2f5e" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9f8f5" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#11161f" />
         <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />

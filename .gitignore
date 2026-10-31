@@ -52,3 +52,7 @@ yarn-error.log*
 
 # search index (built by scripts/postbuild.mjs)
 /public/pagefind/
+
+# generated feeds and Open Graph images
+/public/category/
+/public/og/

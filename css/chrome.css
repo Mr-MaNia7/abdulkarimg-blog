@@ -716,6 +716,17 @@
     color: var(--cloth-ink);
   }
 
+  .colophon-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    margin: 1.1rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--stack-sans);
+    font-size: var(--text-ui);
+  }
+
   .colophon-base {
     display: flex;
     flex-wrap: wrap;

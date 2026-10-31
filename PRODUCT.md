@@ -23,7 +23,7 @@ The name means the marginal gloss written beside a classical text, the commentar
 
 ## Positioning
 
-Written openly as a believing Muslim, yet careful, sourced, and fair to other traditions. Primary texts (Qur'an, Hadith, Bible, Torah) are quoted in full with their references and translators, set apart from the author's commentary, so the reader can always tell the source from the gloss.
+Written openly by a believing Muslim and student of knowledge, yet careful, sourced, and fair to other traditions. Primary texts (Qur'an, Hadith, Bible, Torah) are quoted in full with their references and translators, set apart from the author's commentary, so the reader can always tell the source from the gloss.
 
 ## Operating Context
 
@@ -42,7 +42,7 @@ Written openly as a believing Muslim, yet careful, sourced, and fair to other tr
 ## Brand Commitments
 
 - Name: **Ḥāshiya**. Author: Abdulkarim G. Mohammed.
-- Voice: a believing scholar. Uses honorifics. Calm, reverent, precise; never polemical or trendy.
+- Voice: a believing student of knowledge, not a scholar. Writes down what he is learning, with sources, and issues no rulings. Uses honorifics. Calm, reverent, precise; never polemical or trendy.
 - Standalone project: shares nothing with any other site.
 
 ## Evidence on Hand

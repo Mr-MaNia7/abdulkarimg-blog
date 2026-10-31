@@ -6,6 +6,7 @@ import NewsletterForm from './footer/NewsletterForm'
 
 const SOCIALS: { key: keyof typeof siteMetadata; label: string }[] = [
   { key: 'email', label: 'Email' },
+  { key: 'telegram', label: 'Telegram' },
   { key: 'github', label: 'GitHub' },
   { key: 'x', label: 'X' },
   { key: 'bluesky', label: 'Bluesky' },
@@ -13,6 +14,7 @@ const SOCIALS: { key: keyof typeof siteMetadata; label: string }[] = [
   { key: 'youtube', label: 'YouTube' },
   { key: 'linkedin', label: 'LinkedIn' },
   { key: 'instagram', label: 'Instagram' },
+  { key: 'tiktok', label: 'TikTok' },
   { key: 'threads', label: 'Threads' },
   { key: 'facebook', label: 'Facebook' },
   { key: 'medium', label: 'Medium' },
@@ -70,6 +72,17 @@ export default function Footer() {
               <a href="/feed.xml">RSS feed</a> for every new piece, or one per{' '}
               <Link href="/category">subject</Link>.
             </p>
+            {socials.length > 0 && (
+              <ul className="colophon-socials">
+                {socials.map((s) => (
+                  <li key={s.label}>
+                    <a href={s.key === 'email' ? `mailto:${s.href}` : s.href} rel="me noopener">
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
         </div>
 
@@ -87,13 +100,6 @@ export default function Footer() {
             <li>
               <Link href="/series">Series</Link>
             </li>
-            {socials.map((s) => (
-              <li key={s.label}>
-                <a href={s.key === 'email' ? `mailto:${s.href}` : s.href} rel="me">
-                  {s.label}
-                </a>
-              </li>
-            ))}
           </ul>
         </div>
       </SectionContainer>

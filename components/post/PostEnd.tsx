@@ -7,6 +7,13 @@ import { formatDate, TYPE_LABEL, type PostSummary } from '@/lib/posts'
 
 type Neighbour = { path: string; title: string }
 
+// Comments appear only once the provider is configured (giscus needs its repo env vars).
+const comments = siteMetadata.comments as
+  | { provider?: string; giscusConfig?: { repo?: string } }
+  | undefined
+const commentsReady =
+  !!comments?.provider && (comments.provider !== 'giscus' || !!comments.giscusConfig?.repo)
+
 type Props = {
   slug: string
   filePath: string
@@ -76,7 +83,7 @@ export default function PostEnd({ slug: postSlug, filePath, tags, prev, next, re
         </nav>
       )}
 
-      {siteMetadata.comments?.provider && (
+      {commentsReady && (
         <div className="post-comments" id="comment">
           <Comments slug={postSlug} />
         </div>

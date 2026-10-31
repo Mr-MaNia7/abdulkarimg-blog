@@ -5,6 +5,7 @@ import siteMetadata from '@/data/siteMetadata'
 import { typeset } from '@/lib/typeset'
 import { formatDate, TYPE_LABEL } from '@/lib/posts'
 import { byType, categories, countLine, plural, posts } from '@/lib/content'
+import { ldScript, siteJsonLd } from '@/lib/jsonld'
 
 const LATEST = 6
 const QUESTIONS = 4
@@ -20,6 +21,10 @@ export default function Home() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: ldScript(siteJsonLd()) }}
+      />
       {/* The cover. */}
       <section className="cover" aria-labelledby="cover-title">
         <SectionContainer>

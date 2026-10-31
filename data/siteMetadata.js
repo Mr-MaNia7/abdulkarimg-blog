@@ -10,19 +10,22 @@ const siteMetadata = {
   theme: 'system', // system, dark or light
   siteUrl: 'https://blog.abdulkarimg.com',
   siteRepo: 'https://github.com/Mr-MaNia7/abdulkarimg-blog',
-  siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
-  socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
+  siteLogo: `${process.env.BASE_PATH || ''}/static/favicons/icon-512.png`,
+  // Generated at build by scripts/og.mjs.
+  socialBanner: `${process.env.BASE_PATH || ''}/og/default.png`,
   // Social links: leave a value empty to hide it in the footer.
   email: '',
+  telegram: 'https://t.me/abdulkarimgm',
+  tiktok: 'https://www.tiktok.com/@abkarimg',
   github: '',
   x: '',
-  youtube: '',
+  youtube: 'https://www.youtube.com/@AbdulkarimG',
   linkedin: '',
   mastodon: '',
   bluesky: '',
   threads: '',
-  instagram: '',
-  facebook: '',
+  instagram: 'https://www.instagram.com/abdulkarimgetachew',
+  facebook: 'https://www.facebook.com/share/1CLEt2LZhH/',
   medium: '',
   locale: 'en-US',
   // The masthead stays at the top and condenses on scroll.
@@ -59,7 +62,8 @@ const siteMetadata = {
     fieldName: 'email',
     // Server deployments only: pliny's /api/newsletter route with one of
     // mailchimp, buttondown, convertkit, klaviyo, revue, emailoctopus, beehive (see .env.example).
-    provider: 'buttondown',
+    // Empty for now: no signup form is shown anywhere, only the RSS link.
+    provider: '',
   },
   comments: {
     // If you want to use an analytics provider you have to add it to the

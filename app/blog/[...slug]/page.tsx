@@ -13,6 +13,7 @@ import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
 import { getRelated, getSeries } from '@/lib/posts'
+import { ldScript, ogImage, postJsonLd, postUrl } from '@/lib/jsonld'
 import SectionContainer from '@/components/SectionContainer'
 
 const defaultLayout = 'PostLayout'
@@ -28,48 +29,33 @@ export async function generateMetadata(props: {
   const params = await props.params
   const slug = decodeURI(params.slug.join('/'))
   const post = allBlogs.find((p) => p.slug === slug)
-  const authorList = post?.authors || ['default']
-  const authorDetails = authorList.map((author) => {
-    const authorResults = allAuthors.find((p) => p.slug === author)
-    return coreContent(authorResults as Authors)
-  })
-  if (!post) {
-    return
-  }
+  if (!post) return
 
-  const publishedAt = new Date(post.date).toISOString()
-  const modifiedAt = new Date(post.lastmod || post.date).toISOString()
-  const authors = authorDetails.map((author) => author.name)
-  let imageList = [siteMetadata.socialBanner]
-  if (post.images) {
-    imageList = typeof post.images === 'string' ? [post.images] : post.images
-  }
-  const ogImages = imageList.map((img) => {
-    return {
-      url: img && img.includes('http') ? img : siteMetadata.siteUrl + img,
-    }
-  })
-
+  const description = post.summary || post.short_answer
+  const image = { url: ogImage(post), width: 1200, height: 630, alt: post.title }
   return {
     title: post.title,
-    description: post.summary,
+    description,
+    alternates: { canonical: postUrl(post) },
     openGraph: {
       title: post.title,
-      description: post.summary,
+      description,
       siteName: siteMetadata.title,
       locale: 'en_US',
       type: 'article',
-      publishedTime: publishedAt,
-      modifiedTime: modifiedAt,
-      url: './',
-      images: ogImages,
-      authors: authors.length > 0 ? authors : [siteMetadata.author],
+      publishedTime: new Date(post.date).toISOString(),
+      modifiedTime: new Date(post.lastmod || post.date).toISOString(),
+      url: postUrl(post),
+      images: [image],
+      authors: [siteMetadata.author],
+      section: post.category,
+      tags: post.tags,
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.summary,
-      images: imageList,
+      description,
+      images: [image.url],
     },
   }
 }
@@ -97,13 +83,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
     return coreContent(authorResults as Authors)
   })
   const mainContent = coreContent(post)
-  const jsonLd = post.structuredData
-  jsonLd['author'] = authorDetails.map((author) => {
-    return {
-      '@type': 'Person',
-      name: author.name,
-    }
-  })
+  const jsonLd = postJsonLd(mainContent)
 
   const Layout = layouts[post.layout || defaultLayout]
   const series = getSeries(post, sortedCoreContents)
@@ -111,10 +91,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldScript(jsonLd) }} />
       <SectionContainer>
         <Layout
           content={mainContent}
