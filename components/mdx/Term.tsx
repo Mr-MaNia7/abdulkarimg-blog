@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { slug } from 'github-slugger'
 import glossary from '@/data/glossary.json'
 import TermTrigger from './TermTrigger'
+import { dict } from '@/data/i18n'
 import { typeset } from '@/lib/typeset'
 
 export type GlossaryEntry = {
@@ -27,6 +28,7 @@ type Props = {
   translit?: string
   /** Glossary id, when it differs from the transliteration. */
   id?: string
+  lang?: string
   children?: ReactNode
 }
 
@@ -35,7 +37,7 @@ type Props = {
  * the MDX fill any gaps. The visible text is the children, or the
  * transliteration in italics when there are none.
  */
-export default function Term({ ar, translit, id, children }: Props) {
+export default function Term({ ar, translit, id, lang = 'en', children }: Props) {
   const key = id ?? (translit ? termId(translit) : undefined)
   const entry = entries.find((e) => e.id === key)
   const data = {
@@ -47,5 +49,9 @@ export default function Term({ ar, translit, id, children }: Props) {
   if (!entry && process.env.NODE_ENV !== 'production') {
     console.warn(`<Term>: no glossary entry "${key}" in data/glossary.json`)
   }
-  return <TermTrigger entry={data}>{children ?? <i>{typeset(data.translit)}</i>}</TermTrigger>
+  return (
+    <TermTrigger entry={data} label={dict(lang).mdx.inGlossary} pageLang={lang}>
+      {children ?? <i>{typeset(data.translit)}</i>}
+    </TermTrigger>
+  )
 }

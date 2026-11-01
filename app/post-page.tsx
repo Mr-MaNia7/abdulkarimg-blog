@@ -1,21 +1,29 @@
 import 'css/prism.css'
 import 'katex/dist/katex.css'
 
-import { components } from '@/components/MDXComponents'
+import { componentsFor } from '@/components/MDXComponents'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
-import { sortPosts, coreContent, allCoreContent } from 'pliny/utils/contentlayer'
+import { coreContent } from 'pliny/utils/contentlayer'
 import { allBlogs, allAuthors } from 'contentlayer/generated'
 import type { Authors, Blog } from 'contentlayer/generated'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
 import { preload } from 'react-dom'
-import { getRelated, getSeries } from '@/lib/posts'
-import { ldScript, ogImage, postJsonLd, postUrl } from '@/lib/jsonld'
+import { dict, type Lang } from '@/data/i18n'
+import { allPosts, postsIn } from '@/lib/content'
+import { getRelated, getSeries, getTranslations } from '@/lib/posts'
+import { absolute, ldScript, ogImage, postJsonLd, postUrl } from '@/lib/jsonld'
+import { hasEthiopic } from '@/lib/ethiopic'
 import SectionContainer from '@/components/SectionContainer'
+
+/**
+ * One post page for every language: app/(en)/blog/[...slug] serves English
+ * posts at /blog/<slug>/, app/(am)/am/blog/[...slug] Amharic ones at /am/blog/<slug>/.
+ */
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -24,25 +32,45 @@ const layouts = {
   PostBanner,
 }
 
-export async function generateMetadata(props: {
-  params: Promise<{ slug: string[] }>
-}): Promise<Metadata | undefined> {
+type Params = { params: Promise<{ slug: string[] }> }
+
+const findPost = (lang: Lang, slug: string) =>
+  allBlogs.find((p) => p.lang === lang && p.slug === slug)
+
+export const postStaticParams = (lang: Lang) =>
+  allBlogs
+    .filter((p) => p.lang === lang)
+    .map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
+
+export async function postMetadata(lang: Lang, props: Params): Promise<Metadata | undefined> {
   const params = await props.params
-  const slug = decodeURI(params.slug.join('/'))
-  const post = allBlogs.find((p) => p.slug === slug)
+  const post = findPost(lang, decodeURI(params.slug.join('/')))
   if (!post) return
 
   const description = post.summary || post.short_answer
   const image = { url: ogImage(post), width: 1200, height: 630, alt: post.title }
+  // hreflang alternates: this post and its translation, English as the default.
+  const translations = getTranslations(post, allPosts)
+  const versions = [{ lang: post.lang, url: postUrl(post) }].concat(
+    translations.map((t) => ({ lang: t.lang, url: absolute(t.path) }))
+  )
+  const languages = translations.length
+    ? Object.fromEntries([
+        ...versions.map((v) => [v.lang, v.url]),
+        ['x-default', versions.find((v) => v.lang === 'en')?.url ?? versions[0].url],
+      ])
+    : undefined
+
   return {
     title: post.title,
     description,
-    alternates: { canonical: postUrl(post) },
+    alternates: { canonical: postUrl(post), languages },
     openGraph: {
       title: post.title,
       description,
       siteName: siteMetadata.title,
-      locale: 'en_US',
+      locale: dict(lang).ogLocale,
+      alternateLocale: translations.map((t) => dict(t.lang).ogLocale),
       type: 'article',
       publishedTime: new Date(post.date).toISOString(),
       modifiedTime: new Date(post.lastmod || post.date).toISOString(),
@@ -61,15 +89,10 @@ export async function generateMetadata(props: {
   }
 }
 
-export const generateStaticParams = async () => {
-  return allBlogs.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
-}
-
-export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
-  const params = await props.params
-  const slug = decodeURI(params.slug.join('/'))
-  // Filter out drafts in production
-  const sortedCoreContents = allCoreContent(sortPosts(allBlogs))
+export async function PostPage({ lang, params }: Params & { lang: Lang }) {
+  const slug = decodeURI((await params).slug.join('/'))
+  // Neighbours, series parts and related reading stay within the language.
+  const sortedCoreContents = postsIn(lang)
   const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
   if (postIndex === -1) {
     return notFound()
@@ -77,7 +100,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
 
   const prev = sortedCoreContents[postIndex + 1]
   const next = sortedCoreContents[postIndex - 1]
-  const post = allBlogs.find((p) => p.slug === slug) as Blog
+  const post = findPost(lang, slug) as Blog
   const authorList = post?.authors || ['default']
   const authorDetails = authorList.map((author) => {
     const authorResults = allAuthors.find((p) => p.slug === author)
@@ -85,6 +108,8 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   })
   // Preload the Arabic faces only where the post uses them, so Arabic text is
   // laid out once in its own face instead of reflowing when the font arrives.
+  // Ethiopic likewise for English posts that quote Amharic (Amharic pages
+  // preload it in app/root-shell.tsx).
   const raw = `${post.title} ${post.body.raw}`
   if (/[\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(raw)) {
     preload('/fonts/v1/Amiri-Regular.woff2', { as: 'font', type: 'font/woff2', crossOrigin: '' })
@@ -92,9 +117,17 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   if (/<Quran\b/.test(post.body.raw)) {
     preload('/fonts/v1/AmiriQuran.woff2', { as: 'font', type: 'font/woff2', crossOrigin: '' })
   }
+  if (lang !== 'am' && hasEthiopic(raw)) {
+    preload('/fonts/v1/NotoSerifEthiopic.woff2', {
+      as: 'font',
+      type: 'font/woff2',
+      crossOrigin: '',
+    })
+  }
 
   const mainContent = coreContent(post)
-  const jsonLd = postJsonLd(mainContent)
+  const translations = getTranslations(post, allPosts)
+  const jsonLd = postJsonLd(mainContent, translations)
 
   const Layout = layouts[post.layout || defaultLayout]
   const series = getSeries(post, sortedCoreContents)
@@ -105,6 +138,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldScript(jsonLd) }} />
       <SectionContainer>
         <Layout
+          lang={lang}
           content={mainContent}
           authorDetails={authorDetails}
           next={next}
@@ -112,8 +146,13 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
           toc={post.toc}
           series={series}
           related={related}
+          translations={translations}
         >
-          <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
+          <MDXLayoutRenderer
+            code={post.body.code}
+            components={componentsFor(lang)}
+            toc={post.toc}
+          />
         </Layout>
       </SectionContainer>
     </>

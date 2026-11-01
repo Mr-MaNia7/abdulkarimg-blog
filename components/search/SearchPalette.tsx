@@ -6,9 +6,10 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import glossary from '@/data/glossary.json'
 import { typeset } from '@/lib/typeset'
 import { foldArabic, hasArabic } from '@/lib/arabic'
+import { fill, type Dict } from '@/data/i18n'
 
 type Result = { id: string; group: Group; title: string; url: string; excerpt?: string }
-type Group = 'Essays' | 'Questions' | 'Notes' | 'Glossary' | 'Go to'
+type Group = keyof Dict['search']['groups']
 
 type PagefindResult = {
   url: string
@@ -25,15 +26,8 @@ type Pagefind = {
   ) => Promise<{ results: { data: () => Promise<PagefindResult> }[] } | null>
 }
 
-const GROUP_ORDER: Group[] = ['Essays', 'Questions', 'Notes', 'Glossary', 'Go to']
-const TYPE_GROUP: Record<string, Group> = { essay: 'Essays', qa: 'Questions', note: 'Notes' }
-
-const QUICK: Result[] = [
-  { id: 'q-questions', group: 'Go to', title: 'Questions on Islam', url: '/questions' },
-  { id: 'q-glossary', group: 'Go to', title: 'Glossary', url: '/glossary' },
-  { id: 'q-archive', group: 'Go to', title: 'Archive', url: '/blog' },
-  { id: 'q-about', group: 'Go to', title: 'About', url: '/about' },
-]
+const GROUP_ORDER: Group[] = ['essays', 'questions', 'notes', 'glossary', 'goTo']
+const TYPE_GROUP: Record<string, Group> = { essay: 'essays', qa: 'questions', note: 'notes' }
 
 const fold = (s: string) =>
   s
@@ -45,6 +39,10 @@ const glossaryIndex = (
   glossary as { id: string; translit: string; ar: string; definition: string }[]
 ).map((g) => ({ ...g, hay: fold(`${g.translit} ${g.id} ${g.definition}`), ar: g.ar }))
 
+/**
+ * Pagefind keeps one index per <html lang> and opens the one matching the
+ * page, so search on Amharic pages finds Amharic posts (scripts/postbuild.mjs).
+ */
 let pagefindPromise: Promise<Pagefind> | null = null
 function loadPagefind(): Promise<Pagefind> {
   if (!pagefindPromise) {
@@ -67,9 +65,11 @@ const cleanUrl = (url: string) => url.replace(/\/index\.html$/, '/').replace(/\.
 export default function SearchPalette({
   open,
   onOpenChange,
+  t,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
+  t: Dict['search']
 }) {
   const router = useRouter()
   const listId = useId()
@@ -101,7 +101,7 @@ export default function SearchPalette({
       .slice(0, 4)
       .map((g) => ({
         id: `g-${g.id}`,
-        group: 'Glossary',
+        group: 'glossary',
         title: g.translit,
         url: `/glossary#${g.id}`,
         excerpt: g.definition,
@@ -115,7 +115,7 @@ export default function SearchPalette({
         if (cancelled) return
         const posts: Result[] = data.map((d, i) => ({
           id: `p-${i}`,
-          group: TYPE_GROUP[d.meta.type ?? 'essay'] ?? 'Essays',
+          group: TYPE_GROUP[d.meta.type ?? 'essay'] ?? 'essays',
           title: d.meta.title ?? cleanUrl(d.url),
           url: cleanUrl(d.url),
           excerpt: d.excerpt,
@@ -135,7 +135,11 @@ export default function SearchPalette({
     }
   }, [query])
 
-  const shown = query.trim() ? results : QUICK
+  const quick = useMemo<Result[]>(
+    () => t.quick.map((q, i) => ({ id: `q-${i}`, group: 'goTo', ...q })),
+    [t.quick]
+  )
+  const shown = query.trim() ? results : quick
   const ordered = useMemo(
     () => GROUP_ORDER.flatMap((g) => shown.filter((r) => r.group === g)),
     [shown]
@@ -180,11 +184,8 @@ export default function SearchPalette({
             inputRef.current?.select()
           }}
         >
-          <Dialog.Title className="sr-only">Search the journal</Dialog.Title>
-          <Dialog.Description className="sr-only">
-            Search essays, questions, notes and glossary terms. Use the arrow keys to move through
-            results and Enter to open one.
-          </Dialog.Description>
+          <Dialog.Title className="sr-only">{t.title}</Dialog.Title>
+          <Dialog.Description className="sr-only">{t.description}</Dialog.Description>
           <div className="palette-field">
             <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
               <circle cx="8.75" cy="8.75" r="5.25" />
@@ -195,27 +196,27 @@ export default function SearchPalette({
               className="palette-input"
               type="search"
               name="q"
-              aria-label="Search the journal"
+              aria-label={t.title}
               role="combobox"
               aria-expanded={ordered.length > 0}
               aria-controls={listId}
               aria-activedescendant={ordered.length ? `${listId}-${active}` : undefined}
               aria-autocomplete="list"
-              placeholder="Search essays, questions, terms…"
+              placeholder={t.placeholder}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={onKeyDown}
               autoComplete="off"
               spellCheck={false}
             />
-            <kbd className="palette-esc">Esc</kbd>
+            <kbd className="palette-esc">{t.esc}</kbd>
           </div>
 
-          <div id={listId} role="listbox" aria-label="Results" className="palette-results">
+          <div id={listId} role="listbox" aria-label={t.results} className="palette-results">
             {groups.map(([group, list]) => (
               <div key={group} role="group" aria-labelledby={`${listId}-${group}`}>
                 <p id={`${listId}-${group}`} className="palette-group" role="presentation">
-                  {group}
+                  {t.groups[group]}
                 </p>
                 {list.map((r) => {
                   index += 1
@@ -238,12 +239,14 @@ export default function SearchPalette({
                       {r.excerpt && (
                         <span
                           className="palette-option-excerpt"
+                          // Glossary definitions are written in English.
+                          lang={r.group === 'glossary' ? 'en' : undefined}
                           // Pagefind excerpts are escaped HTML with <mark> around matches.
                           dangerouslySetInnerHTML={
-                            r.group === 'Glossary' ? undefined : { __html: r.excerpt }
+                            r.group === 'glossary' ? undefined : { __html: r.excerpt }
                           }
                         >
-                          {r.group === 'Glossary' ? r.excerpt : undefined}
+                          {r.group === 'glossary' ? r.excerpt : undefined}
                         </span>
                       )}
                     </div>
@@ -254,10 +257,9 @@ export default function SearchPalette({
           </div>
 
           <p className="palette-status" aria-live="polite">
-            {status === 'loading' && 'Searching…'}
-            {status === 'ready' && !results.length && `Nothing matches “${query.trim()}”.`}
-            {status === 'unavailable' &&
-              'The search index is missing. It is built by `yarn build`; glossary terms still work.'}
+            {status === 'loading' && t.searching}
+            {status === 'ready' && !results.length && fill(t.noMatch, { query: query.trim() })}
+            {status === 'unavailable' && t.unavailable}
           </p>
         </Dialog.Content>
       </Dialog.Portal>

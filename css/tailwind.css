@@ -39,6 +39,61 @@
     U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200F, U+25CC, U+FB50-FDFF, U+FE70-FEFF;
 }
 
+/* ───────────────────────── Ethiopic faces ─────────────────────────
+   Noto Serif Ethiopic (text) and Noto Sans Ethiopic (interface), self-hosted
+   in public/fonts/v1 (OFL), subset to the Ethiopic blocks, weight axis only.
+   - size-adjust sets Ethiopic 1.12× the Latin beside it, in every context,
+     so mixed lines need no extra markup.
+   - The metric overrides give each face the ascent and descent of its Latin
+     partner (Literata 1.177 / 0.308, Commissioner 1.017 / 0.206, divided by
+     the 1.12 size-adjust), so a line that mixes the two scripts keeps the
+     Latin line box instead of growing. Glyphs are not clipped by this: the
+     overrides only move the line box, and Amharic text runs at line-height 1.85.
+   - unicode-range: fetched only when Ethiopic is on the page. */
+
+@font-face {
+  font-family: 'Hashiya Ethiopic';
+  src: url('/fonts/v1/NotoSerifEthiopic.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 112%;
+  ascent-override: 105.1%;
+  descent-override: 27.5%;
+  line-gap-override: 0%;
+  unicode-range: U+1200-137F, U+1380-139F, U+2D80-2DDF, U+AB00-AB2F;
+}
+
+@font-face {
+  font-family: 'Hashiya Ethiopic Sans';
+  src: url('/fonts/v1/NotoSansEthiopic.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 112%;
+  ascent-override: 90.8%;
+  descent-override: 18.4%;
+  line-gap-override: 0%;
+  unicode-range: U+1200-137F, U+1380-139F, U+2D80-2DDF, U+AB00-AB2F;
+}
+
+/* The few syllables of the Amharic links English pages carry ("በአማርኛ",
+   "በአማርኛም ያንብቡ"): the same face, 2 KB instead of 113, listed first so
+   English pages fetch only this. Built by scripts/fonts/ethiopic.py, which
+   prints this unicode-range; rerun it when those strings change. */
+@font-face {
+  font-family: 'Hashiya Ethiopic Labels';
+  src: url('/fonts/v1/NotoSansEthiopic-labels.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 112%;
+  ascent-override: 90.8%;
+  descent-override: 18.4%;
+  line-gap-override: 0%;
+  unicode-range: U+121B, U+121D, U+122D, U+1260, U+1261, U+1265, U+1295, U+129B, U+12A0, U+12EB;
+}
+
 /* ───────────────────────── Palette ───────────────────────── */
 
 :root {
@@ -77,10 +132,21 @@
   --shadow-float: 0 0.6rem 1.6rem -0.6rem rgb(0 0 0 / 0.3);
   --scrim: rgb(10 14 22 / 0.45);
 
-  /* Font stacks. Amiri follows each Latin stack so ﷺ and stray Arabic always resolve. */
-  --stack-serif: var(--font-literata), 'Hashiya Amiri', 'Iowan Old Style', Georgia, serif;
-  --stack-sans: var(--font-commissioner), 'Hashiya Amiri', ui-sans-serif, system-ui, sans-serif;
-  --stack-mono: var(--font-source-code-pro), ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  /* Font stacks. The Ethiopic and Arabic faces follow each Latin stack, so
+     Amharic, ﷺ and stray Arabic always resolve (their unicode-range keeps them
+     from loading where they are not used). */
+  --stack-serif:
+    var(--font-literata), 'Hashiya Ethiopic', 'Hashiya Amiri', 'Iowan Old Style', Georgia, serif;
+  --stack-sans:
+    var(--font-commissioner), 'Hashiya Ethiopic Labels', 'Hashiya Ethiopic Sans', 'Hashiya Amiri',
+    ui-sans-serif, system-ui, sans-serif;
+  --stack-mono:
+    var(--font-source-code-pro), 'Hashiya Ethiopic Labels', 'Hashiya Ethiopic Sans', ui-monospace,
+    'SFMono-Regular', Menlo, monospace;
+  --stack-ethiopic: 'Hashiya Ethiopic', 'Noto Serif Ethiopic', 'Abyssinica SIL', serif;
+
+  /* Amharic text: a more open line for the taller syllables (DESIGN.md, Typography). */
+  --leading-ethiopic: 1.85;
   --stack-arabic: 'Hashiya Amiri', 'Noto Naskh Arabic', 'Geeza Pro', serif;
   --stack-quran: 'Hashiya Amiri Quran', 'Hashiya Amiri', 'Geeza Pro', serif;
 
@@ -191,6 +257,7 @@ html[data-reading-font='sans'] {
   --font-mono: var(--stack-mono);
   --font-arabic: var(--stack-arabic);
   --font-quran: var(--stack-quran);
+  --font-ethiopic: var(--stack-ethiopic);
 }
 
 @theme {
@@ -320,6 +387,19 @@ html[data-reading-font='sans'] {
   /* Inline Arabic must not stretch the line box of the Latin around it. */
   :not(:lang(ar)) > :lang(ar):where(span, i, em, b, strong) {
     line-height: 1;
+  }
+
+  /* Ethiopic has no italic and no case: a slanted Roman is not an italic, and
+     synthesized small caps only shrink it. Keep it upright and full size (Latin
+     in the same run keeps Literata's real italic and small caps). Its syllables
+     want their natural spacing, not display tracking. */
+  :lang(am) {
+    font-synthesis-style: none;
+    font-synthesis-small-caps: none;
+  }
+
+  span:lang(am) {
+    letter-spacing: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {

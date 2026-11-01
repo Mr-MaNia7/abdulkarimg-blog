@@ -10,11 +10,13 @@ import type { PostLayoutProps } from './PostLayout'
  * Without an image it is identical to PostSimple.
  */
 export default function PostBanner({
+  lang = 'en',
   content,
   next,
   prev,
   series,
   related = [],
+  translations = [],
   children,
 }: PostLayoutProps) {
   const images = typeof content.images === 'string' ? [content.images] : content.images
@@ -42,11 +44,12 @@ export default function PostBanner({
           </figure>
         )}
         <div className="post-main">
-          <PostHeader content={content} />
-          {series && <SeriesContents series={series} />}
+          <PostHeader content={content} lang={lang} translations={translations} />
+          {series && <SeriesContents series={series} lang={lang} />}
           <div className="prose post-body">{children}</div>
-          {series && <SeriesPager series={series} />}
+          {series && <SeriesPager series={series} lang={lang} />}
           <PostEnd
+            lang={lang}
             slug={content.slug}
             filePath={content.filePath}
             tags={content.tags}

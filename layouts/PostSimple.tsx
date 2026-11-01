@@ -9,11 +9,13 @@ import type { PostLayoutProps } from './PostLayout'
  * Side notes open inline here at every width.
  */
 export default function PostSimple({
+  lang = 'en',
   content,
   next,
   prev,
   series,
   related = [],
+  translations = [],
   children,
 }: PostLayoutProps) {
   return (
@@ -26,11 +28,12 @@ export default function PostSimple({
         data-pagefind-meta={`type:${content.type ?? 'essay'}`}
       >
         <div className="post-main">
-          <PostHeader content={content} />
-          {series && <SeriesContents series={series} />}
+          <PostHeader content={content} lang={lang} translations={translations} />
+          {series && <SeriesContents series={series} lang={lang} />}
           <div className="prose post-body">{children}</div>
-          {series && <SeriesPager series={series} />}
+          {series && <SeriesPager series={series} lang={lang} />}
           <PostEnd
+            lang={lang}
             slug={content.slug}
             filePath={content.filePath}
             tags={content.tags}

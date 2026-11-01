@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { dict } from '@/data/i18n'
 import { typeset } from '@/lib/typeset'
 import SearchCopy from './SearchCopy'
 
@@ -10,21 +11,32 @@ type Props = {
   grade?: Grade
   narrator?: string
   arabic?: string
+  lang?: string
   children: ReactNode
 }
 
-const GRADES: Record<string, { label: string; key: string; note: string }> = {
-  sahih: { label: 'Ṣaḥīḥ', key: 'sahih', note: 'sound' },
-  hasan: { label: 'Ḥasan', key: 'hasan', note: 'good' },
-  daif: { label: 'Ḍaʿīf', key: 'daif', note: 'weak' },
+// The grade stays a transliterated term; its gloss for screen readers is translated.
+const GRADES: Record<string, { label: string; key: string }> = {
+  sahih: { label: 'Ṣaḥīḥ', key: 'sahih' },
+  hasan: { label: 'Ḥasan', key: 'hasan' },
+  daif: { label: 'Ḍaʿīf', key: 'daif' },
 }
 
 const gradeOf = (grade?: string) =>
   grade ? GRADES[grade.toLowerCase().replace(/[^a-z]/g, '')] : undefined
 
 /** A ḥadīth report: related to the Qur'an block, but framed rather than washed. */
-export default function Hadith({ collection, number, grade, narrator, arabic, children }: Props) {
+export default function Hadith({
+  collection,
+  number,
+  grade,
+  narrator,
+  arabic,
+  lang,
+  children,
+}: Props) {
   const g = gradeOf(grade)
+  const notes = dict(lang).mdx.grades
   return (
     <figure className="scripture scripture-hadith not-prose">
       {narrator && <p className="hadith-narrator">{typeset(narrator)}</p>}
@@ -43,7 +55,7 @@ export default function Hadith({ collection, number, grade, narrator, arabic, ch
         {g ? (
           <span className={`hadith-grade hadith-grade-${g.key}`}>
             {g.label}
-            <span className="sr-only"> ({g.note})</span>
+            <span className="sr-only"> ({notes[g.key]})</span>
           </span>
         ) : (
           grade && <span className="hadith-grade">{grade}</span>

@@ -54,6 +54,7 @@
   [data-sonner-toaster],
   .qindex-controls,
   .archive-tabs,
+  .post-translation,
   .cover-meta {
     display: none !important;
   }

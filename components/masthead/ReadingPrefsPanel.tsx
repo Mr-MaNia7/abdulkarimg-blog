@@ -4,6 +4,7 @@ import * as Popover from '@radix-ui/react-popover'
 import { useTheme } from 'next-themes'
 import { useEffect, useRef, useState } from 'react'
 import { PREFS_KEY } from '@/lib/reading-prefs'
+import type { Dict } from '@/data/i18n'
 
 type Size = 'sm' | 'md' | 'lg' | 'xl'
 type Font = 'serif' | 'sans'
@@ -11,12 +12,8 @@ type Prefs = { v: 1; size: Size; font: Font }
 
 const DEFAULTS: Prefs = { v: 1, size: 'md', font: 'serif' }
 
-const SIZES: { value: Size; label: string }[] = [
-  { value: 'sm', label: 'Smaller' },
-  { value: 'md', label: 'Default' },
-  { value: 'lg', label: 'Larger' },
-  { value: 'xl', label: 'Largest' },
-]
+const SIZES: Size[] = ['sm', 'md', 'lg', 'xl']
+const THEMES = ['system', 'light', 'dark'] as const
 
 function read(): Prefs {
   try {
@@ -44,9 +41,11 @@ function apply(p: Prefs) {
 export default function ReadingPrefsPanel({
   defaultOpen = false,
   takeFocus = false,
+  t,
 }: {
   defaultOpen?: boolean
   takeFocus?: boolean
+  t: Dict['prefs']
 }) {
   const [prefs, setPrefs] = useState<Prefs>(DEFAULTS)
   const [open, setOpen] = useState(false)
@@ -74,7 +73,7 @@ export default function ReadingPrefsPanel({
           ref={trigger}
           type="button"
           className="tool-button tool-button-text js-only"
-          aria-label="Reading preferences"
+          aria-label={t.button}
         >
           <span aria-hidden="true">Aa</span>
         </button>
@@ -82,26 +81,26 @@ export default function ReadingPrefsPanel({
       <Popover.Portal>
         <Popover.Content className="prefs-card" align="end" sideOffset={10} collisionPadding={16}>
           <fieldset className="prefs-group">
-            <legend>Text size</legend>
+            <legend>{t.textSize}</legend>
             <div className="prefs-options">
               {SIZES.map((s) => (
-                <label key={s.value} className={`prefs-size prefs-size-${s.value}`}>
+                <label key={s} className={`prefs-size prefs-size-${s}`}>
                   <input
                     type="radio"
                     name="reading-size"
-                    value={s.value}
-                    checked={prefs.size === s.value}
-                    onChange={() => update({ size: s.value })}
+                    value={s}
+                    checked={prefs.size === s}
+                    onChange={() => update({ size: s })}
                   />
                   <span aria-hidden="true">A</span>
-                  <span className="sr-only">{s.label}</span>
+                  <span className="sr-only">{t.sizes[s]}</span>
                 </label>
               ))}
             </div>
           </fieldset>
 
           <fieldset className="prefs-group">
-            <legend>Typeface</legend>
+            <legend>{t.typeface}</legend>
             <div className="prefs-options">
               {(['serif', 'sans'] as Font[]).map((f) => (
                 <label key={f} className={`prefs-choice prefs-font-${f}`}>
@@ -112,25 +111,25 @@ export default function ReadingPrefsPanel({
                     checked={prefs.font === f}
                     onChange={() => update({ font: f })}
                   />
-                  <span>{f === 'serif' ? 'Serif' : 'Sans'}</span>
+                  <span>{f === 'serif' ? t.serif : t.sans}</span>
                 </label>
               ))}
             </div>
           </fieldset>
 
           <fieldset className="prefs-group">
-            <legend>Theme</legend>
+            <legend>{t.theme}</legend>
             <div className="prefs-options">
-              {['system', 'light', 'dark'].map((t) => (
-                <label key={t} className="prefs-choice">
+              {THEMES.map((mode) => (
+                <label key={mode} className="prefs-choice">
                   <input
                     type="radio"
                     name="reading-theme"
-                    value={t}
-                    checked={(theme ?? 'system') === t}
-                    onChange={() => setTheme(t)}
+                    value={mode}
+                    checked={(theme ?? 'system') === mode}
+                    onChange={() => setTheme(mode)}
                   />
-                  <span>{t === 'system' ? 'System' : t === 'light' ? 'Light' : 'Dark'}</span>
+                  <span>{t.themes[mode]}</span>
                 </label>
               ))}
             </div>

@@ -1,6 +1,7 @@
+import { Fragment } from 'react'
 import Link from 'next/link'
-import headerNavLinks from '@/data/headerNavLinks'
 import siteMetadata from '@/data/siteMetadata'
+import { dict, fill, type Lang } from '@/data/i18n'
 import { typeset } from '@/lib/typeset'
 import NavLinks from './NavLinks'
 import SearchTrigger from './SearchTrigger'
@@ -11,41 +12,60 @@ import ReadingPrefs from './ReadingPrefs'
  * A thin masthead: wordmark, five links, search, reading preferences, theme.
  * It keeps one height so nothing below it moves; on scroll it gains a ground
  * and a hairline (CSS scroll-driven animation, no script).
+ * Labels come from the page's language (data/i18n).
  */
-export default function Masthead() {
+export default function Masthead({ lang = 'en' }: { lang?: Lang }) {
+  const t = dict(lang)
+  const m = t.masthead
   return (
     <header className="masthead">
       <div className="masthead-inner">
         <Link
-          href="/"
+          href={t.home}
           className="masthead-mark"
           translate="no"
-          aria-label={`${siteMetadata.title}, front page`}
+          aria-label={fill(m.frontPageLabel, { title: siteMetadata.title })}
         >
           {typeset(siteMetadata.title)}
         </Link>
 
-        <nav className="masthead-nav" aria-label="Main">
-          <NavLinks links={headerNavLinks} />
+        <nav className="masthead-nav" aria-label={m.main}>
+          <NavLinks links={m.links} />
         </nav>
 
         <div className="masthead-tools">
-          <SearchTrigger />
-          <ReadingPrefs />
-          <ThemeToggle />
+          <SearchTrigger t={t.search} />
+          <ReadingPrefs t={t.prefs} />
+          <ThemeToggle t={t.prefs} />
           {/* Narrow screens: a disclosure, so the menu works without JavaScript. */}
           <details className="mobile-menu">
-            <summary aria-label="Menu">
+            <summary aria-label={m.menu}>
               <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
                 <path className="menu-line menu-line-1" d="M3 6.5h14" />
                 <path className="menu-line menu-line-2" d="M3 13.5h14" />
               </svg>
             </summary>
-            <nav className="mobile-menu-panel" aria-label="Main">
-              <NavLinks links={[{ href: '/', title: 'Front page' }, ...headerNavLinks]} />
+            <nav className="mobile-menu-panel" aria-label={m.main}>
+              <NavLinks
+                links={[{ href: t.home, title: m.frontPage }, ...m.links.filter((l) => !l.lang)]}
+              />
               <p className="mobile-menu-more">
-                <Link href="/blog">Archive</Link> · <Link href="/tags">Tags</Link> ·{' '}
-                <Link href="/series">Series</Link>
+                {m.more.map((l, i) => (
+                  <Fragment key={l.href}>
+                    {i > 0 && ' · '}
+                    {l.hrefLang ? (
+                      <a
+                        href={l.href === '/' ? '/' : `${l.href}/`}
+                        hrefLang={l.hrefLang}
+                        lang={l.lang}
+                      >
+                        {l.title}
+                      </a>
+                    ) : (
+                      <Link href={l.href}>{l.title}</Link>
+                    )}
+                  </Fragment>
+                ))}
               </p>
             </nav>
           </details>

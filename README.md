@@ -34,12 +34,13 @@ The design treats the site as a clothbound scholarly edition: lapis cloth frames
 
 - **Scripture components.** Qur'an, ḥadīth and other scripture blocks, each visually distinct from commentary, with references, translators, grades and a copy button.
 - **Arabic done properly.** Arabic typed straight into Markdown is marked `lang="ar" dir="rtl"` and set in Amiri; Qur'anic text in Amiri Quran. ﷺ, transliteration marks (ʿ ʾ) and curly quotes are typeset at build time.
+- **In Amharic too.** An Amharic section at [`/am/`](https://blog.abdulkarimg.com/am/) for original Amharic writing and translations of English posts, linked both ways, with its own interface, feed and search. Dates give the Ethiopian calendar and the Gregorian (`ጥቅምት 21 ቀን 2019 ዓ.ም. · 31 Oct 2026`); Amharic is set in Noto Serif Ethiopic beside Literata. See [Writing in Amharic](#writing-in-amharic).
 - **Margins that work.** Tufte-style side notes and footnote copies in the right margin, a sticky contents list in the left; both collapse gracefully on phones and work without JavaScript.
 - **Four kinds of writing.** Essays, Q&A posts (short answer first), notes, and multi-part series.
 - **A glossary.** Inline terms open a definition; every term is collected on `/glossary`, A–Z.
-- **Search.** ⌘K / Ctrl+K / `/` opens a palette backed by [Pagefind](https://pagefind.app): static, grouped by type, includes glossary terms, and finds vocalized Arabic from plain typing.
+- **Search.** ⌘K / Ctrl+K / `/` opens a palette backed by [Pagefind](https://pagefind.app): static, grouped by type, includes glossary terms, and finds vocalized Arabic from plain typing. English and Amharic pages each search their own language.
 - **Reading preferences.** Text size, serif or sans, and light / dark / system, applied before first paint.
-- **Distribution.** RSS (site-wide, per subject, per tag), sitemap, canonical URLs, JSON-LD (`BlogPosting`, `QAPage`, `BreadcrumbList`), and a generated Open Graph card per post with correctly shaped Arabic.
+- **Distribution.** RSS (site-wide, per subject, per tag, and `/am/feed.xml`), sitemap with `hreflang` alternates, canonical URLs, JSON-LD (`BlogPosting`, `QAPage`, `BreadcrumbList`, with `inLanguage` and translation links), and a generated Open Graph card per post with correctly shaped Arabic and Ethiopic.
 - **Built to last.** Fully static, self-hosted fonts, no tracking by default, strict security headers, and a print stylesheet.
 
 ## Tech stack
@@ -159,6 +160,31 @@ layout: PostSimple
 **Series:** give each part the same `series.name` and its own `part`. Each part shows the series contents at the top and previous/next parts at the end; `/series/<name>` lists them all.
 
 </details>
+
+### Writing in Amharic
+
+Amharic posts are MDX files in [`data/blog/am/`](data/blog/am), served under `/am/`: `data/blog/am/the-names-of-god.mdx` → `/am/blog/the-names-of-god/`. The folder sets the language, so there is no `lang` field to write. English URLs are unaffected.
+
+- **An original Amharic post** uses the same frontmatter as any other post. It is listed on the Amharic front page ([`/am/`](https://blog.abdulkarimg.com/am/)) and archive (`/am/blog/`), and in `/am/feed.xml`.
+- **A translation** adds `translationOf` with the English post's slug (its file name):
+
+  ```mdx
+  ---
+  title: 'ሙስሊሞች ከነቢዩ ስም በኋላ ለምን ﷺ ይላሉ?'
+  date: '2026-10-31'
+  type: qa
+  category: Questions on Islam
+  translationOf: sample-salawat
+  ---
+  ```
+
+  The two versions then link to each other ("በአማርኛም ያንብቡ" on the English post, "Also in English" on the Amharic one) and are marked as `hreflang` alternates in the page head, the sitemap and the JSON-LD. The build stops if `translationOf` names no English post, or if two posts translate the same one. The link works in either direction, so an English translation of an Amharic original can later name the Amharic slug the same way.
+
+- **Category** stays one of the four English values; it is shown in Amharic. Tags stay as written; Amharic pages show them without links, since tag and subject pages exist in English only.
+- **Scripture** works as in English, and the same rule holds: components show only what you write. Keep the Arabic exactly as published, and for `translation` use a published Amharic translation and name its translator. The sample post ([`data/blog/am/sample-salawat.mdx`](data/blog/am/sample-salawat.mdx)) shows a clearly marked placeholder where that translation is still missing.
+- **Typesetting** is automatic: spaces typed before ። ፣ ፤ ፡ are closed up so a stop never starts a line, and Ethiopic typed into an English post is marked `lang="am"`.
+
+Interface text (navigation, labels, dates, search, the footer, the 404 page) comes from one dictionary per language, [`data/i18n/en.ts`](data/i18n/en.ts) and [`data/i18n/am.ts`](data/i18n/am.ts), with the same keys. Components pick one by the page's language (`dict(lang)`); to change a label, edit it there. Each language has its own root layout (`app/(en)/` and `app/(am)/`) so that every page is served with the right `<html lang>`.
 
 ### Components
 
@@ -299,6 +325,7 @@ Put images in `public/static/images/`. `wide` lets a figure extend into the righ
 | [`data/siteMetadata.js`](data/siteMetadata.js)         | Title, description, author, social links (empty ones are hidden), analytics, comments, newsletter |
 | [`data/authors/default.mdx`](data/authors/default.mdx) | The About page                                                                                    |
 | [`data/glossary.json`](data/glossary.json)             | Glossary terms                                                                                    |
+| [`data/i18n/`](data/i18n)                              | Interface text in English (`en.ts`) and Amharic (`am.ts`)                                         |
 | [`security-headers.js`](security-headers.js)           | Content Security Policy and caching, written to `out/_headers`                                    |
 | [`wrangler.jsonc`](wrangler.jsonc)                     | Cloudflare deployment                                                                             |
 
@@ -311,7 +338,7 @@ Optional services are off until configured:
 > [!IMPORTANT]
 > When you enable analytics or comments, add their hosts to `thirdParty` in `security-headers.js`, or the browser will block them.
 
-Fonts are self-hosted (`assets/fonts/web`, `public/fonts/v1`), so builds need no network. If you replace an Arabic font file, rename the folder `v1` → `v2`; those files are cached for a year.
+Fonts are self-hosted (`assets/fonts/web`, `public/fonts/v1`), so builds need no network. If you replace an Arabic or Ethiopic font file, rename the folder `v1` → `v2`; those files are cached for a year. The Ethiopic files are built from Google Fonts' Noto sources by [`scripts/fonts/ethiopic.py`](scripts/fonts/ethiopic.py) (instructions inside). Rerun it if you change `inThisLanguage` or `readIn` in `data/i18n/am.ts`: English pages load only a 2 kB file holding those links' syllables.
 
 ## Deployment
 
@@ -348,8 +375,10 @@ curl -sI https://blog.abdulkarimg.com/ | grep -i "content-security-policy\|cf-ra
 
 ```text
 .
-├── app/                    Routes: home, /blog, /essays, /questions, /notes, /glossary,
-│                           /tags, /category, /series, /about, and posts
+├── app/
+│   ├── (en)/               English routes: home, /blog, /essays, /questions, /notes,
+│   │                       /glossary, /tags, /category, /series, /about, and posts
+│   └── (am)/               The Amharic section: /am/, /am/blog/ and posts
 ├── components/
 │   ├── mdx/                Quran, Hadith, Scripture, Compare, Sidenote, Term, Callout, …
 │   ├── post/               Post header, contents, series navigation, end matter
@@ -359,10 +388,11 @@ curl -sI https://blog.abdulkarimg.com/ | grep -i "content-security-policy\|cf-ra
 ├── layouts/                PostLayout, PostSimple, PostBanner
 ├── lib/                    Typesetting plugins, content queries, JSON-LD
 ├── css/                    Tokens and prose, reading, pages, chrome, motion, print
-├── data/                   Posts, glossary, bibliography, About page, site metadata
-├── scripts/                Open Graph cards, RSS feeds, search index, _headers
+├── data/                   Posts (Amharic in blog/am/), interface strings (i18n/),
+│                           glossary, bibliography, About page, site metadata
+├── scripts/                Open Graph cards, RSS feeds, search index, _headers, font subsetting
 ├── assets/                 Self-hosted fonts (SIL Open Font License)
-├── public/                 Static files and Arabic fonts
+├── public/                 Static files, Arabic and Ethiopic fonts
 ├── security-headers.js     Security and cache headers (Next.js and Cloudflare)
 ├── wrangler.jsonc          Cloudflare Workers deployment
 ├── DESIGN.md               The design system
@@ -382,7 +412,7 @@ Every post ends with **Suggest a correction**, which opens its source file on Gi
 ## Credits
 
 - Started from the [Tailwind Next.js Starter Blog](https://github.com/timlrx/tailwind-nextjs-starter-blog) by Timothy Lin (MIT); every visible surface has since been redesigned.
-- Typefaces: [Literata](https://github.com/googlefonts/literata), [Commissioner](https://github.com/kosbarts/Commissioner), [Source Code Pro](https://github.com/adobe-fonts/source-code-pro), [Amiri and Amiri Quran](https://github.com/aliftype/amiri), all under the SIL Open Font License.
+- Typefaces: [Literata](https://github.com/googlefonts/literata), [Commissioner](https://github.com/kosbarts/Commissioner), [Source Code Pro](https://github.com/adobe-fonts/source-code-pro), [Amiri and Amiri Quran](https://github.com/aliftype/amiri), [Noto Serif Ethiopic and Noto Sans Ethiopic](https://github.com/notofonts/ethiopic), all under the SIL Open Font License.
 - Search by [Pagefind](https://pagefind.app); Arabic shaping in social cards by [HarfBuzz](https://harfbuzz.github.io).
 
 ## License

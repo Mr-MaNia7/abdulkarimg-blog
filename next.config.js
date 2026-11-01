@@ -23,7 +23,9 @@ module.exports = () => {
     env: { NEXT_PUBLIC_BASE_PATH: basePath || '' },
     reactStrictMode: true,
     // Inline the (small) stylesheet so first paint does not wait on CSS requests.
-    experimental: { inlineCss: true },
+    // globalNotFound: one 404 page for unknown URLs, now that each language has
+    // its own root layout (app/global-not-found.tsx).
+    experimental: { inlineCss: true, globalNotFound: true },
     trailingSlash: true,
     turbopack: {
       root: process.cwd(),

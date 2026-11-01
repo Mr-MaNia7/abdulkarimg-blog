@@ -2,8 +2,9 @@ import { slug } from 'github-slugger'
 import Link from '@/components/Link'
 import Comments from '@/components/Comments'
 import siteMetadata from '@/data/siteMetadata'
+import { dict } from '@/data/i18n'
 import { typeset } from '@/lib/typeset'
-import { formatDate, TYPE_LABEL, type PostSummary } from '@/lib/posts'
+import { formatDate, type PostSummary } from '@/lib/posts'
 
 type Neighbour = { path: string; title: string }
 
@@ -15,6 +16,7 @@ const commentsReady =
   !!comments?.provider && (comments.provider !== 'giscus' || !!comments.giscusConfig?.repo)
 
 type Props = {
+  lang?: string
   slug: string
   filePath: string
   tags?: string[]
@@ -24,31 +26,45 @@ type Props = {
 }
 
 /** Everything after the text: filing, correction link, related reading, neighbours, comments. */
-export default function PostEnd({ slug: postSlug, filePath, tags, prev, next, related }: Props) {
+export default function PostEnd({
+  lang = 'en',
+  slug: postSlug,
+  filePath,
+  tags,
+  prev,
+  next,
+  related,
+}: Props) {
   const editUrl = `${siteMetadata.siteRepo}/blob/main/data/${filePath}`
+  const t = dict(lang)
   return (
     <footer className="post-end" data-pagefind-ignore="all">
       <div className="post-filing">
         {tags && tags.length > 0 && (
           <p>
-            <span className="post-filing-label">Filed under</span>{' '}
+            <span className="post-filing-label">{t.post.filedUnder}</span>{' '}
             {tags.map((tag, i) => (
               <span key={tag}>
-                {i > 0 && ', '}
-                <Link href={`/tags/${slug(tag)}`}>{tag}</Link>
+                {i > 0 && (lang === 'am' ? '፣ ' : ', ')}
+                {lang === 'en' ? (
+                  <Link href={`/tags/${slug(tag)}`}>{tag}</Link>
+                ) : (
+                  // Tag pages exist in English only; tags are named, not linked.
+                  <span lang="en">{tag}</span>
+                )}
               </span>
             ))}
           </p>
         )}
         <p>
-          <Link href={editUrl}>Suggest a correction</Link>
+          <Link href={editUrl}>{t.post.suggestCorrection}</Link>
         </p>
       </div>
 
       {related.length > 0 && (
         <section className="related" aria-labelledby="related-heading">
           <h2 id="related-heading" className="end-heading">
-            Related reading
+            {t.post.related}
           </h2>
           <ul className="related-list">
             {related.map((p) => (
@@ -57,8 +73,8 @@ export default function PostEnd({ slug: postSlug, filePath, tags, prev, next, re
                   {typeset(p.title)}
                 </Link>
                 <span className="related-meta">
-                  {TYPE_LABEL[p.type ?? 'essay']} ·{' '}
-                  <time dateTime={p.date}>{formatDate(p.date, 'short')}</time>
+                  {t.types[p.type ?? 'essay']} ·{' '}
+                  <time dateTime={p.date}>{formatDate(p.date, 'short', lang)}</time>
                 </span>
               </li>
             ))}
@@ -67,16 +83,16 @@ export default function PostEnd({ slug: postSlug, filePath, tags, prev, next, re
       )}
 
       {(prev || next) && (
-        <nav className="pager" aria-label="Previous and next post">
+        <nav className="pager" aria-label={t.post.pager}>
           {prev && (
             <Link href={`/${prev.path}`} className="pager-link pager-prev" rel="prev">
-              <span className="pager-dir">Older</span>
+              <span className="pager-dir">{t.post.older}</span>
               <span className="pager-title">{typeset(prev.title)}</span>
             </Link>
           )}
           {next && (
             <Link href={`/${next.path}`} className="pager-link pager-next" rel="next">
-              <span className="pager-dir">Newer</span>
+              <span className="pager-dir">{t.post.newer}</span>
               <span className="pager-title">{typeset(next.title)}</span>
             </Link>
           )}
@@ -85,7 +101,7 @@ export default function PostEnd({ slug: postSlug, filePath, tags, prev, next, re
 
       {commentsReady && (
         <div className="post-comments" id="comment">
-          <Comments slug={postSlug} />
+          <Comments slug={postSlug} label={t.post.loadComments} />
         </div>
       )}
     </footer>

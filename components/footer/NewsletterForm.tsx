@@ -1,6 +1,7 @@
 'use client'
 
 import { useId, useState } from 'react'
+import type { Dict } from '@/data/i18n'
 
 /**
  * Two modes:
@@ -11,9 +12,11 @@ import { useId, useState } from 'react'
 export default function NewsletterForm({
   action,
   fieldName = 'email',
+  t,
 }: {
   action?: string
   fieldName?: string
+  t: Dict['footer']['newsletter']
 }) {
   const id = useId()
   const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
@@ -32,10 +35,10 @@ export default function NewsletterForm({
       })
       if (!res.ok) throw new Error(String(res.status))
       setState('done')
-      setMessage('Subscribed. Look for a confirmation email.')
+      setMessage(t.done)
     } catch {
       setState('error')
-      setMessage('That did not go through. Check the address and try again.')
+      setMessage(t.error)
     }
   }
 
@@ -48,7 +51,7 @@ export default function NewsletterForm({
       onSubmit={subscribe}
     >
       <label htmlFor={`${id}-email`} className="newsletter-label">
-        New essays by email
+        {t.label}
       </label>
       <div className="newsletter-row">
         <input
@@ -62,7 +65,7 @@ export default function NewsletterForm({
           aria-describedby={message ? `${id}-msg` : undefined}
         />
         <button type="submit" className="newsletter-button" disabled={state === 'sending'}>
-          {state === 'sending' ? 'Subscribing…' : 'Subscribe'}
+          {state === 'sending' ? t.subscribing : t.subscribe}
         </button>
       </div>
       {message && (

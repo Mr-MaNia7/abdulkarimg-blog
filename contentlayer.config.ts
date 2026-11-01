@@ -27,7 +27,12 @@ import rehypeKatexNoTranslate from 'rehype-katex-notranslate'
 import rehypeCitation from 'rehype-citation'
 import rehypePrismPlus from 'rehype-prism-plus'
 import rehypePresetMinify from 'rehype-preset-minify'
-import { rehypeScripts, rehypeMarginFootnotes, rehypeRefAlias } from './lib/rehype-hashiya'
+import {
+  rehypeScripts,
+  rehypeMarginFootnotes,
+  rehypeRefAlias,
+  rehypeLocalize,
+} from './lib/rehype-hashiya'
 
 const root = process.cwd()
 
@@ -61,6 +66,28 @@ const computedFields: ComputedFields = {
   toc: { type: 'json', resolve: (doc) => extractTocHeadings(doc.body.raw) },
 }
 
+/**
+ * Languages. English posts live in data/blog/ and are served at /blog/<slug>/;
+ * Amharic posts live in data/blog/am/ and are served at /am/blog/<slug>/.
+ * The folder decides the language, so authors never write `lang` themselves.
+ */
+const langOf = (doc): 'en' | 'am' => (/^blog\/am\//.test(doc._raw.flattenedPath) ? 'am' : 'en')
+
+const blogFields: ComputedFields = {
+  lang: { type: 'string', resolve: langOf },
+  slug: {
+    type: 'string',
+    resolve: (doc) => doc._raw.flattenedPath.replace(/^blog\/(am\/)?/, ''),
+  },
+  path: {
+    type: 'string',
+    resolve: (doc) =>
+      langOf(doc) === 'am'
+        ? doc._raw.flattenedPath.replace(/^blog\/am\//, 'am/blog/')
+        : doc._raw.flattenedPath,
+  },
+}
+
 export const POST_TYPES = ['essay', 'qa', 'note'] as const
 export const CATEGORIES = [
   'Theology',
@@ -79,13 +106,29 @@ const Series = defineNestedType(() => ({
 
 /**
  * Fail the build on frontmatter the type system cannot express:
- * Q&A posts need their question and short answer, and series parts must be unique.
+ * Q&A posts need their question and short answer, series parts must be unique
+ * within a language, and a translation must name an original that exists.
  */
 function validatePosts(allBlogs) {
   const problems: string[] = []
   const seriesParts = new Map<string, string>()
+  const translated = new Map<string, string>()
   allBlogs.forEach((post) => {
     const file = post._raw.sourceFilePath
+    if (post.translationOf) {
+      const original = allBlogs.find((p) => p.lang !== post.lang && p.slug === post.translationOf)
+      if (!original) {
+        problems.push(
+          `${file}: \`translationOf: ${post.translationOf}\` names no post in the other language`
+        )
+      } else if (original.translationOf) {
+        problems.push(`${file}: ${original._raw.sourceFilePath} is itself a translation`)
+      }
+      const key = `${post.lang}:${post.translationOf}`
+      const other = translated.get(key)
+      if (other) problems.push(`${file}: ${other} already translates ${post.translationOf}`)
+      translated.set(key, file)
+    }
     if (post.type === 'qa' && (!post.question || !post.short_answer)) {
       problems.push(`${file}: type "qa" requires both \`question\` and \`short_answer\``)
     }
@@ -93,7 +136,7 @@ function validatePosts(allBlogs) {
       problems.push(`${file}: \`question\` and \`short_answer\` are only used when type is "qa"`)
     }
     if (post.series) {
-      const key = `${post.series.name}#${post.series.part}`
+      const key = `${post.lang}:${post.series.name}#${post.series.part}`
       const other = seriesParts.get(key)
       if (other) problems.push(`${file}: series part ${key} is also used by ${other}`)
       seriesParts.set(key, file)
@@ -127,9 +170,12 @@ export const Blog = defineDocumentType(() => ({
     question: { type: 'string' },
     short_answer: { type: 'string' },
     featured: { type: 'boolean', default: false },
+    /** On a translation: the slug of the original in the other language. */
+    translationOf: { type: 'string' },
   },
   computedFields: {
     ...computedFields,
+    ...blogFields,
     categorySlug: {
       type: 'string',
       resolve: (doc) => (doc.category ? slug(doc.category) : undefined),
@@ -205,6 +251,7 @@ export default makeSource({
       [rehypeCitation, { path: path.join(root, 'data') }],
       [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
       rehypeScripts,
+      rehypeLocalize,
       rehypeMarginFootnotes,
       rehypePresetMinify,
     ],

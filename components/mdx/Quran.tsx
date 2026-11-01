@@ -1,3 +1,4 @@
+import { dict } from '@/data/i18n'
 import CopyButton from './CopyButton'
 import SearchCopy from './SearchCopy'
 
@@ -10,6 +11,8 @@ type Props = {
   arabic: string
   translation: string
   translator?: string
+  /** The page's language, for the labels (set by componentsFor). */
+  lang?: string
 }
 
 const toArabicDigits = (n: string) => n.replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[+d])
@@ -19,11 +22,12 @@ const toArabicDigits = (n: string) => n.replace(/\d/g, (d) => '٠١٢٣٤٥٦٧�
  * Shows only what the author wrote; nothing is fetched or filled in.
  */
 export default function Quran(props: Props) {
-  const { reference, arabic, translation, translator } = props
+  const { reference, arabic, translation, translator, lang } = props
+  const t = dict(lang).mdx
   // A single verse gets its traditional end-of-verse marker; ranges do not.
   const single = /^\d+:(\d+)$/.exec(reference.trim())
-  const label = `Qur’an ${reference}`
-  const copyText = `${arabic}\n\n${translation}\n— ${label}${translator ? `, tr. ${translator}` : ''}`
+  const label = `${t.quran} ${reference}`
+  const copyText = `${arabic}\n\n${translation}\n— ${label}${translator ? `, ${t.translatedBy} ${translator}` : ''}`
 
   return (
     <figure className="scripture scripture-quran not-prose">
@@ -37,10 +41,14 @@ export default function Quran(props: Props) {
       </blockquote>
       <figcaption className="scripture-caption">
         <cite className="scripture-ref">
-          <abbr title="Qur’an">QUR’AN</abbr> {reference}
+          <abbr title={t.quran}>{t.quranCaps}</abbr> {reference}
         </cite>
         {translator && <span className="scripture-version">{translator}</span>}
-        <CopyButton text={copyText} label={label} />
+        <CopyButton
+          text={copyText}
+          label={label}
+          strings={{ copy: t.copy, copied: t.copied, failed: t.copyFailed }}
+        />
       </figcaption>
     </figure>
   )

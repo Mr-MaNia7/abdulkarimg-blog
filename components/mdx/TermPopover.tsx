@@ -15,10 +15,14 @@ export default function TermPopover({
   entry,
   children,
   defaultOpen = false,
+  label,
+  pageLang,
 }: {
   entry: GlossaryEntry
   children: ReactNode
   defaultOpen?: boolean
+  label: string
+  pageLang: string
 }) {
   const href = `/glossary#${entry.id}`
   const [open, setOpen] = useState(false)
@@ -65,9 +69,14 @@ export default function TermPopover({
             )}
             {entry.translit && <i className="term-card-translit">{typeset(entry.translit)}</i>}
           </p>
-          {entry.definition && <p className="term-card-def">{typeset(entry.definition)}</p>}
-          <a className="term-card-link" href={href}>
-            In the glossary
+          {/* Glossary definitions are written in English (data/glossary.json). */}
+          {entry.definition && (
+            <p className="term-card-def" lang={pageLang === 'en' ? undefined : 'en'}>
+              {typeset(entry.definition)}
+            </p>
+          )}
+          <a className="term-card-link" href={href} hrefLang={pageLang === 'en' ? undefined : 'en'}>
+            {label}
           </a>
         </Popover.Content>
       </Popover.Portal>

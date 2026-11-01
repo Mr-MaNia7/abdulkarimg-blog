@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { dict } from '@/data/i18n'
 import { typeset } from '@/lib/typeset'
 
 type Side = {
@@ -13,6 +14,7 @@ type Props = {
   /** Optional row headings, e.g. ['God', 'Scripture', 'Salvation']. */
   rows?: string[]
   caption?: string
+  lang?: string
 }
 
 const cell = (item: ReactNode) => (typeof item === 'string' ? typeset(item) : item)
@@ -21,7 +23,7 @@ const cell = (item: ReactNode) => (typeof item === 'string' ? typeset(item) : it
  * Two traditions side by side. A real table, so rows stay aligned and are read
  * in order by assistive tech; on narrow screens each row stacks into a block.
  */
-export default function Compare({ left, right, rows, caption }: Props) {
+export default function Compare({ left, right, rows, caption, lang }: Props) {
   const count = Math.max(left.items.length, right.items.length, rows?.length ?? 0)
   return (
     <figure className="compare not-prose">
@@ -31,7 +33,7 @@ export default function Compare({ left, right, rows, caption }: Props) {
           <tr>
             {rows && (
               <td>
-                <span className="sr-only">Topic</span>
+                <span className="sr-only">{dict(lang).mdx.topic}</span>
               </td>
             )}
             <th scope="col">{typeset(left.label)}</th>

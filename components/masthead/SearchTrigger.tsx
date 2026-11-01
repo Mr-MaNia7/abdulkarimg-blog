@@ -2,11 +2,12 @@
 
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
+import type { Dict } from '@/data/i18n'
 
 // The palette, Pagefind and the glossary data load only when search is first opened.
 const SearchPalette = dynamic(() => import('@/components/search/SearchPalette'), { ssr: false })
 
-export default function SearchTrigger() {
+export default function SearchTrigger({ t }: { t: Dict['search'] }) {
   const [open, setOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [mac, setMac] = useState(true)
@@ -42,20 +43,20 @@ export default function SearchTrigger() {
         onClick={show}
         onPointerEnter={() => setLoaded(true)}
         onFocus={() => setLoaded(true)}
-        aria-label="Search"
+        aria-label={t.button}
         aria-keyshortcuts={mac ? 'Meta+K' : 'Control+K'}
       >
         <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
           <circle cx="8.75" cy="8.75" r="5.25" />
           <path d="m12.6 12.6 4.4 4.4" />
         </svg>
-        <span className="search-trigger-label">Search</span>
+        <span className="search-trigger-label">{t.button}</span>
         <kbd className="search-trigger-kbd" aria-hidden="true">
           {mac ? '⌘' : 'Ctrl'}
           {'\u00A0'}K
         </kbd>
       </button>
-      {loaded && <SearchPalette open={open} onOpenChange={setOpen} />}
+      {loaded && <SearchPalette open={open} onOpenChange={setOpen} t={t} />}
     </>
   )
 }

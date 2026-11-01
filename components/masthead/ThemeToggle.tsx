@@ -2,9 +2,10 @@
 
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
+import type { Dict } from '@/data/i18n'
 
 /** Switches between light and dark. "Follow the system" lives in the Aa panel. */
-export default function ThemeToggle() {
+export default function ThemeToggle({ t }: { t: Dict['prefs'] }) {
   const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
@@ -24,7 +25,7 @@ export default function ThemeToggle() {
       type="button"
       className="tool-button js-only"
       onClick={() => setTheme(dark ? 'light' : 'dark')}
-      aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}
+      aria-label={dark ? t.toLight : t.toDark}
     >
       <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
         {dark ? (

@@ -67,6 +67,16 @@ typography:
     fontSize: '1.35em'
     fontWeight: 400
     lineHeight: 2.1
+  ethiopic:
+    fontFamily: 'Literata, Hashiya Ethiopic, Noto Serif Ethiopic, serif'
+    fontSize: '1.12em'
+    fontWeight: 400
+    lineHeight: 1.85
+  ethiopic-ui:
+    fontFamily: 'Commissioner, Hashiya Ethiopic Sans, system-ui, sans-serif'
+    fontSize: '1.12em'
+    fontWeight: 400
+    lineHeight: 1.5
 rounded:
   hairline: '2px'
   card: '3px'
@@ -150,6 +160,13 @@ Every text pair passes WCAG 2.2 AA in both themes (ink 15.9 / 13.9, faint ≥ 4.
 - **Commissioner** for interface text only: navigation, labels, buttons, captions.
 - **Source Code Pro** for metadata (dates, reading time, references) and code. Never for headings or running text.
 - **Amiri Quran** (`Hashiya Amiri Quran`) for Qur'anic Arabic only; **Amiri** (`Hashiya Amiri`) for all other Arabic and for ﷺ. Arabic is set 1.35–1.5× the surrounding Latin with line-height 2.1–2.3 so vowel marks never clip.
+- **Noto Serif Ethiopic** (`Hashiya Ethiopic`) for Amharic text and headings, paired with Literata; **Noto Sans Ethiopic** (`Hashiya Ethiopic Sans`) for Amharic interface text and metadata, beside Commissioner and Source Code Pro. Each Ethiopic face follows its Latin partner in the same stack (`--stack-serif`, `--stack-sans`, `--stack-mono`; `--stack-ethiopic` names the face alone), so mixed lines need no markup.
+  - **Size:** 1.12× the Latin beside it, set once in the `@font-face` (`size-adjust: 112%`), so it holds in every context.
+  - **Line:** the faces carry their Latin partner's ascent and descent (metric overrides), so an Amharic word inside an English line never stretches the line box. Amharic running text is set at `--leading-ethiopic` (1.85), titles at 1.3.
+  - **No faux styles:** Ethiopic has no italic and no case, so slanted and small-caps synthesis are off for `:lang(am)`, and headings drop display tracking for it.
+  - **Punctuation:** ። ፣ ፤ ፡ sit against the word before them (space typed before a stop is closed up at build time), with a space after.
+  - **Dates:** Ethiopian calendar first, then the Gregorian: `ጥቅምት 21 ቀን 2019 ዓ.ም. · 31 Oct 2026`.
+  - Faces load only where Ethiopic appears (unicode-range); Amharic pages preload the serif. English pages carry only a 2 kB subset for the links into Amharic.
 - Fluid scale (`clamp(rem + vw)`, never `vw` alone). Measure 68ch, body line-height 1.7. Headings balance; paragraphs `text-wrap: pretty`.
 - Transliteration uses full diacritics. ʿ and ʾ are tightened by −0.12em (Literata draws them with wide side bearings). Straight quotes become typographic quotes at build time.
 - Sentence case everywhere. No eyebrow labels above headings.
@@ -189,7 +206,8 @@ Square-cornered by default: 2px on controls and code, 3px on floating cards. Pil
 
 - Keep gold for scripture only, and lapis for links, focus and small marks.
 - Quote primary texts in full with reference and translator, set apart from commentary.
-- Put Arabic in `lang="ar" dir="rtl"` (the build does this automatically) and protect scripture from machine translation (`translate="no"`).
+- Put Arabic in `lang="ar" dir="rtl"` and Amharic in `lang="am"` (the build does both automatically; Amharic pages are `<html lang="am">`), and protect scripture from machine translation (`translate="no"`).
+- Write each link into the other language in that language ("በአማርኛም ያንብቡ", "Also in English").
 - Let the cloth fill its field completely on the cover and colophon.
 
 **Don't**

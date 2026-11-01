@@ -3,7 +3,13 @@
 import { useState, type ComponentType, type ReactNode } from 'react'
 import type { GlossaryEntry } from './Term'
 
-type PopoverProps = { entry: GlossaryEntry; children: ReactNode; defaultOpen?: boolean }
+type PopoverProps = {
+  entry: GlossaryEntry
+  children: ReactNode
+  defaultOpen?: boolean
+  label: string
+  pageLang: string
+}
 
 /**
  * A glossary term as a plain link. The Radix popover loads on first hover or
@@ -11,9 +17,14 @@ type PopoverProps = { entry: GlossaryEntry; children: ReactNode; defaultOpen?: b
  */
 export default function TermTrigger({
   entry,
+  label,
+  pageLang,
   children,
 }: {
   entry: GlossaryEntry
+  /** "In the glossary", in the page's language. */
+  label: string
+  pageLang: string
   children: ReactNode
 }) {
   const [Popover, setPopover] = useState<ComponentType<PopoverProps> | null>(null)
@@ -24,7 +35,7 @@ export default function TermTrigger({
 
   if (Popover)
     return (
-      <Popover entry={entry} defaultOpen={openOnLoad}>
+      <Popover entry={entry} defaultOpen={openOnLoad} label={label} pageLang={pageLang}>
         {children}
       </Popover>
     )

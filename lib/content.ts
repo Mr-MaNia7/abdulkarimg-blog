@@ -2,14 +2,25 @@ import { slug } from 'github-slugger'
 import { allBlogs } from 'contentlayer/generated'
 import type { Blog } from 'contentlayer/generated'
 import { allCoreContent, sortPosts, type CoreContent } from 'pliny/utils/contentlayer'
+import { count, dict, type Lang } from '@/data/i18n'
+import { ethiopianYear } from './posts'
 
 export type Post = CoreContent<Blog>
 export type PostType = 'essay' | 'qa' | 'note'
 
-/** Published posts, newest first. Drafts are dropped in production. */
-export const posts: Post[] = allCoreContent(sortPosts(allBlogs))
+/** Published posts in every language, newest first. Drafts are dropped in production. */
+export const allPosts: Post[] = allCoreContent(sortPosts(allBlogs))
 
-export const byType = (type: PostType) => posts.filter((p) => (p.type ?? 'essay') === type)
+export const postsIn = (lang: Lang) => allPosts.filter((p) => p.lang === lang)
+
+/**
+ * English posts. Every English index (archive, types, subjects, tags, series)
+ * lists only these; Amharic posts are listed under /am/.
+ */
+export const posts: Post[] = postsIn('en')
+
+export const byType = (type: PostType, list: Post[] = posts) =>
+  list.filter((p) => (p.type ?? 'essay') === type)
 
 export const CATEGORY_INFO = [
   {
@@ -63,28 +74,24 @@ export function tagCounts() {
   return [...counts.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
 }
 
-export function groupByYear(list: Post[]) {
+/** Posts by year: the Gregorian year, or the Ethiopian year on Amharic pages. */
+export function groupByYear(list: Post[], lang = 'en') {
   const years = new Map<number, Post[]>()
   list.forEach((p) => {
-    const y = new Date(p.date).getUTCFullYear()
+    const y = lang === 'am' ? ethiopianYear(p.date) : new Date(p.date).getUTCFullYear()
     years.set(y, [...(years.get(y) ?? []), p])
   })
   return [...years.entries()].sort((a, b) => b[0] - a[0])
 }
 
-const NOUNS: Record<PostType, [string, string]> = {
-  essay: ['essay', 'essays'],
-  qa: ['answer', 'answers'],
-  note: ['note', 'notes'],
-}
-
 export const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
 
-/** "2 essays · 2 answers · 1 note", omitting empty kinds. */
-export function countLine(list: Post[] = posts) {
+/** "2 essays · 2 answers · 1 note", omitting empty kinds, in the page's language. */
+export function countLine(list: Post[] = posts, lang = 'en') {
+  const nouns = dict(lang).nouns
   return (['essay', 'qa', 'note'] as PostType[])
     .map((t) => [t, list.filter((p) => (p.type ?? 'essay') === t).length] as const)
     .filter(([, n]) => n > 0)
-    .map(([t, n]) => plural(n, ...NOUNS[t]))
+    .map(([t, n]) => count(n, nouns[t]))
     .join(' · ')
 }

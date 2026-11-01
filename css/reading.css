@@ -1100,4 +1100,64 @@
     object-fit: cover;
     border-radius: 2px;
   }
+
+  /* ───────────── Translations ───────────── */
+
+  /* "በአማርኛም ያንብቡ" / "Also in English", under the post's metadata. */
+  .post-translation {
+    margin: 0.55rem 0 0;
+    font-family: var(--stack-sans);
+    font-size: var(--text-ui);
+  }
+
+  .post-translation a {
+    color: var(--accent);
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in oklab, var(--accent) 40%, transparent);
+  }
+
+  .post-translation a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .post-translation a + a {
+    margin-inline-start: 1.25em;
+  }
+
+  /* ───────────── Amharic pages ───────────── */
+
+  /* Size comes from the face itself (size-adjust in css/tailwind.css); here the
+     running text gets a more open line, and headings drop display tracking,
+     which crowds Ethiopic syllables. :is() (not :where()) so these outrank each
+     component's own rule, wherever its file sits in the cascade. */
+  .prose:lang(am) {
+    line-height: var(--leading-ethiopic);
+  }
+
+  :is(
+    .post-dek,
+    .post-question,
+    .short-answer p,
+    .page-lede,
+    .latest-summary,
+    .question-answer,
+    .cover-mission,
+    .callout-body,
+    .scripture-translation
+  ):lang(am) {
+    line-height: var(--leading-ethiopic);
+  }
+
+  :is(h1, h2, h3, h4, .latest-title, .related-title, .pager-title, .archive-title):lang(am) {
+    letter-spacing: 0;
+  }
+
+  /* Multi-line Amharic titles need a little more air than Latin ones. */
+  :is(.post-title, .page-title):lang(am) {
+    line-height: 1.3;
+  }
+
+  :is(.latest-title, .archive-title, .related-title):lang(am) {
+    line-height: 1.45;
+  }
 }

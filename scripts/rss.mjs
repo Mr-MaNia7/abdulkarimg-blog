@@ -5,12 +5,14 @@ import { escape } from 'pliny/utils/htmlEscaper.js'
 import siteMetadata from '../data/siteMetadata.js'
 import { allBlogs } from '../.contentlayer/generated/index.mjs'
 import { sortPosts } from 'pliny/utils/contentlayer.js'
+import { dict } from './i18n.mjs'
 
 /**
  * RSS 2.0 feeds:
- *   /feed.xml                    everything
- *   /category/<subject>/feed.xml one per subject
- *   /tags/<tag>/feed.xml         one per tag
+ *   /feed.xml                    every English post
+ *   /category/<subject>/feed.xml one per subject (English)
+ *   /tags/<tag>/feed.xml         one per tag (English)
+ *   /am/feed.xml                 every Amharic post
  * Written into out/ for a static export, public/ otherwise.
  */
 const outputFolder = process.env.EXPORT ? 'out' : 'public'
@@ -20,6 +22,7 @@ const url = (p) => `${site}/${p.replace(/^\/|\/$/g, '')}/`
 const item = (post) => {
   const link = post.canonicalUrl || url(post.path)
   const description = post.summary || post.short_answer
+  const category = post.category && (dict(post.lang).categories[post.category] ?? post.category)
   return `
     <item>
       <guid isPermaLink="true">${link}</guid>
@@ -28,18 +31,25 @@ const item = (post) => {
       ${description ? `<description>${escape(description)}</description>` : ''}
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <dc:creator>${escape(siteMetadata.author)}</dc:creator>
-      ${post.category ? `<category>${escape(post.category)}</category>` : ''}
+      ${category ? `<category>${escape(category)}</category>` : ''}
       ${(post.tags ?? []).map((t) => `<category>${escape(t)}</category>`).join('')}
     </item>`
 }
 
-const feed = ({ title, description, link, file, posts }) => `<?xml version="1.0" encoding="UTF-8"?>
+const feed = ({
+  title,
+  description,
+  link,
+  file,
+  posts,
+  lang = 'en',
+}) => `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>${escape(title)}</title>
     <link>${link}</link>
     <description>${escape(description)}</description>
-    <language>${siteMetadata.language}</language>
+    <language>${lang}</language>
     <lastBuildDate>${new Date(posts[0].date).toUTCString()}</lastBuildDate>
     <atom:link href="${site}/${file}" rel="self" type="application/rss+xml"/>
     ${posts.map(item).join('')}
@@ -66,7 +76,9 @@ function groupBy(posts, pick) {
 }
 
 const rss = () => {
-  const posts = sortPosts(allBlogs.filter((p) => p.draft !== true))
+  const published = sortPosts(allBlogs.filter((p) => p.draft !== true))
+  const posts = published.filter((p) => p.lang === 'en')
+  const amharic = published.filter((p) => p.lang === 'am')
   if (!posts.length) return
 
   write(
@@ -79,6 +91,23 @@ const rss = () => {
       posts,
     })
   )
+
+  // public/am/ holds only the generated feed, so it is cleared like tags/ below.
+  if (outputFolder === 'public') rmSync(path.join('public', 'am'), { recursive: true, force: true })
+  if (amharic.length) {
+    const am = dict('am')
+    write(
+      'am/feed.xml',
+      feed({
+        title: `${siteMetadata.title} · ${am.inThisLanguage}`,
+        description: am.description,
+        link: url('am'),
+        file: 'am/feed.xml',
+        posts: amharic,
+        lang: 'am',
+      })
+    )
+  }
 
   // In public/ these folders hold only generated feeds; clear them so removed
   // tags and subjects do not linger. (`next build` recreates out/ itself.)

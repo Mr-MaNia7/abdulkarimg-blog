@@ -4,7 +4,8 @@ import SectionContainer from '@/components/SectionContainer'
 import siteMetadata from '@/data/siteMetadata'
 import { typeset } from '@/lib/typeset'
 import { formatDate, TYPE_LABEL } from '@/lib/posts'
-import { byType, categories, countLine, plural, posts } from '@/lib/content'
+import { byType, categories, countLine, plural, posts, postsIn } from '@/lib/content'
+import LangEntry from '@/components/index/LangEntry'
 import { ldScript, siteJsonLd } from '@/lib/jsonld'
 
 const LATEST = 6
@@ -12,6 +13,7 @@ const QUESTIONS = 4
 
 export default function Home() {
   const essays = byType('essay')
+  const hasAmharic = postsIn('am').length > 0
   const questions = byType('qa')
   const featured = posts.find((p) => p.featured) ?? essays[0] ?? posts[0]
   const latest = posts.filter((p) => p !== featured).slice(0, LATEST)
@@ -82,9 +84,12 @@ export default function Home() {
               <h2 id="latest-heading" className="home-heading">
                 Latest
               </h2>
-              <Link href="/blog" className="home-more">
-                The full archive
-              </Link>
+              <p className="home-links">
+                <Link href="/blog" className="home-more">
+                  The full archive
+                </Link>
+                {hasAmharic && <LangEntry to="am" from="en" />}
+              </p>
             </div>
             <ol className="latest-list" data-reveal suppressHydrationWarning>
               {latest.map((p, i) => (

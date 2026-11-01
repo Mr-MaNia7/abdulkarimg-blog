@@ -4,11 +4,14 @@
  * Satori lays the cards out and resvg rasterises them. Satori cannot shape
  * Arabic, so every Arabic run (and ﷺ) is shaped here with HarfBuzz and drawn
  * as vector outlines, which keeps joined letters and vowel marks correct.
+ * Ethiopic needs no shaping (each syllable is one character), so Amharic is
+ * set by Satori itself in Noto Serif Ethiopic, its fallback after Literata.
  *
  * Fonts are committed in assets/og/fonts (static, subset instances, OFL), so
  * the build never depends on a network font download.
  *
- *   node scripts/og.mjs           → public/og/*.png (one per post + default)
+ *   node scripts/og.mjs           → public/og/*.png (one per post + default),
+ *                                   Amharic posts and default under public/og/am/
  *   node scripts/og.mjs --icons   → also regenerate public/static/favicons/*
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, statSync } from 'fs'
@@ -18,6 +21,7 @@ import satori from 'satori'
 import { Resvg } from '@resvg/resvg-js'
 import { Blob as HbBlob, Face, Font, Buffer as HbBuffer, shape } from 'harfbuzzjs'
 import siteMetadata from '../data/siteMetadata.js'
+import { dict } from './i18n.mjs'
 
 const FONT_DIR = 'assets/og/fonts'
 const OUT = 'public/og'
@@ -40,6 +44,19 @@ const fonts = [
   {
     name: 'Source Code Pro',
     data: fontFile('SourceCodePro-Regular.ttf'),
+    weight: 400,
+    style: 'normal',
+  },
+  // Ethiopic only (subset); Satori falls back to it for Amharic in any family.
+  {
+    name: 'Noto Serif Ethiopic',
+    data: fontFile('NotoSerifEthiopic-SemiBold.ttf'),
+    weight: 600,
+    style: 'normal',
+  },
+  {
+    name: 'Noto Serif Ethiopic',
+    data: fontFile('NotoSerifEthiopic-Regular.ttf'),
     weight: 400,
     style: 'normal',
   },
@@ -178,10 +195,11 @@ const frame = (...children) =>
     )
   )
 
-const TYPE_LABEL = { essay: 'Essay', qa: 'Question', note: 'Note' }
-
 function postCard(post) {
-  const label = [TYPE_LABEL[post.type ?? 'essay'], post.category].filter(Boolean).join(' · ')
+  const t = dict(post.lang)
+  const label = [t.types[post.type ?? 'essay'], post.category && t.categories[post.category]]
+    .filter(Boolean)
+    .join(' · ')
   return frame(
     h(
       'div',
@@ -222,7 +240,8 @@ function postCard(post) {
   )
 }
 
-function defaultCard() {
+function defaultCard(lang = 'en') {
+  const t = dict(lang)
   return frame(
     h(
       'div',
@@ -253,11 +272,11 @@ function defaultCard() {
           maxWidth: 720,
           textAlign: 'center',
           fontFamily: 'Literata',
-          fontSize: 32,
-          lineHeight: 1.4,
+          fontSize: lang === 'am' ? 30 : 32,
+          lineHeight: lang === 'am' ? 1.6 : 1.4,
           color: C.paper,
         },
-        siteMetadata.description
+        t.description
       ),
       h(
         'div',
@@ -287,8 +306,9 @@ function readPosts(dir = 'data/blog') {
   return files
     .map((file) => {
       const { data } = matter(readFileSync(file, 'utf8'))
+      // data/blog/am/<slug>.mdx → slug "am/<slug>", card og/am/<slug>.png (lib/jsonld.ts ogImage).
       const slug = path.relative(dir, file).replace(/\.mdx?$/, '')
-      return { slug, ...data }
+      return { slug, lang: slug.startsWith('am/') ? 'am' : 'en', ...data }
     })
     .filter((p) => !(p.draft === true && process.env.NODE_ENV === 'production'))
 }
@@ -378,13 +398,15 @@ async function main() {
   rmSync(OUT, { recursive: true, force: true })
   mkdirSync(OUT, { recursive: true })
   writeFileSync(path.join(OUT, 'default.png'), await png(defaultCard()))
+  mkdirSync(path.join(OUT, 'am'), { recursive: true })
+  writeFileSync(path.join(OUT, 'am', 'default.png'), await png(defaultCard('am')))
   const posts = readPosts()
   for (const post of posts) {
     const file = path.join(OUT, `${post.slug}.png`)
     mkdirSync(path.dirname(file), { recursive: true })
     writeFileSync(file, await png(postCard(post)))
   }
-  console.log(`Open Graph images: ${posts.length + 1} → ${OUT}`)
+  console.log(`Open Graph images: ${posts.length + 2} → ${OUT}`)
   if (process.argv.includes('--icons')) await icons()
 }
 

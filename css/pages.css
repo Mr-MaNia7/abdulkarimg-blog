@@ -109,6 +109,36 @@
     text-decoration-color: currentColor;
   }
 
+  .home-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 1.5rem;
+    margin: 0;
+  }
+
+  /* The way into the other language: "በአማርኛ · In Amharic". */
+  .lang-entry {
+    font-family: var(--stack-sans);
+    font-size: var(--text-ui);
+    color: var(--ink-muted);
+    text-decoration-line: underline;
+    text-decoration-color: var(--border-strong);
+  }
+
+  .lang-entry:hover {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+  }
+
+  .lang-entry-gloss {
+    color: var(--ink-faint);
+  }
+
+  .page-meta .lang-entry {
+    font-size: inherit;
+  }
+
   .entry-meta {
     margin: 1rem 0 0;
     font-family: var(--stack-mono);
@@ -257,6 +287,31 @@
 
     .latest-meta br {
       display: inline;
+    }
+
+    /* Amharic rows carry two dates, one line each. */
+    .latest-row:lang(am) {
+      grid-template-columns: 3.5rem minmax(0, 1fr) 12.5rem;
+    }
+
+    .latest-date {
+      display: block;
+    }
+  }
+
+  /* Each date stays whole; a line may break only between them. */
+  .latest-date {
+    white-space: nowrap;
+  }
+
+  /* Phones: type and date share one line, so the hidden <br> becomes a separator. */
+  @media (max-width: 47.99rem) {
+    .latest-meta time::before {
+      content: ' · ';
+    }
+
+    .latest-date + .latest-date::before {
+      content: '· ';
     }
   }
 
@@ -528,6 +583,32 @@
 
   .archive-empty {
     color: var(--ink-muted);
+  }
+
+  /* "2019 ዓ.ም.": the era on its own smaller line under the year. */
+  .archive-era {
+    display: block;
+    font-size: 0.5em;
+    font-weight: 400;
+    color: var(--ink-faint);
+  }
+
+  /* Amharic rows carry two dates ("ጥቅምት 21 · 31 Oct"): above the title on
+     phones, in a wider column from 40rem. */
+  .archive[data-lang='am'] .archive-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 40rem) {
+    .archive[data-lang='am'] .archive-row {
+      grid-template-columns: 9.5rem minmax(0, 1fr) auto;
+    }
+  }
+
+  @media (max-width: 39.99rem) {
+    .archive[data-lang='am'] .archive-type {
+      grid-column: 1;
+    }
   }
 
   /* Questions: the reference desk */
