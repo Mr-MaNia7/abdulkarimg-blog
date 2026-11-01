@@ -1,0 +1,45 @@
+{
+  "expectations": [
+    {
+      "text": "notice-am.md is written in Ethiopic (Fidel) script",
+      "passed": true,
+      "evidence": "133 Ethiopic vs 0 Latin letters"
+    },
+    {
+      "text": "notice-am.md uses the Ethiopic full stop ። and never types :: as a full stop",
+      "passed": true,
+      "evidence": "። x4, '::' x0"
+    },
+    {
+      "text": "notice-am.md has no space before ። ፣ ፤ or ፦",
+      "passed": true,
+      "evidence": "space before stop: []"
+    },
+    {
+      "text": "notice-am.md gives the closure date in the Ethiopian calendar as ጥቅምት 28 (2018)",
+      "passed": true,
+      "evidence": "found ጥቅምት 28: True, 2018: True"
+    },
+    {
+      "text": "notice-am.md states the 9:00 AM reopening on the Ethiopian clock (ከጠዋቱ 3 ሰዓት), alone or beside 9:00 AM",
+      "passed": true,
+      "evidence": "Ethiopian-clock phrase: ['ከጠዋቱ 3:00 ሰዓት']"
+    },
+    {
+      "text": "notice-am.md keeps the phone number 0911 234 567 exactly",
+      "passed": true,
+      "evidence": "phone kept"
+    },
+    {
+      "text": "notice-am.md addresses members politely or in the plural throughout, with no informal singular forms",
+      "passed": true,
+      "evidence": "Plural address throughout (የተከበራችሁ, ካጋጠማችሁ, ደውሉልን, ትዕግሥታችሁ). No informal singular forms."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 0,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

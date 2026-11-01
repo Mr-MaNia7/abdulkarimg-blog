@@ -1,0 +1,8 @@
+{
+  "translate-closure-notice/with_skill/6": {"passed": true, "evidence": "Polite singular verbs throughout (ካጋጠመዎት, እባክዎ, ይደውሉ, ትዕግሥትዎ); greeting addresses members in the plural (ውድ አባሎቻችን). No informal singular forms."},
+  "translate-closure-notice/without_skill/6": {"passed": true, "evidence": "Plural address throughout (የተከበራችሁ, ካጋጠማችሁ, ደውሉልን, ትዕግሥታችሁ). No informal singular forms."},
+  "proofread-customer-sms/with_skill/6": {"passed": true, "evidence": "response.md lists five changes (register, voice, calque, double 'us', punctuation), each with a reason, and notes ትዕግስት kept as a valid variant."},
+  "proofread-customer-sms/without_skill/6": {"passed": true, "evidence": "response.md lists nine numbered changes, each with a reason."},
+  "proofread-customer-sms/with_skill/7": {"passed": true, "evidence": "Greeting, confirmation, payment by tomorrow, contact line and the original thanks (ስለ ትዕግስትዎ እናመሰግናለን) all kept; suggestions offered separately rather than applied."},
+  "proofread-customer-sms/without_skill/7": {"passed": false, "evidence": "Rewrote content unasked: greeting became ውድ ደንበኛችን and the closing 'thank you for your patience' was replaced with ስለመረጡን እናመሰግናለን ('thank you for choosing us')."}
+}

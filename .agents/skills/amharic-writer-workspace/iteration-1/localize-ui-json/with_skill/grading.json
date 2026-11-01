@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "am.json is valid JSON with exactly the eight keys of en.json",
+      "passed": true,
+      "evidence": "keys: save, cancel, delete_confirm, files_count, welcome_back, search_placeholder, error_network, order_delivered"
+    },
+    {
+      "text": "Every placeholder ({name}, {count}, {firstName}, {time}) appears unchanged in its string in am.json",
+      "passed": true,
+      "evidence": "missing placeholders: none"
+    },
+    {
+      "text": "Every value in am.json is Amharic in Fidel script, none left in English",
+      "passed": true,
+      "evidence": "English-only values: none"
+    },
+    {
+      "text": "The sentence strings in am.json use Ethiopic punctuation (። or ?) with no :: and no space before ። or ፣",
+      "passed": true,
+      "evidence": "sentences: {name}ን መሰረዝ ይፈልጋሉ? ከተሰረዘ በኋላ መመለስ አይቻልም። መገናኘት አልተቻለም። የኢንተርኔት ግንኙነትዎን ያረጋግጡና እንደገና ይሞክሩ። ትዕዛዝዎ {time} ላይ ደርሷል።"
+    },
+    {
+      "text": "welcome_back uses a polite or gender-neutral greeting (e.g. መጡ), not the informal መጣህ or መጣሽ",
+      "passed": true,
+      "evidence": "welcome_back = እንኳን በደህና ተመለሱ፣ {firstName}!"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

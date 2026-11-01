@@ -1,0 +1,385 @@
+{
+  "metadata": {
+    "skill_name": "amharic-writer",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "claude-opus-5-5",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-11-01T06:50:51Z",
+    "evals_run": [
+      "localize-ui-json",
+      "proofread-customer-sms",
+      "translate-closure-notice"
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": "localize-ui-json",
+      "eval_name": "localize-ui-json",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 48.0,
+        "tokens": 36050,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "am.json is valid JSON with exactly the eight keys of en.json",
+          "passed": true,
+          "evidence": "keys: save, cancel, delete_confirm, files_count, welcome_back, search_placeholder, error_network, order_delivered"
+        },
+        {
+          "text": "Every placeholder ({name}, {count}, {firstName}, {time}) appears unchanged in its string in am.json",
+          "passed": true,
+          "evidence": "missing placeholders: none"
+        },
+        {
+          "text": "Every value in am.json is Amharic in Fidel script, none left in English",
+          "passed": true,
+          "evidence": "English-only values: none"
+        },
+        {
+          "text": "The sentence strings in am.json use Ethiopic punctuation (። or ?) with no :: and no space before ። or ፣",
+          "passed": true,
+          "evidence": "sentences: {name}ን መሰረዝ ይፈልጋሉ? ከተሰረዘ በኋላ መመለስ አይቻልም። መገናኘት አልተቻለም። የኢንተርኔት ግንኙነትዎን ያረጋግጡና እንደገና ይሞክሩ። ትዕዛዝዎ {time} ላይ ደርሷል።"
+        },
+        {
+          "text": "welcome_back uses a polite or gender-neutral greeting (e.g. መጡ), not the informal መጣህ or መጣሽ",
+          "passed": true,
+          "evidence": "welcome_back = እንኳን በደህና ተመለሱ፣ {firstName}!"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": "proofread-customer-sms",
+      "eval_name": "proofread-customer-sms",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 43.0,
+        "tokens": 35339,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "sms-fixed.txt contains no :: and no space before ፣ or ።",
+          "passed": true,
+          "evidence": "'ውድ ደንበኛ፣ ትዕዛዝዎን በተሳካ ሁኔታ ተቀብለናል። እባክዎ ክፍያዎን እስከ ነገ ድረስ ይፈጽሙ። ከወሰኑ በኋላ ያግኙን። ስለ ትዕግስትዎ እናመሰግናለን።'"
+        },
+        {
+          "text": "sms-fixed.txt uses the polite ትዕዛዝዎ instead of ትዕዛዝህ",
+          "passed": true,
+          "evidence": "has ትዕዛዝዎ: True, has ትዕዛዝህ: False"
+        },
+        {
+          "text": "sms-fixed.txt no longer says the order itself received something (ትዕዛዝ… ተቀብሏል); it says the company received the order (e.g. ደርሶናል or ተቀብለናል)",
+          "passed": true,
+          "evidence": "see text"
+        },
+        {
+          "text": "sms-fixed.txt replaces the calque ውሳኔ ከወሰዱ",
+          "passed": true,
+          "evidence": "calque present: False"
+        },
+        {
+          "text": "sms-fixed.txt drops the redundant እኛን before ያግኙን",
+          "passed": true,
+          "evidence": "redundant እኛን present: False"
+        },
+        {
+          "text": "sms-fixed.txt ends with ።",
+          "passed": true,
+          "evidence": "ends with: 'ለን።'"
+        },
+        {
+          "text": "The reply lists the changes made, each with a reason",
+          "passed": true,
+          "evidence": "response.md lists five changes (register, voice, calque, double 'us', punctuation), each with a reason, and notes ትዕግስት kept as a valid variant."
+        },
+        {
+          "text": "sms-fixed.txt keeps the message's content: order confirmation, payment by tomorrow, contact, thanks",
+          "passed": true,
+          "evidence": "Greeting, confirmation, payment by tomorrow, contact line and the original thanks (ስለ ትዕግስትዎ እናመሰግናለን) all kept; suggestions offered separately rather than applied."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": "translate-closure-notice",
+      "eval_name": "translate-closure-notice",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 65.5,
+        "tokens": 37802,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "notice-am.md is written in Ethiopic (Fidel) script",
+          "passed": true,
+          "evidence": "136 Ethiopic vs 2 Latin letters"
+        },
+        {
+          "text": "notice-am.md uses the Ethiopic full stop ። and never types :: as a full stop",
+          "passed": true,
+          "evidence": "። x4, '::' x0"
+        },
+        {
+          "text": "notice-am.md has no space before ። ፣ ፤ or ፦",
+          "passed": true,
+          "evidence": "space before stop: []"
+        },
+        {
+          "text": "notice-am.md gives the closure date in the Ethiopian calendar as ጥቅምት 28 (2018)",
+          "passed": true,
+          "evidence": "found ጥቅምት 28: True, 2018: True"
+        },
+        {
+          "text": "notice-am.md states the 9:00 AM reopening on the Ethiopian clock (ከጠዋቱ 3 ሰዓት), alone or beside 9:00 AM",
+          "passed": true,
+          "evidence": "Ethiopian-clock phrase: ['ከጠዋቱ 3:00 ሰዓት']"
+        },
+        {
+          "text": "notice-am.md keeps the phone number 0911 234 567 exactly",
+          "passed": true,
+          "evidence": "phone kept"
+        },
+        {
+          "text": "notice-am.md addresses members politely or in the plural throughout, with no informal singular forms",
+          "passed": true,
+          "evidence": "Polite singular verbs throughout (ካጋጠመዎት, እባክዎ, ይደውሉ, ትዕግሥትዎ); greeting addresses members in the plural (ውድ አባሎቻችን). No informal singular forms."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": "localize-ui-json",
+      "eval_name": "localize-ui-json",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 34.1,
+        "tokens": 29941,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "am.json is valid JSON with exactly the eight keys of en.json",
+          "passed": true,
+          "evidence": "keys: save, cancel, delete_confirm, files_count, welcome_back, search_placeholder, error_network, order_delivered"
+        },
+        {
+          "text": "Every placeholder ({name}, {count}, {firstName}, {time}) appears unchanged in its string in am.json",
+          "passed": true,
+          "evidence": "missing placeholders: none"
+        },
+        {
+          "text": "Every value in am.json is Amharic in Fidel script, none left in English",
+          "passed": true,
+          "evidence": "English-only values: none"
+        },
+        {
+          "text": "The sentence strings in am.json use Ethiopic punctuation (። or ?) with no :: and no space before ። or ፣",
+          "passed": true,
+          "evidence": "sentences: {name} ይሰረዝ? ይህ ሊቀለበስ አይችልም። መገናኘት አልተቻለም። የኢንተርኔት ግንኙነትዎን ያረጋግጡና እንደገና ይሞክሩ። ትዕዛዝዎ {time} ላይ ደርሷል።"
+        },
+        {
+          "text": "welcome_back uses a polite or gender-neutral greeting (e.g. መጡ), not the informal መጣህ or መጣሽ",
+          "passed": true,
+          "evidence": "welcome_back = እንኳን በደህና ተመለሱ፣ {firstName}!"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": "proofread-customer-sms",
+      "eval_name": "proofread-customer-sms",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.88,
+        "passed": 7,
+        "failed": 1,
+        "total": 8,
+        "time_seconds": 51.4,
+        "tokens": 31509,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "sms-fixed.txt contains no :: and no space before ፣ or ።",
+          "passed": true,
+          "evidence": "'ውድ ደንበኛችን፣ ትዕዛዝዎን በተሳካ ሁኔታ ተቀብለናል። እባክዎ ክፍያዎን እስከ ነገ ድረስ ይፈጽሙ። ከወሰኑ በኋላ ያግኙን። ስለመረጡን እናመሰግናለን።'"
+        },
+        {
+          "text": "sms-fixed.txt uses the polite ትዕዛዝዎ instead of ትዕዛዝህ",
+          "passed": true,
+          "evidence": "has ትዕዛዝዎ: True, has ትዕዛዝህ: False"
+        },
+        {
+          "text": "sms-fixed.txt no longer says the order itself received something (ትዕዛዝ… ተቀብሏል); it says the company received the order (e.g. ደርሶናል or ተቀብለናል)",
+          "passed": true,
+          "evidence": "see text"
+        },
+        {
+          "text": "sms-fixed.txt replaces the calque ውሳኔ ከወሰዱ",
+          "passed": true,
+          "evidence": "calque present: False"
+        },
+        {
+          "text": "sms-fixed.txt drops the redundant እኛን before ያግኙን",
+          "passed": true,
+          "evidence": "redundant እኛን present: False"
+        },
+        {
+          "text": "sms-fixed.txt ends with ።",
+          "passed": true,
+          "evidence": "ends with: 'ለን።'"
+        },
+        {
+          "text": "The reply lists the changes made, each with a reason",
+          "passed": true,
+          "evidence": "response.md lists nine numbered changes, each with a reason."
+        },
+        {
+          "text": "sms-fixed.txt keeps the message's content: order confirmation, payment by tomorrow, contact, thanks",
+          "passed": false,
+          "evidence": "Rewrote content unasked: greeting became ውድ ደንበኛችን and the closing 'thank you for your patience' was replaced with ስለመረጡን እናመሰግናለን ('thank you for choosing us')."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": "translate-closure-notice",
+      "eval_name": "translate-closure-notice",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 42.8,
+        "tokens": 30631,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "notice-am.md is written in Ethiopic (Fidel) script",
+          "passed": true,
+          "evidence": "133 Ethiopic vs 0 Latin letters"
+        },
+        {
+          "text": "notice-am.md uses the Ethiopic full stop ። and never types :: as a full stop",
+          "passed": true,
+          "evidence": "። x4, '::' x0"
+        },
+        {
+          "text": "notice-am.md has no space before ። ፣ ፤ or ፦",
+          "passed": true,
+          "evidence": "space before stop: []"
+        },
+        {
+          "text": "notice-am.md gives the closure date in the Ethiopian calendar as ጥቅምት 28 (2018)",
+          "passed": true,
+          "evidence": "found ጥቅምት 28: True, 2018: True"
+        },
+        {
+          "text": "notice-am.md states the 9:00 AM reopening on the Ethiopian clock (ከጠዋቱ 3 ሰዓት), alone or beside 9:00 AM",
+          "passed": true,
+          "evidence": "Ethiopian-clock phrase: ['ከጠዋቱ 3:00 ሰዓት']"
+        },
+        {
+          "text": "notice-am.md keeps the phone number 0911 234 567 exactly",
+          "passed": true,
+          "evidence": "phone kept"
+        },
+        {
+          "text": "notice-am.md addresses members politely or in the plural throughout, with no informal singular forms",
+          "passed": true,
+          "evidence": "Plural address throughout (የተከበራችሁ, ካጋጠማችሁ, ደውሉልን, ትዕግሥታችሁ). No informal singular forms."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 52.1667,
+        "stddev": 11.8145,
+        "min": 43.0,
+        "max": 65.5
+      },
+      "tokens": {
+        "mean": 36397.0,
+        "stddev": 1267.6352,
+        "min": 35339,
+        "max": 37802
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.96,
+        "stddev": 0.0693,
+        "min": 0.88,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 42.7667,
+        "stddev": 8.65,
+        "min": 34.1,
+        "max": 51.4
+      },
+      "tokens": {
+        "mean": 30693.6667,
+        "stddev": 785.8762,
+        "min": 29941,
+        "max": 31509
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.04",
+      "time_seconds": "+9.4",
+      "tokens": "+5703"
+    }
+  },
+  "notes": [
+    "Most assertions are non-discriminating: the baseline (same model, no skill) already converted the date to ጥቅምት 28 ቀን 2018 ዓ.ም., used ከጠዋቱ 3:00 ሰዓት, kept placeholders and fixed every SMS error. The skill's value shows in finer points the checks don't capture.",
+    "Notice: with the skill the run gave both calendars and both clocks (Gregorian date and 9:00 a.m. in brackets) and computed the dates with Intl; the baseline gave only the Ethiopian forms. Both flagged that 7 Nov 2025 is in the past.",
+    "UI strings: with the skill every string is polite (button ያስቀምጡ); the baseline used the familiar masculine imperative አስቀምጥ for the button while its sentences are polite. The baseline argues that is common in Amharic apps; this is a style call for a native speaker, and a candidate assertion once decided.",
+    "Proofreading: with the skill the author's wording was kept and further edits only suggested; the baseline rewrote the greeting and the closing thanks unasked (the only failed assertion).",
+    "Cost: the skill adds about 5.7k tokens and 9s per run (reading SKILL.md and, in one run, computing dates)."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "eval_name": "proofread-customer-sms",
+  "prompt": "Proofread this Amharic SMS template our support team wrote before we send it to customers. Give me the corrected version and tell me what you changed. Save the corrected text to sms-fixed.txt.\n\nውድ ደንበኛ ፣ ትዕዛዝህ በተሳካ ሁኔታ ተቀብሏል:: እባክዎ ክፍያዎን እስከ ነገ ድረስ ይፈጽሙ:: ውሳኔ ከወሰዱ በኋላ እኛን ያግኙን ። ስለ ትዕግስትዎ እናመሰግናለን",
+  "assertions": [
+    "sms-fixed.txt contains no :: and no space before ፣ or ።",
+    "sms-fixed.txt uses the polite ትዕዛዝዎ instead of ትዕዛዝህ",
+    "sms-fixed.txt no longer says the order itself received something (ትዕዛዝ… ተቀብሏል); it says the company received the order (e.g. ደርሶናል or ተቀብለናል)",
+    "sms-fixed.txt replaces the calque ውሳኔ ከወሰዱ",
+    "sms-fixed.txt drops the redundant እኛን before ያግኙን",
+    "sms-fixed.txt ends with ።",
+    "The reply lists the changes made, each with a reason",
+    "sms-fixed.txt keeps the message's content: order confirmation, payment by tomorrow, contact, thanks"
+  ]
+}

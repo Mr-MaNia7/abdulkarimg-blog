@@ -1,0 +1,10 @@
+{
+  "save": "ያስቀምጡ",
+  "cancel": "ይቅር",
+  "delete_confirm": "{name}ን መሰረዝ ይፈልጋሉ? ከተሰረዘ በኋላ መመለስ አይቻልም።",
+  "files_count": "{count} ፋይል",
+  "welcome_back": "እንኳን በደህና ተመለሱ፣ {firstName}!",
+  "search_placeholder": "ትዕዛዞችን ይፈልጉ…",
+  "error_network": "መገናኘት አልተቻለም። የኢንተርኔት ግንኙነትዎን ያረጋግጡና እንደገና ይሞክሩ።",
+  "order_delivered": "ትዕዛዝዎ {time} ላይ ደርሷል።"
+}
