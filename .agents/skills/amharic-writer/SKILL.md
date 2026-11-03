@@ -22,7 +22,7 @@ Mixing registers is the most common error in machine-written Amharic, for exampl
 
 - **Verb last.** Amharic is subject–object–verb, and modifiers come before what they modify. Relative clauses go before the noun: **ትናንት የገዛሁት መጽሐፍ** ("the book I bought yesterday").
 - **Chain clauses with converbs**, not a string of **እና**: **ወደ ቤት ሄዶ ተኛ** rather than "ወደ ቤት ሄደ እና ተኛ". Use **እና** for joining nouns.
-- **Agreement.** The verb carries the subject's person, number and gender, and often the object (ያግኙን = "contact us"). Don't add a separate pronoun the verb already has (not "እኛን ያግኙን").
+- **Agreement.** The verb carries the subject's person, number and gender, and often the object (ያግኙን = "reach us", in a sentence). Don't add a separate pronoun the verb already has (not "እኛን ያግኙን").
 - **Voice.** English passives often become active Amharic with "we" or "they": "your order has been received" → **ትዕዛዝዎ ደርሶናል** or **ትዕዛዝዎን ተቀብለናል**. A literal **ትዕዛዝዎ ተቀብሏል** means the order received something.
 - **Calques.** Translate what the English means, not its words. "Take a decision" → **መወሰን** (not ውሳኔ መውሰድ); "make sure" → **ያረጋግጡ**; "at the end of the day" → **በመጨረሻ** or drop it. Use a proverb (ምሳሌያዊ አነጋገር) only if it truly fits the register; a forced proverb is worse than plain words.
 - **Loanwords.** Keep established ones (ኮምፒውተር, ኢሜይል, ኢንተርኔት, ስልክ). Don't coin Amharic words readers won't recognize. If a technical term has no common Amharic form, use the loanword, or the Amharic gloss with the English in brackets the first time it appears.
@@ -37,7 +37,7 @@ The mismatches fall into four patterns. The examples show the patterns; they are
 
 **1. No English preposition, but Amharic needs a marker.**
 - A definite or specific direct object takes **‑ን**: "the Qur'an commanded *the believers* to send blessings" → **ቁርኣን አማኞችን ሶለዋት እንዲያወርዱ አዘዘ**. English marks nothing, and without **‑ን**, አማኞች reads as a second subject. Verbs of commanding, telling, asking, teaching and helping all take the person this way, followed by an **እንዲ‑** clause. (An indefinite object stays bare: **መጽሐፍ አነበብኩ**, "I read a book", but **መጽሐፉን አነበብኩ**, "I read the book".)
-- "Call the office" → **ለቢሮው** or **ወደ ቢሮው ይደውሉ**.
+- "Call the office" → **ወደ ቢሮ ይደውሉ**, not ወደ ቢሮው or ለቢሮው. English says "the" even though the caller doesn't know that particular office until they call. Amharic **‑ው** marks something actually known, so it doesn't copy the English "the": before adding it, ask whether the reader knows which one is meant.
 - "Enter the room" → **ወደ ክፍሉ ገባ** or **ክፍሉ ውስጥ ገባ**.
 
 **2. An English preposition, but Amharic uses a plain object.**
@@ -85,7 +85,7 @@ When you aren't sure how a verb marks its arguments, say so in the "for review" 
 ## Spelling in Fidel
 
 - Use Unicode Ethiopic only: no legacy font encodings, no Latin lookalikes. Use **ኋ, ቋ, ጓ, ሷ** and other labialized forms where the word has them.
-- Several letters sound alike: **ሀ / ሐ / ኀ**, **ሰ / ሠ**, **አ / ዐ**, **ጸ / ፀ**. Many words have an established spelling (ሥራ or ስራ, ዓመት or አመት, ኅብረተሰብ or ህብረተሰብ). Use the one your reader expects, and the same one throughout a text.
+- Several letters sound alike: **ሀ / ሐ / ኀ**, **ሰ / ሠ**, **አ / ዐ**, **ጸ / ፀ**. Many words have more than one spelling in use. Prefer **ስራ** (not ሥራ), **ዓመት** (not አመት) and **ህብረተሰብ** (not ኅብረተሰብ), and use one spelling throughout a text. The preference goes word by word, not letter by letter: ዓመት keeps ዓ while ስራ drops ሥ, so don't respell other words by analogy.
 - When proofreading someone else's text, treat a recognized variant as their choice. Mention it if it matters; don't "fix" it.
 - Foreign names: write them as pronounced (ጆን, ሎንዶን). Brand and product names usually stay in Latin script (Google, iPhone, Telegram). Mixing scripts that way is normal in modern Amharic.
 
@@ -126,7 +126,7 @@ Readers in Ethiopia live with two calendars and two clocks. Treat any date or ti
 
 **Quoted published texts:** scripture, laws, official statements, published literature and other quotations that have an authoritative Amharic version. Don't present your own rendering as that text, because readers will take it as the authoritative one.
 - If the user supplies the published Amharic version, use it.
-- Otherwise leave a clearly marked placeholder, e.g. **[ከታተመ ትርጉም ይጨመር: insert from a published Amharic translation]**, and say so in your reply.
+- Otherwise leave a clearly marked placeholder, e.g. **[እዚህ ላይ የታተመ የአማርኛ ትርጉም ይገባል። Insert a published Amharic translation here.]**, and say so in your reply.
 - If the user explicitly wants your own working translation, label it as yours.
 
 **Keep the machinery intact:** Markdown, HTML tags, `{placeholders}`, `%s` and `%d`, variable names, JSON keys and links pass through untranslated. Only their position in the sentence may change.
@@ -134,6 +134,7 @@ Readers in Ethiopia live with two calendars and two clocks. Treat any date or ti
 ## Interface strings
 
 - Buttons and actions: the polite imperative (**ያስቀምጡ, ይሰርዙ, ይቀጥሉ, ይሞክሩ**), or a short noun where that reads better (**ፍለጋ**, **ቅንብሮች**). Use one pattern across the set.
+- A "Contact us" link or button, which starts a message to the company or site, is **መገኛችን**, not the verb ያግኙን.
 - "Cancel" and "Delete" need different verbs in Amharic: **ይቅር** (cancel the action) and **ይሰርዙ** (delete).
 - Placeholders may move: `Delete {name}?` → `{name}ን መሰረዝ ይፈልጋሉ?`. The object marker **‑ን** attaches to a placeholder that ends up as the object.
 - Counts: `{count} files` → `{count} ፋይሎች`. A noun after a number can also stay singular (5 ፋይል); pick one and keep it.
