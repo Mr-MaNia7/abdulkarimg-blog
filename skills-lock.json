@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "amharic-writer": {
+      "source": "Mr-MaNia7/amharic-writer",
+      "sourceType": "github",
+      "skillPath": "skills/amharic-writer/SKILL.md",
+      "computedHash": "01d4119ba6762d1dff10e3b2cd6732eae90253a57beb35dcf4a669ea964d0b9a"
+    },
     "design-taste-frontend": {
       "source": "leonxlnx/taste-skill",
       "sourceType": "github",
