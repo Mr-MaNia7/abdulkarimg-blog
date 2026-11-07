@@ -56,3 +56,9 @@ yarn-error.log*
 # generated feeds and Open Graph images
 /public/category/
 /public/og/
+
+.taste-skill/
+
+/.claude/skills/design-taste-frontend/
+/.agents/skills/design-taste-frontend/
+.taste-skill/
