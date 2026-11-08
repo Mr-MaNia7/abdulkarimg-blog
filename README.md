@@ -14,7 +14,7 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/home-dark.webp">
-  <img src="docs/screenshots/home-light.webp" alt="The home page: a lapis cloth cover with the gilt wordmark above the Arabic, the site's mission, and a count of essays, answers and notes." width="100%">
+  <img src="docs/screenshots/home-light.webp" alt="The Sīmā home page: a lapis cloth cover with the gilt wordmark Sīmā above the Arabic سيماء, the site's mission, and a count of essays, answers and notes." width="100%">
 </picture>
 
 </div>
