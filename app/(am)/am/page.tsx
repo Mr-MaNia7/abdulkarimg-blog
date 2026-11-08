@@ -55,12 +55,9 @@ export default function AmharicHome() {
             </p>
           </div>
           {latest.length ? (
-            <ol className="latest-list" data-reveal suppressHydrationWarning>
-              {latest.map((p, i) => (
+            <ol className="latest-list">
+              {latest.map((p) => (
                 <li key={p.path} className="latest-row">
-                  <span className="latest-index" aria-hidden="true">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
                   <div className="latest-body">
                     <Link href={`/${p.path}`} className="latest-title">
                       {typeset(p.title)}

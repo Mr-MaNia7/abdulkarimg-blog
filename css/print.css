@@ -32,6 +32,8 @@
   }
 
   body {
+    display: block !important;
+    min-block-size: 0 !important;
     background: #fff !important;
   }
 
@@ -166,11 +168,6 @@
 
   .questions-band {
     background: none;
-  }
-
-  [data-reveal] > * {
-    opacity: 1 !important;
-    transform: none !important;
   }
 }
 

@@ -32,7 +32,7 @@ export default function YearArchive({
             {year}
             {t.index.era && <span className="archive-era"> {t.index.era}</span>}
           </H>
-          <ul className="archive-list" data-reveal suppressHydrationWarning>
+          <ul className="archive-list">
             {list.map((p) => (
               <li key={p.path} className="archive-row">
                 <time dateTime={p.date} className="archive-date">

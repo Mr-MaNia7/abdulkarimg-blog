@@ -756,10 +756,13 @@
 
   .colophon-base a {
     color: var(--cloth-muted);
-    text-decoration: none;
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in oklab, var(--cloth-muted) 45%, transparent);
+    text-underline-offset: 0.2em;
   }
 
   .colophon-base a:hover {
     color: var(--cloth-ink);
+    text-decoration-color: currentColor;
   }
 }

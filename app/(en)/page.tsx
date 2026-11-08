@@ -17,7 +17,14 @@ export default function Home() {
   const questions = byType('qa')
   const featured = posts.find((p) => p.featured) ?? essays[0] ?? posts[0]
   const latest = posts.filter((p) => p !== featured).slice(0, LATEST)
-  const featuredSections = (featured?.toc as { value: string; depth: number }[] | undefined)
+  // The band shows only questions the Latest list does not already show.
+  const moreQuestions = questions
+    .filter((q) => q !== featured && !latest.includes(q))
+    .slice(0, QUESTIONS)
+  const subjects = categories.filter((c) => c.posts.length > 0)
+  const featuredSections = (
+    featured?.toc as { value: string; url: string; depth: number }[] | undefined
+  )
     ?.filter((t) => t.depth === 2 && !/^(bibliography|references|notes)$/i.test(t.value))
     .slice(0, 6)
 
@@ -69,7 +76,9 @@ export default function Home() {
                   <p className="featured-contents-label">In this essay</p>
                   <ol>
                     {featuredSections.map((s) => (
-                      <li key={s.value}>{typeset(s.value)}</li>
+                      <li key={s.value}>
+                        <Link href={`/${featured.path}${s.url}`}>{typeset(s.value)}</Link>
+                      </li>
                     ))}
                   </ol>
                 </nav>
@@ -91,12 +100,9 @@ export default function Home() {
                 {hasAmharic && <LangEntry to="am" from="en" />}
               </p>
             </div>
-            <ol className="latest-list" data-reveal suppressHydrationWarning>
-              {latest.map((p, i) => (
+            <ol className="latest-list">
+              {latest.map((p) => (
                 <li key={p.path} className="latest-row">
-                  <span className="latest-index" aria-hidden="true">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
                   <div className="latest-body">
                     <Link href={`/${p.path}`} className="latest-title">
                       {typeset(p.title)}
@@ -115,7 +121,7 @@ export default function Home() {
         )}
       </SectionContainer>
 
-      {questions.length > 0 && (
+      {moreQuestions.length > 0 && (
         <section className="questions-band" aria-labelledby="questions-heading">
           <SectionContainer>
             <div className="home-heading-row">
@@ -126,8 +132,8 @@ export default function Home() {
                 All {plural(questions.length, 'question', 'questions')}
               </Link>
             </div>
-            <ul className="question-grid" data-reveal suppressHydrationWarning>
-              {questions.slice(0, QUESTIONS).map((q) => (
+            <ul className="question-grid">
+              {moreQuestions.map((q) => (
                 <li key={q.path}>
                   <Link href={`/${q.path}`} className="question-title">
                     {typeset(q.title)}
@@ -145,15 +151,13 @@ export default function Home() {
           <h2 id="subjects-heading" className="home-heading">
             Browse by subject
           </h2>
-          <ul className="subject-grid" data-reveal suppressHydrationWarning>
-            {categories.map((c) => (
+          <ul className="subject-grid">
+            {subjects.map((c) => (
               <li key={c.slug}>
                 <Link href={`/category/${slug(c.name)}`} className="subject-name">
                   {c.name}
                 </Link>
-                <p className="subject-count">
-                  {c.posts.length ? plural(c.posts.length, 'piece', 'pieces') : 'Nothing yet'}
-                </p>
+                <p className="subject-count">{plural(c.posts.length, 'piece', 'pieces')}</p>
                 <p className="subject-description">{c.description}</p>
               </li>
             ))}

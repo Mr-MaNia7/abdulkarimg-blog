@@ -8,11 +8,9 @@ import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import Masthead from '@/components/masthead/Masthead'
 import Footer from '@/components/Footer'
 import ToastHost from '@/components/ToastHost'
-import RevealOnNavigate from '@/components/RevealOnNavigate'
 import siteMetadata from '@/data/siteMetadata'
 import { dict, type Lang } from '@/data/i18n'
 import { applyPrefsScript } from '@/lib/reading-prefs'
-import { revealScript } from '@/lib/reveal'
 import { ThemeProviders } from './theme-providers'
 import { fontVariables } from './fonts'
 
@@ -91,10 +89,8 @@ export default function RootShell({ lang, children }: { lang: Lang; children: Re
   return (
     <html lang={lang} className={`${fontVariables} scroll-smooth`} suppressHydrationWarning>
       <head>
-        {/* Saved reading preferences, applied before first paint. */}
+        {/* Marks <html class="js"> and applies saved reading preferences before first paint. */}
         <script dangerouslySetInnerHTML={{ __html: applyPrefsScript }} />
-        {/* First-view reveal for index lists; runs before hydration. */}
-        <script dangerouslySetInnerHTML={{ __html: revealScript }} />
         <link rel="icon" href={`${basePath}/static/favicons/favicon.ico`} sizes="32x32" />
         <link rel="icon" type="image/svg+xml" href={`${basePath}/static/favicons/icon.svg`} />
         <link rel="apple-touch-icon" href={`${basePath}/static/favicons/apple-touch-icon.png`} />
@@ -103,7 +99,7 @@ export default function RootShell({ lang, children }: { lang: Lang; children: Re
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#11161f" />
         <link rel="alternate" type="application/rss+xml" href={`${basePath}${t.feed}`} />
       </head>
-      <body className="bg-bg text-ink antialiased">
+      <body className="bg-bg text-ink flex min-h-svh flex-col antialiased">
         <a href="#main-content" className="skip-link">
           {t.skipLink}
         </a>
@@ -116,7 +112,6 @@ export default function RootShell({ lang, children }: { lang: Lang; children: Re
             {children}
           </main>
           <Footer lang={lang} />
-          <RevealOnNavigate />
           <ToastHost />
         </ThemeProviders>
       </body>

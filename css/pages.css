@@ -6,7 +6,9 @@
 @layer hashiya {
   /* ───────────── Cover ───────────── */
 
+  /* Padding, not the panel's margin, so the cloth runs past the frame on every side. */
   .cover {
+    padding-block: clamp(1.25rem, 0.6rem + 2vw, 2.5rem);
     background: var(--cloth);
     color: var(--cloth-ink);
   }
@@ -16,7 +18,6 @@
     justify-items: center;
     align-content: center;
     min-block-size: clamp(24rem, 62svh, 38rem);
-    margin-block: clamp(1rem, 0.6rem + 1.5vw, 2rem);
     padding: 3rem 1.5rem;
     text-align: center;
     border: 1px solid color-mix(in oklab, var(--gilt) 50%, transparent);
@@ -66,12 +67,16 @@
 
   /* ───────────── Home sections ───────────── */
 
+  :root {
+    --home-gap: clamp(3rem, 2rem + 3.5vw, 5.5rem);
+  }
+
   .home-section {
-    padding-block-start: clamp(4rem, 2.5rem + 5vw, 8rem);
+    padding-block-start: var(--home-gap);
   }
 
   .home-section-last {
-    padding-block-end: clamp(4rem, 2.5rem + 5vw, 8rem);
+    padding-block-end: var(--home-gap);
   }
 
   .home-heading {
@@ -185,8 +190,17 @@
 
   .featured-contents {
     align-self: start;
-    padding-inline-start: 2rem;
-    border-inline-start: 1px solid var(--border-subtle);
+    padding-block-start: 1.25rem;
+    border-block-start: 1px solid var(--border-subtle);
+  }
+
+  @media (min-width: 64rem) {
+    .featured-contents {
+      padding-block-start: 0;
+      padding-inline-start: 2rem;
+      border-block-start: 0;
+      border-inline-start: 1px solid var(--border-subtle);
+    }
   }
 
   .featured-contents-label {
@@ -208,6 +222,18 @@
     padding-block: 0.3rem;
   }
 
+  .featured-contents a {
+    color: var(--ink);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2em;
+  }
+
+  .featured-contents a:hover {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+  }
+
   .featured-contents li::marker {
     font-family: var(--stack-mono);
     font-size: 0.8em;
@@ -223,25 +249,16 @@
 
   .latest-row {
     display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr);
-    gap: 0.25rem 1.25rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem 1.5rem;
     padding-block: 1.4rem;
     border-block-start: 1px solid var(--border-subtle);
   }
 
   @media (min-width: 48rem) {
     .latest-row {
-      grid-template-columns: 3.5rem minmax(0, 1fr) 9rem;
-      gap: 1.5rem;
+      grid-template-columns: minmax(0, 1fr) 9rem;
     }
-  }
-
-  .latest-index {
-    padding-block-start: 0.4rem;
-    font-family: var(--stack-mono);
-    font-size: var(--text-meta);
-    color: var(--ink-faint);
-    font-variant-numeric: tabular-nums;
   }
 
   .latest-title {
@@ -266,7 +283,6 @@
   }
 
   .latest-meta {
-    grid-column: 2;
     margin: 0;
     font-family: var(--stack-mono);
     font-size: var(--text-meta);
@@ -280,7 +296,8 @@
 
   @media (min-width: 48rem) {
     .latest-meta {
-      grid-column: 3;
+      grid-column: 2;
+      grid-row: 1;
       padding-block-start: 0.4rem;
       text-align: end;
     }
@@ -291,7 +308,7 @@
 
     /* Amharic rows carry two dates, one line each. */
     .latest-row:lang(am) {
-      grid-template-columns: 3.5rem minmax(0, 1fr) 12.5rem;
+      grid-template-columns: minmax(0, 1fr) 12.5rem;
     }
 
     .latest-date {
@@ -316,8 +333,8 @@
   }
 
   .questions-band {
-    margin-block-start: clamp(4rem, 2.5rem + 5vw, 8rem);
-    padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+    margin-block-start: var(--home-gap);
+    padding-block: clamp(3rem, 2rem + 3vw, 5rem);
     background: var(--surface);
   }
 
@@ -373,13 +390,7 @@
 
   @media (min-width: 40rem) {
     .subject-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .subject-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     }
   }
 
@@ -411,6 +422,76 @@
     margin: 0.6rem 0 0;
     line-height: 1.55;
     color: var(--ink-muted);
+  }
+
+  /*
+    Row feedback. Each home row is one link: the title's hit area covers the
+    row, the rule above it turns lapis and the title's underline draws in.
+    Colour changes are instant; the drawing only runs when motion is welcome.
+  */
+  .latest-row,
+  .question-grid li,
+  .subject-grid li {
+    position: relative;
+  }
+
+  .latest-title::after,
+  .question-title::after,
+  .subject-name::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+  }
+
+  .latest-title,
+  .question-title,
+  .subject-name,
+  .featured-title a {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  }
+
+  .latest-row:hover,
+  .question-grid li:hover,
+  .subject-grid li:hover {
+    border-block-start-color: var(--accent);
+  }
+
+  .latest-row:hover .latest-title,
+  .question-grid li:hover .question-title,
+  .subject-grid li:hover .subject-name,
+  .featured-title a:hover {
+    color: var(--accent);
+    background-size: 100% 1px;
+  }
+
+  .latest-row:active .latest-title,
+  .question-grid li:active .question-title,
+  .subject-grid li:active .subject-name,
+  .featured-title a:active {
+    opacity: 0.75;
+  }
+
+  .latest-row:has(:focus-visible),
+  .question-grid li:has(:focus-visible),
+  .subject-grid li:has(:focus-visible) {
+    border-block-start-color: var(--accent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .latest-row,
+    .question-grid li,
+    .subject-grid li {
+      transition: border-color 200ms var(--ease-out-quint);
+    }
+
+    .latest-title,
+    .question-title,
+    .subject-name,
+    .featured-title a {
+      transition:
+        color 160ms var(--ease-out-quint),
+        background-size 320ms var(--ease-out-quint);
+    }
   }
 
   /* ───────────── Index pages ───────────── */

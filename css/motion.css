@@ -1,62 +1,9 @@
 /*
-  Ḥāshiya — motion. One authored moment (index lists revealing on first view);
-  everything else is feedback on the reader's own actions, 150–240ms.
-  Reading pages have no scroll motion at all.
+  Ḥāshiya — motion. Only feedback on the reader's own actions, 150–320ms.
+  Nothing moves because the page scrolled.
 */
 
 @layer hashiya {
-  @media (prefers-reduced-motion: no-preference) {
-    /* Hidden only when the reveal script is running (lib/reveal.ts). */
-    .js [data-reveal] > * {
-      opacity: 0;
-      transform: translateY(6px);
-    }
-
-    .js [data-reveal].is-revealed > * {
-      opacity: 1;
-      transform: none;
-      transition:
-        opacity 420ms var(--ease-out-quint),
-        transform 420ms var(--ease-out-quint);
-      transition-delay: calc(var(--i, 0) * 50ms);
-    }
-
-    /* Failsafe: if the observer never starts, show everything after a beat. */
-    .js:not(.reveal-ready) [data-reveal] > * {
-      animation: reveal-failsafe 0s 2.5s forwards;
-    }
-
-    @keyframes reveal-failsafe {
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    /* Capped stagger: the ninth item onward share the last delay. */
-    [data-reveal] > :nth-child(2) {
-      --i: 1;
-    }
-    [data-reveal] > :nth-child(3) {
-      --i: 2;
-    }
-    [data-reveal] > :nth-child(4) {
-      --i: 3;
-    }
-    [data-reveal] > :nth-child(5) {
-      --i: 4;
-    }
-    [data-reveal] > :nth-child(6) {
-      --i: 5;
-    }
-    [data-reveal] > :nth-child(7) {
-      --i: 6;
-    }
-    [data-reveal] > :nth-child(n + 8) {
-      --i: 7;
-    }
-  }
-
   /* Press feedback on the few real buttons. */
   .search-trigger:active,
   .tool-button:active,

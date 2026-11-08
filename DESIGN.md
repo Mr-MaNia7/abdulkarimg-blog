@@ -90,7 +90,7 @@ spacing:
   note-width: '15rem'
   note-gap: '3rem'
   toc-width: '13rem'
-  section: 'clamp(4rem, 2.5rem + 5vw, 8rem)'
+  section: 'clamp(3rem, 2rem + 3.5vw, 5.5rem)'
 components:
   link:
     textColor: '{colors.lapis}'
@@ -176,7 +176,7 @@ Every text pair passes WCAG 2.2 AA in both themes (ink 15.9 / 13.9, faint ≥ 4.
 - One page frame: max 84rem, equal gutters 1.25 / 2 / 2.5rem.
 - Reading pages: a 68ch column; from 64rem a right margin (15rem notes + 3rem gap) for side notes and footnote copies; from 80rem a left margin (13rem) for the sticky contents.
 - Index pages: a centred 56rem column, an intro block closed by a strong rule, then hairline-separated lists.
-- The home page opens on the full-width cloth cover, then alternates paper and one surface band. Section spacing `clamp(4rem, 2.5rem + 5vw, 8rem)`.
+- The home page opens on the full-width cloth cover (the stamped frame inset on all four sides), then the featured essay, Latest, an optional surface band of older questions, and the subjects. Nothing appears twice: the questions band shows only questions Latest does not, and is left out when there are none; subjects with no pieces are left off the home page. Section spacing `clamp(3rem, 2rem + 3.5vw, 5.5rem)`.
 - All sizes in rem/em/ch; px only for hairlines, focus rings and shadows.
 
 ## Elevation & Depth
@@ -198,7 +198,7 @@ Square-cornered by default: 2px on controls and code, 3px on floating cards. Pil
 - **Pull quote:** display Literata after a 2.5rem × 2px lapis rule.
 - **Ornamental break:** `⁂` in lapis replaces every `<hr>`.
 - **Masthead:** constant 4rem; gains a hairline on scroll; current section underlined in lapis.
-- **Motion:** one authored moment (index lists rise 6px and fade in on first view, 420ms, capped stagger); everything else is 150–240ms feedback on `cubic-bezier(0.22, 1, 0.36, 1)`. Reduced motion removes all of it.
+- **Motion:** feedback on the reader's own actions only, on `cubic-bezier(0.22, 1, 0.36, 1)`. A home row is one link: on hover the rule above it turns lapis and the title's underline draws in (320ms); press dims the title; real buttons press to 98%. Nothing moves on scroll, and nothing is hidden waiting for a script. Reduced motion keeps the colour changes and drops the transitions.
 
 ## Do's and Don'ts
 
