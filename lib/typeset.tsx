@@ -16,7 +16,7 @@ const TOKEN = new RegExp(
 const curl = (s: string) => s.replace(/(\p{L})'(\p{L})/gu, '$1\u2019$2')
 
 /**
- * The same typesetting the MDX pipeline applies (lib/rehype-hashiya.ts),
+ * The same typesetting the MDX pipeline applies (lib/rehype-sima.ts),
  * for plain strings such as frontmatter titles: Arabic runs get lang="ar"
  * dir="rtl", Ethiopic runs lang="am", ﷺ and ʿ ʾ their own spans.
  */

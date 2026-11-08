@@ -16,7 +16,7 @@ export default function TagsPage() {
       <div className="index-page">
         <PageIntro
           title="Tags"
-          lede="Every topic the journal has touched, most frequent first."
+          lede="Every topic the site has touched, most frequent first."
           meta={plural(tags.length, 'tag', 'tags')}
         />
         <ul className="tag-cloud">

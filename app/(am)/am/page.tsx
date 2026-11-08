@@ -30,7 +30,7 @@ export default function AmharicHome() {
               {typeset(siteMetadata.title)}
             </h1>
             <p className="cover-arabic" lang="ar" dir="rtl" translate="no">
-              حاشية
+              سيماء
             </p>
             <p className="cover-mission">{t.description}</p>
             {posts.length > 0 && <p className="cover-meta">{countLine(posts, 'am')}</p>}

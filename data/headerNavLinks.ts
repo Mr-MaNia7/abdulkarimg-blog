@@ -1,7 +1,10 @@
+// The course comes first: Start here, then the pillars that hold most of the writing.
+// Foundations is reached from Start here; formats (essays, questions, notes) are under More.
 const headerNavLinks = [
-  { href: '/essays', title: 'Essays' },
-  { href: '/questions', title: 'Questions' },
-  { href: '/notes', title: 'Notes' },
+  { href: '/start', title: 'Start here' },
+  { href: '/category/existence-of-god', title: 'God' },
+  { href: '/category/truth-of-islam', title: 'Islam' },
+  { href: '/category/answering-doubts', title: 'Doubts' },
   { href: '/glossary', title: 'Glossary' },
   { href: '/about', title: 'About' },
 ]

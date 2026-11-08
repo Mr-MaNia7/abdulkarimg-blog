@@ -32,6 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const pages = [
     '',
+    'start',
     'blog',
     'essays',
     'questions',

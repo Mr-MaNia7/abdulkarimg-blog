@@ -15,7 +15,7 @@ const am: Dict = {
   archive: '/am/blog',
   feed: '/am/feed.xml',
   description:
-    'ስለ አምላክ፣ ስለ ቅዱሳት መጻሕፍትና ስለ መጽሐፍ ሃይማኖቶች የሚያወሱ ድርሰቶች፤ ስለ እስልምና ለሚነሱ ጥያቄዎችም በጥንቃቄ የተዘጋጁ መልሶች።',
+    'አምላክ መኖሩንና እስልምና እውነት መሆኑን የሚያረጋግጡ ማስረጃዎች፣ በእስልምና ላይ ለሚነሱ ጥርጣሬዎችም በጥንቃቄ የተዘጋጁ ምላሾች፤ ሁሉም በቅደም ተከተል።',
   socialBanner: `${process.env.BASE_PATH || ''}/og/am/default.png`,
   skipLink: 'ወደ ዋናው ይዘት ይለፉ',
 
@@ -109,9 +109,10 @@ const am: Dict = {
     piece: ['ጽሑፍ', 'ጽሑፎች'],
   },
   categories: {
-    Theology: 'ሥነ መለኮት',
-    'Comparative Religion': 'የንጽጽር ሃይማኖት ጥናት',
-    'Questions on Islam': 'ስለ እስልምና የሚነሱ ጥያቄዎች',
+    Foundations: 'የእውቀት መሠረቶች',
+    'Existence of God': 'የአምላክ መኖር',
+    'Truth of Islam': 'የእስልምና እውነትነት',
+    'Answering Doubts': 'ለጥርጣሬዎች ምላሽ',
     Notes: 'ማስታወሻዎች',
   },
 
@@ -162,7 +163,7 @@ const am: Dict = {
   },
 
   notFound: {
-    title: 'በኅዳጉ ላይ የለም',
+    title: 'ገጹ አልተገኘም',
     lede: 'በዚህ አድራሻ የሚገኝ ገጽ የለም። ገጹ ተዛውሮ ወይም አድራሻው በስህተት ተጽፎ ሊሆን ይችላል።',
     links: [
       { href: '/am', title: 'የአማርኛው የፊት ገጽ' },

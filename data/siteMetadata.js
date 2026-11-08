@@ -1,11 +1,11 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Ḥāshiya',
+  title: 'Sīmā',
   author: 'Abdulkarim G. Mohammed',
-  headerTitle: 'Ḥāshiya',
+  headerTitle: 'Sīmā',
   // One-line mission, shown on the home cover and in search results. Edit freely.
   description:
-    'Essays on God, scripture and the religions of the book, with careful answers to questions about Islam.',
+    'A systematic case for Islam: the proofs that God exists, the evidence that Islam is true, and careful answers to the doubts raised against it.',
   language: 'en',
   theme: 'system', // system, dark or light
   siteUrl: 'https://blog.abdulkarimg.com',

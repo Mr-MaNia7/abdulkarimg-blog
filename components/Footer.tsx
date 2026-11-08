@@ -48,7 +48,7 @@ export default function Footer({ lang = 'en' }: { lang?: Lang }) {
               {typeset(siteMetadata.title)}
             </Link>
             <p className="colophon-arabic" lang="ar" dir="rtl" translate="no">
-              حاشية
+              سيماء
             </p>
             <p className="colophon-line">{t.description}</p>
           </div>

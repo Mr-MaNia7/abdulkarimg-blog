@@ -4,6 +4,7 @@ import type { Blog } from 'contentlayer/generated'
 import { allCoreContent, sortPosts, type CoreContent } from 'pliny/utils/contentlayer'
 import { count, dict, type Lang } from '@/data/i18n'
 import { ethiopianYear } from './posts'
+import course from '@/data/course'
 
 export type Post = CoreContent<Blog>
 export type PostType = 'essay' | 'qa' | 'note'
@@ -22,21 +23,38 @@ export const posts: Post[] = postsIn('en')
 export const byType = (type: PostType, list: Post[] = posts) =>
   list.filter((p) => (p.type ?? 'essay') === type)
 
+/**
+ * The subjects. The first four are the pillars of the course on /start, in
+ * reading order; `part` is the numeral shown beside them. Notes stands apart.
+ */
 export const CATEGORY_INFO = [
   {
-    name: 'Theology',
-    description: 'God, revelation, prophethood and the unseen, read from the sources.',
+    name: 'Foundations',
+    part: 'I',
+    description:
+      'How we know anything at all: the senses, reason, true report and the innate disposition, and the kinds of argument that carry a conclusion.',
   },
   {
-    name: 'Comparative Religion',
-    description: 'Islam beside Judaism, Christianity and other traditions, fairly stated.',
+    name: 'Existence of God',
+    part: 'II',
+    description:
+      'The classical proofs, premise by premise: Ibn Sīnā on contingency, al-Ghazālī on origination, Ibn Taymiyya on fiṭra and signs, and the argument from design.',
   },
   {
-    name: 'Questions on Islam',
-    description: 'Direct answers to questions people ask, short answer first.',
+    name: 'Truth of Islam',
+    part: 'III',
+    description:
+      'The evidence for the prophethood of Muḥammad ﷺ and the Qur’an, and why Islam alone holds revelation whole while other religions mix truth with error.',
+  },
+  {
+    name: 'Answering Doubts',
+    part: 'IV',
+    description:
+      'The doubts raised by atheism, liberalism, feminism and other worldviews, and arguments such as the problem of evil, each stated at its strongest and then answered.',
   },
   {
     name: 'Notes',
+    part: undefined,
     description: 'Shorter pieces: reading, language, and things noticed along the way.',
   },
 ] as const
@@ -94,4 +112,32 @@ export function countLine(list: Post[] = posts, lang = 'en') {
     .filter(([, n]) => n > 0)
     .map(([t, n]) => count(n, nouns[t]))
     .join(' · ')
+}
+
+/**
+ * The course (data/course.ts) with each module's post resolved. A module is
+ * linked only when its slug names a published English post; otherwise it is
+ * forthcoming. Modules are numbered straight through all four parts.
+ */
+export function courseParts() {
+  let n = 0
+  const parts = course.map((part) => {
+    const info = CATEGORY_INFO.find((c) => c.name === part.category)!
+    return {
+      ...part,
+      numeral: info.part as string,
+      description: info.description as string,
+      slug: slug(part.category),
+      groups: part.groups.map((g) => ({
+        ...g,
+        modules: g.modules.map((m) => {
+          n += 1
+          const post = m.slug ? posts.find((p) => p.slug === m.slug) : undefined
+          return { ...m, n, post }
+        }),
+      })),
+    }
+  })
+  const modules = parts.flatMap((p) => p.groups.flatMap((g) => g.modules))
+  return { parts, total: modules.length, written: modules.filter((m) => m.post).length }
 }

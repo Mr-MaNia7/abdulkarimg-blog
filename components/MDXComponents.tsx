@@ -24,7 +24,7 @@ export const components: MDXComponents = {
   pre: Pre,
   table: TableWrapper,
   BlogNewsletterForm,
-  // Ḥāshiya
+  // Sīmā
   Quran,
   Hadith,
   Scripture,

@@ -21,7 +21,8 @@ export default function Home() {
   const moreQuestions = questions
     .filter((q) => q !== featured && !latest.includes(q))
     .slice(0, QUESTIONS)
-  const subjects = categories.filter((c) => c.posts.length > 0)
+  // The four pillars, always shown in course order, written or not.
+  const pillars = categories.filter((c) => c.part)
   const featuredSections = (
     featured?.toc as { value: string; url: string; depth: number }[] | undefined
   )
@@ -42,7 +43,7 @@ export default function Home() {
               {typeset(siteMetadata.title)}
             </h1>
             <p className="cover-arabic" lang="ar" dir="rtl" translate="no">
-              حاشية
+              سيماء
             </p>
             <p className="cover-mission">{siteMetadata.description}</p>
             <p className="cover-meta">{countLine()}</p>
@@ -126,7 +127,7 @@ export default function Home() {
           <SectionContainer>
             <div className="home-heading-row">
               <h2 id="questions-heading" className="home-heading">
-                Questions on Islam
+                Questions answered
               </h2>
               <Link href="/questions" className="home-more">
                 All {plural(questions.length, 'question', 'questions')}
@@ -148,20 +149,28 @@ export default function Home() {
 
       <SectionContainer>
         <section className="home-section home-section-last" aria-labelledby="subjects-heading">
-          <h2 id="subjects-heading" className="home-heading">
-            Browse by subject
-          </h2>
-          <ul className="subject-grid">
-            {subjects.map((c) => (
+          <div className="home-heading-row">
+            <h2 id="subjects-heading" className="home-heading">
+              The course, in four parts
+            </h2>
+            <Link href="/start" className="home-more">
+              Start here
+            </Link>
+          </div>
+          <ol className="subject-grid">
+            {pillars.map((c) => (
               <li key={c.slug}>
+                <span className="subject-part">Part {c.part}</span>
                 <Link href={`/category/${slug(c.name)}`} className="subject-name">
                   {c.name}
                 </Link>
-                <p className="subject-count">{plural(c.posts.length, 'piece', 'pieces')}</p>
-                <p className="subject-description">{c.description}</p>
+                <p className="subject-count">
+                  {c.posts.length ? plural(c.posts.length, 'piece', 'pieces') : 'Forthcoming'}
+                </p>
+                <p className="subject-description">{typeset(c.description)}</p>
               </li>
             ))}
-          </ul>
+          </ol>
         </section>
       </SectionContainer>
     </>

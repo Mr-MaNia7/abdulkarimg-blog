@@ -1,5 +1,5 @@
 /**
- * Build-time typesetting for Ḥāshiya posts.
+ * Build-time typesetting for Sīmā posts.
  *
  * rehypeScripts
  *   - wraps every run of Arabic script in <span lang="ar" dir="rtl"> so authors

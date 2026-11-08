@@ -36,12 +36,6 @@
     "definition": "The text of a report itself, as distinct from its chain of narrators; also the base text on which a commentary is written."
   },
   {
-    "id": "hashiya",
-    "translit": "ḥāshiya",
-    "ar": "حاشية",
-    "definition": "A marginal gloss: commentary written beside or around a text, a central genre of classical Islamic scholarship. The name of this journal."
-  },
-  {
     "id": "sunna",
     "translit": "sunna",
     "ar": "سنة",
@@ -94,5 +88,83 @@
     "translit": "ḍaʿīf",
     "ar": "ضعيف",
     "definition": "Weak: a ḥadīth that fails one or more conditions of acceptance, such as a broken chain or an unreliable narrator."
+  },
+  {
+    "id": "sima",
+    "translit": "sīmā",
+    "ar": "سيماء",
+    "definition": "A mark or sign by which something is known; the Qurʾān uses it for the visible sign that identifies a people (2:273, 48:29). The name of this site."
+  },
+  {
+    "id": "shubha",
+    "translit": "shubha",
+    "ar": "شبهة",
+    "definition": "A doubt: an argument or objection that makes something false look true, or something true look doubtful. Plural shubuhāt."
+  },
+  {
+    "id": "fitra",
+    "translit": "fiṭra",
+    "ar": "فطرة",
+    "definition": "The innate disposition with which every person is created, inclined to recognise God and to know basic truths before any argument."
+  },
+  {
+    "id": "burhan",
+    "translit": "burhān",
+    "ar": "برهان",
+    "definition": "A demonstration: a proof whose premises are certain, so that its conclusion is certain too. The Qurʾān uses the word for decisive evidence."
+  },
+  {
+    "id": "dalil",
+    "translit": "dalīl",
+    "ar": "دليل",
+    "definition": "Evidence or proof: whatever leads, when reflected on correctly, to knowledge of something else."
+  },
+  {
+    "id": "kalam",
+    "translit": "kalām",
+    "ar": "كلام",
+    "definition": "Speculative theology: the discipline that sets out and defends the articles of belief with rational argument."
+  },
+  {
+    "id": "huduth",
+    "translit": "ḥudūth",
+    "ar": "حدوث",
+    "definition": "Origination: coming into existence after not existing. The argument from ḥudūth reasons from the world's having a beginning to its having a cause."
+  },
+  {
+    "id": "imkan",
+    "translit": "imkān",
+    "ar": "إمكان",
+    "definition": "Contingency: the state of a thing that may exist or not exist, so that its existence needs a cause outside itself."
+  },
+  {
+    "id": "wajib-al-wujud",
+    "translit": "wājib al-wujūd",
+    "ar": "واجب الوجود",
+    "definition": "The Necessary Existent: that whose existence is necessary in itself and owes nothing to a cause. Ibn Sīnā's term for God."
+  },
+  {
+    "id": "nubuwwa",
+    "translit": "nubuwwa",
+    "ar": "نبوة",
+    "definition": "Prophethood: God's choosing a human being to receive revelation and convey it."
+  },
+  {
+    "id": "ijaz",
+    "translit": "iʿjāz",
+    "ar": "إعجاز",
+    "definition": "Inimitability: the quality of the Qurʾān by which no one can produce its like, a proof of its divine origin."
+  },
+  {
+    "id": "tahaddi",
+    "translit": "taḥaddī",
+    "ar": "تحدي",
+    "definition": "The challenge: the Qurʾān's call to its doubters to produce a chapter like it."
+  },
+  {
+    "id": "tahrif",
+    "translit": "taḥrīf",
+    "ar": "تحريف",
+    "definition": "Alteration: the changing of a scripture's words or meanings. The Qurʾān says the earlier scriptures suffered taḥrīf."
   }
 ]

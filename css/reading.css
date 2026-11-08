@@ -1,12 +1,12 @@
 /*
-  Ḥāshiya — the reading experience: post layout, margins, apparatus and
+  Sīmā — the reading experience: post layout, margins, apparatus and
   every MDX component. Tokens only; sizes in rem/em/ch.
 
-  `hashiya` is declared after Tailwind's layers, so these component styles
+  `sima` is declared after Tailwind's layers, so these component styles
   win over the typography plugin's prose rules (layer order beats specificity).
 */
 
-@layer hashiya {
+@layer sima {
   :root {
     --toc-width: 13rem;
     --note-width: 15rem;

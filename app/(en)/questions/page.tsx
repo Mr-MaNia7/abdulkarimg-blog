@@ -6,8 +6,8 @@ import { byType, plural } from '@/lib/content'
 import { genPageMetadata } from 'app/seo'
 
 const lede =
-  'Answers to questions people ask about Islam. Each one opens with a short answer, then the reasoning and the sources.'
-export const metadata = genPageMetadata({ title: 'Questions on Islam', description: lede })
+  'Direct answers to questions and doubts about God and Islam. Each opens with a short answer, then the reasoning and the sources.'
+export const metadata = genPageMetadata({ title: 'Questions', description: lede })
 
 export default function QuestionsPage() {
   const questions = byType('qa')
@@ -25,7 +25,7 @@ export default function QuestionsPage() {
     <SectionContainer>
       <div className="index-page">
         <PageIntro
-          title="Questions on Islam"
+          title="Questions"
           lede={lede}
           meta={plural(questions.length, 'answer', 'answers')}
         >

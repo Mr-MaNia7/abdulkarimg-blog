@@ -5,7 +5,7 @@ import SearchCopy from './SearchCopy'
 type Props = {
   /**
    * Sūra and verse, e.g. "2:255" or "112:1-4". Authors write `ref="…"`;
-   * the build renames it to `reference` (lib/rehype-hashiya.ts).
+   * the build renames it to `reference` (lib/rehype-sima.ts).
    */
   reference: string
   arabic: string

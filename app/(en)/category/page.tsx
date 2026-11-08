@@ -6,14 +6,17 @@ import { genPageMetadata } from 'app/seo'
 
 export const metadata = genPageMetadata({
   title: 'Subjects',
-  description: 'The four subjects the journal is organised by.',
+  description: 'The four parts of the course, in reading order, and the notes beside them.',
 })
 
 export default function CategoriesPage() {
   return (
     <SectionContainer>
       <div className="index-page">
-        <PageIntro title="Subjects" lede="The four subjects the journal is organised by." />
+        <PageIntro
+          title="Subjects"
+          lede="The four parts of the course, in reading order, and the notes beside them."
+        />
         <ul className="subject-list">
           {categories.map((c) => (
             <li key={c.slug}>

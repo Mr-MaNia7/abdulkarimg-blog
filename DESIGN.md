@@ -1,6 +1,6 @@
 ---
-name: Ḥāshiya
-description: A clothbound scholarly journal on the web. Lapis cloth frames white paper; gold is reserved for scripture.
+name: Sīmā
+description: A clothbound scholarly edition on the web. Lapis cloth frames white paper; gold is reserved for scripture.
 colors:
   paper: '#f9f8f5'
   surface: '#f1efea'
@@ -58,22 +58,22 @@ typography:
     fontWeight: 400
     lineHeight: 1.5
   quran:
-    fontFamily: 'Hashiya Amiri Quran, Hashiya Amiri, serif'
+    fontFamily: 'Sima Amiri Quran, Sima Amiri, serif'
     fontSize: '1.5em'
     fontWeight: 400
     lineHeight: 2.3
   arabic:
-    fontFamily: 'Hashiya Amiri, Noto Naskh Arabic, serif'
+    fontFamily: 'Sima Amiri, Noto Naskh Arabic, serif'
     fontSize: '1.35em'
     fontWeight: 400
     lineHeight: 2.1
   ethiopic:
-    fontFamily: 'Literata, Hashiya Ethiopic, Noto Serif Ethiopic, serif'
+    fontFamily: 'Literata, Sima Ethiopic, Noto Serif Ethiopic, serif'
     fontSize: '1.12em'
     fontWeight: 400
     lineHeight: 1.85
   ethiopic-ui:
-    fontFamily: 'Commissioner, Hashiya Ethiopic Sans, system-ui, sans-serif'
+    fontFamily: 'Commissioner, Sima Ethiopic Sans, system-ui, sans-serif'
     fontSize: '1.12em'
     fontWeight: 400
     lineHeight: 1.5
@@ -124,11 +124,11 @@ components:
     padding: '0.95rem 1.05rem'
 ---
 
-# Design System: Ḥāshiya
+# Design System: Sīmā
 
 ## Overview
 
-**Creative north star: the Library Edition.** Ḥāshiya is a clothbound scholarly series on a reading desk. Lapis book cloth with gilt stamping owns the frame (the home cover and the colophon footer); plain paper and iron ink own the reading. The gloss lives in the margin: side notes and footnote copies sit beside the text, the way a _ḥāshiya_ sits beside a classical text.
+**Creative north star: the Library Edition.** Sīmā is a clothbound scholarly series on a reading desk. Lapis book cloth with gilt stamping owns the frame (the home cover and the colophon footer); plain paper and iron ink own the reading. The gloss lives in the margin: side notes and footnote copies sit beside the text, the way a _ḥāshiya_ sits beside a classical text.
 
 The system is calm, reverent and precise. The text comes first. Source and commentary are always visually distinct: scripture is gold, commentary is ink. It refuses the dev-blog card grid, SaaS shadows and gradients, and the warm-cream-serif-terracotta look.
 
@@ -159,8 +159,8 @@ Every text pair passes WCAG 2.2 AA in both themes (ink 15.9 / 13.9, faint ≥ 4.
 - **Literata** (variable weight, pinned at text optical size) for prose and every heading. One face carries the voice.
 - **Commissioner** for interface text only: navigation, labels, buttons, captions.
 - **Source Code Pro** for metadata (dates, reading time, references) and code. Never for headings or running text.
-- **Amiri Quran** (`Hashiya Amiri Quran`) for Qur'anic Arabic only; **Amiri** (`Hashiya Amiri`) for all other Arabic and for ﷺ. Arabic is set 1.35–1.5× the surrounding Latin with line-height 2.1–2.3 so vowel marks never clip.
-- **Noto Serif Ethiopic** (`Hashiya Ethiopic`) for Amharic text and headings, paired with Literata; **Noto Sans Ethiopic** (`Hashiya Ethiopic Sans`) for Amharic interface text and metadata, beside Commissioner and Source Code Pro. Each Ethiopic face follows its Latin partner in the same stack (`--stack-serif`, `--stack-sans`, `--stack-mono`; `--stack-ethiopic` names the face alone), so mixed lines need no markup.
+- **Amiri Quran** (`Sima Amiri Quran`) for Qur'anic Arabic only; **Amiri** (`Sima Amiri`) for all other Arabic and for ﷺ. Arabic is set 1.35–1.5× the surrounding Latin with line-height 2.1–2.3 so vowel marks never clip.
+- **Noto Serif Ethiopic** (`Sima Ethiopic`) for Amharic text and headings, paired with Literata; **Noto Sans Ethiopic** (`Sima Ethiopic Sans`) for Amharic interface text and metadata, beside Commissioner and Source Code Pro. Each Ethiopic face follows its Latin partner in the same stack (`--stack-serif`, `--stack-sans`, `--stack-mono`; `--stack-ethiopic` names the face alone), so mixed lines need no markup.
   - **Size:** 1.12× the Latin beside it, set once in the `@font-face` (`size-adjust: 112%`), so it holds in every context.
   - **Line:** the faces carry their Latin partner's ascent and descent (metric overrides), so an Amharic word inside an English line never stretches the line box. Amharic running text is set at `--leading-ethiopic` (1.85), titles at 1.3.
   - **No faux styles:** Ethiopic has no italic and no case, so slanted and small-caps synthesis are off for `:lang(am)`, and headings drop display tracking for it.

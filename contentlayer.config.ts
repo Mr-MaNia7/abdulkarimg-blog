@@ -32,7 +32,7 @@ import {
   rehypeMarginFootnotes,
   rehypeRefAlias,
   rehypeLocalize,
-} from './lib/rehype-hashiya'
+} from './lib/rehype-sima'
 
 const root = process.cwd()
 
@@ -89,10 +89,12 @@ const blogFields: ComputedFields = {
 }
 
 export const POST_TYPES = ['essay', 'qa', 'note'] as const
+/** The four pillars of the course, in reading order, plus Notes. See data/course.ts. */
 export const CATEGORIES = [
-  'Theology',
-  'Comparative Religion',
-  'Questions on Islam',
+  'Foundations',
+  'Existence of God',
+  'Truth of Islam',
+  'Answering Doubts',
   'Notes',
 ] as const
 
@@ -163,7 +165,7 @@ export const Blog = defineDocumentType(() => ({
     layout: { type: 'string' },
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
-    // Ḥāshiya additions
+    // Sīmā additions
     type: { type: 'enum', options: [...POST_TYPES], default: 'essay' },
     category: { type: 'enum', options: [...CATEGORIES] },
     series: { type: 'nested', of: Series },

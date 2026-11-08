@@ -37,6 +37,9 @@ const en = {
     frontPage: 'Front page',
     links: headerNavLinks as NavItem[],
     more: [
+      { href: '/essays', title: 'Essays' },
+      { href: '/questions', title: 'Questions' },
+      { href: '/notes', title: 'Notes' },
       { href: '/blog', title: 'Archive' },
       { href: '/tags', title: 'Tags' },
       { href: '/series', title: 'Series' },
@@ -45,7 +48,7 @@ const en = {
 
   search: {
     button: 'Search',
-    title: 'Search the journal',
+    title: 'Search the site',
     description:
       'Search essays, questions, notes and glossary terms. Use the arrow keys to move through results and Enter to open one.',
     placeholder: 'Search essays, questions, terms…',
@@ -63,7 +66,8 @@ const en = {
       goTo: 'Go to',
     },
     quick: [
-      { title: 'Questions on Islam', url: '/questions' },
+      { title: 'Start here', url: '/start' },
+      { title: 'Questions', url: '/questions' },
       { title: 'Glossary', url: '/glossary' },
       { title: 'Archive', url: '/blog' },
       { title: 'About', url: '/about' },
@@ -122,9 +126,10 @@ const en = {
     piece: ['piece', 'pieces'],
   } as Record<string, [string, string]>,
   categories: {
-    Theology: 'Theology',
-    'Comparative Religion': 'Comparative Religion',
-    'Questions on Islam': 'Questions on Islam',
+    Foundations: 'Foundations',
+    'Existence of God': 'Existence of God',
+    'Truth of Islam': 'Truth of Islam',
+    'Answering Doubts': 'Answering Doubts',
     Notes: 'Notes',
   } as Record<string, string>,
 
@@ -177,11 +182,11 @@ const en = {
   },
 
   notFound: {
-    title: 'Not in the margins',
+    title: 'Nothing at this address',
     lede: 'There is no page at this address. It may have moved, or the link may be mistyped.',
     links: [
       { href: '/', title: 'The front page' },
-      { href: '/questions', title: 'Questions on Islam' },
+      { href: '/start', title: 'Start here: the course' },
       { href: '/blog', title: 'The archive' },
       { href: '/glossary', title: 'The glossary' },
     ] as { href: string; title: string; lang?: string }[],

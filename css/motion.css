@@ -1,9 +1,9 @@
 /*
-  Ḥāshiya — motion. Only feedback on the reader's own actions, 150–320ms.
+  Sīmā — motion. Only feedback on the reader's own actions, 150–320ms.
   Nothing moves because the page scrolled.
 */
 
-@layer hashiya {
+@layer sima {
   /* Press feedback on the few real buttons. */
   .search-trigger:active,
   .tool-button:active,

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ComponentType } from 'react'
 
-const EVENT = 'hashiya:toast'
+const EVENT = 'sima:toast'
 
 /** Show a toast from anywhere. sonner loads on the first call, not with the page. */
 export function notify(message: string) {

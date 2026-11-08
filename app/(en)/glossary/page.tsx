@@ -7,7 +7,7 @@ import { typeset } from '@/lib/typeset'
 import { genPageMetadata } from 'app/seo'
 
 const lede =
-  'Islamic and theological terms used in the journal, with the Arabic, the transliteration, and a short definition.'
+  'Islamic and theological terms used on this site, with the Arabic, the transliteration, and a short definition.'
 export const metadata = genPageMetadata({ title: 'Glossary', description: lede })
 
 /** Sort and file under the first real letter: ʿaqīda files under A, ḍaʿīf under D. */

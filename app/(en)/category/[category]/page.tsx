@@ -40,7 +40,11 @@ export default async function CategoryPage(props: Props) {
           meta={
             <>
               {c.posts.length ? countLine(c.posts) : 'Nothing yet'} ·{' '}
-              <Link href="/category">All subjects</Link>
+              {c.part ? (
+                <Link href={`/start#part-${c.slug}`}>Part {c.part} of the course</Link>
+              ) : (
+                <Link href="/category">All subjects</Link>
+              )}
               {c.posts.length > 0 && (
                 <>
                   {' · '}

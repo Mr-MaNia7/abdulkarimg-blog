@@ -1,4 +1,4 @@
-export const PREFS_KEY = 'hashiya-reading'
+export const PREFS_KEY = 'sima-reading'
 
 /**
  * Runs in <head> before first paint (app/root-shell.tsx) so saved reading

@@ -1,9 +1,9 @@
 /*
-  Ḥāshiya — the home cover and the index pages.
+  Sīmā — the home cover and the index pages.
   Same layer and tokens as reading.css.
 */
 
-@layer hashiya {
+@layer sima {
   /* ───────────── Cover ───────────── */
 
   /* Padding, not the panel's margin, so the cloth runs past the frame on every side. */
@@ -1059,6 +1059,163 @@
   }
 
   .not-found-links a {
+    color: var(--accent);
+  }
+
+  /* ───────────── Start here: the course ───────────── */
+
+  .course-part {
+    padding-block: 2.5rem 1rem;
+    border-block-start: 1px solid var(--border-strong);
+  }
+
+  /* The intro's rule already opens Part I. */
+  .page-intro + .course-part {
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+
+  .course-part-head {
+    display: grid;
+    gap: 0.25rem 1.5rem;
+    margin-block-end: 1.75rem;
+  }
+
+  @media (min-width: 40rem) {
+    .course-part-head,
+    .course-group {
+      grid-template-columns: 4rem minmax(0, 1fr);
+    }
+
+    .course-group {
+      display: grid;
+    }
+
+    .course-group > * {
+      grid-column: 2;
+    }
+  }
+
+  .course-numeral {
+    margin: 0;
+    font-family: var(--stack-serif);
+    font-size: var(--text-h2);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--accent);
+  }
+
+  .course-part-title {
+    margin: 0;
+    font-family: var(--stack-serif);
+    font-size: var(--text-h2);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  .course-part-title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .course-part-title a:hover {
+    color: var(--accent);
+  }
+
+  .course-classical {
+    margin: 0.3rem 0 0;
+    color: var(--ink-faint);
+  }
+
+  .course-part-description {
+    max-inline-size: 60ch;
+    margin: 0.75rem 0 0;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+
+  .course-group + .course-group {
+    margin-block-start: 1.5rem;
+  }
+
+  .course-group-heading {
+    margin: 0 0 0.5rem;
+    font-family: var(--stack-sans);
+    font-size: var(--text-meta);
+    font-weight: 600;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .course-modules {
+    margin: 0 0 1.5rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .course-module {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: 0 0.75rem;
+    padding-block: 0.9rem;
+    border-block-start: 1px solid var(--border-subtle);
+  }
+
+  .course-module:first-child {
+    border-block-start: 0;
+  }
+
+  .course-n {
+    padding-block-start: 0.2rem;
+    font-family: var(--stack-mono);
+    font-size: var(--text-meta);
+    color: var(--ink-faint);
+  }
+
+  .course-module-title {
+    margin: 0;
+    font-family: var(--stack-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--ink-muted);
+  }
+
+  .course-module-title a {
+    color: var(--ink);
+    text-decoration-line: underline;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 0.2em;
+  }
+
+  .course-module-title a:hover {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+  }
+
+  .course-soon {
+    margin-inline-start: 0.6rem;
+    font-family: var(--stack-mono);
+    font-size: var(--text-meta);
+    font-weight: 400;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  .course-module-summary {
+    margin: 0.3rem 0 0;
+    line-height: 1.5;
+    color: var(--ink-muted);
+  }
+
+  /* Home: the four parts, numbered. */
+  .subject-part {
+    display: block;
+    margin-block-end: 0.35rem;
+    font-family: var(--stack-mono);
+    font-size: var(--text-meta);
     color: var(--accent);
   }
 }

@@ -216,9 +216,9 @@ function postCard(post) {
             color: C.gilt,
             letterSpacing: '-0.01em',
           },
-          'Ḥāshiya'
+          'Sīmā'
         ),
-        img(arabicImage('حاشية', 30, C.gilt), { marginLeft: 16, marginTop: 4 })
+        img(arabicImage('سيماء', 30, C.gilt), { marginLeft: 16, marginTop: 4 })
       ),
       h('div', { fontFamily: 'Source Code Pro', fontSize: 21, color: C.muted }, label)
     ),
@@ -262,9 +262,9 @@ function defaultCard(lang = 'en') {
           letterSpacing: '-0.02em',
           lineHeight: 1,
         },
-        'Ḥāshiya'
+        'Sīmā'
       ),
-      img(arabicImage('حاشية', 64, C.gilt), { marginTop: 14 }),
+      img(arabicImage('سيماء', 64, C.gilt), { marginTop: 14 }),
       h(
         'div',
         {

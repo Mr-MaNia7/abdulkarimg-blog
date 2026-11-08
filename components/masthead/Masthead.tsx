@@ -9,7 +9,7 @@ import ThemeToggle from './ThemeToggle'
 import ReadingPrefs from './ReadingPrefs'
 
 /**
- * A thin masthead: wordmark, five links, search, reading preferences, theme.
+ * A thin masthead: wordmark, six links, search, reading preferences, theme.
  * It keeps one height so nothing below it moves; on scroll it gains a ground
  * and a hairline (CSS scroll-driven animation, no script).
  * Labels come from the page's language (data/i18n).

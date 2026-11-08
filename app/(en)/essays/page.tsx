@@ -5,7 +5,7 @@ import YearArchive from '@/components/index/YearArchive'
 import { byType, plural } from '@/lib/content'
 import { genPageMetadata } from 'app/seo'
 
-const lede = 'Long-form writing on theology and comparative religion.'
+const lede = 'Long-form arguments: the proofs, the evidence and the replies, set out step by step.'
 export const metadata = genPageMetadata({ title: 'Essays', description: lede })
 
 export default function EssaysPage() {

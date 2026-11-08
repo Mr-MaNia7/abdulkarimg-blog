@@ -1,8 +1,8 @@
 <div align="center">
 
-# Ḥāshiya · حاشية
+# Sīmā · سيماء
 
-**A journal of theology, comparative religion, and careful answers to questions about Islam.**
+**A systematic case for Islam: the proofs that God exists, the evidence that Islam is true, and careful answers to the doubts raised against it.**
 
 [**blog.abdulkarimg.com**](https://blog.abdulkarimg.com) · [Design system](DESIGN.md) · [Write a post](#writing) · [Deploy](#deployment)
 
@@ -14,14 +14,14 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/home-dark.webp">
-  <img src="docs/screenshots/home-light.webp" alt="The Ḥāshiya home page: a lapis cloth cover with the gilt wordmark Ḥāshiya above the Arabic حاشية, the journal's mission, and a count of essays, answers and notes." width="100%">
+  <img src="docs/screenshots/home-light.webp" alt="The home page: a lapis cloth cover with the gilt wordmark above the Arabic, the site's mission, and a count of essays, answers and notes." width="100%">
 </picture>
 
 </div>
 
 ## About
 
-A _ḥāshiya_ is a marginal gloss: the notes a reader writes beside a text while studying it. This journal is a gloss in that sense. It is written by Abdulkarim G. Mohammed, a student of knowledge, for Muslims who want depth and for readers of other faiths or none who want to understand.
+_Sīmā_ (سيماء) is the mark by which something is known. The site is a course in four parts, read in order: **Foundations** (how we know, and the kinds of argument), **Existence of God** (Ibn Sīnā, al-Ghazālī, Ibn Taymiyya and the argument from design), **Truth of Islam** (prophethood, the Qur'an, and why Islam alone holds revelation whole), and **Answering Doubts** (atheism, liberalism, feminism, the problem of evil and more). It is written by Abdulkarim G. Mohammed, a student of knowledge, for Muslims who want to know why they believe and for sceptics who want to see the case made properly. The syllabus lives in [`data/course.ts`](data/course.ts) and is rendered at `/start`.
 
 The design treats the site as a clothbound scholarly edition: lapis cloth frames white paper, gold is reserved for scripture, and the gloss lives in the margin. Primary texts are always quoted in full with their reference and translator, set apart from the commentary.
 
@@ -36,6 +36,7 @@ The design treats the site as a clothbound scholarly edition: lapis cloth frames
 - **Arabic done properly.** Arabic typed straight into Markdown is marked `lang="ar" dir="rtl"` and set in Amiri; Qur'anic text in Amiri Quran. ﷺ, transliteration marks (ʿ ʾ) and curly quotes are typeset at build time.
 - **In Amharic too.** An Amharic section at [`/am/`](https://blog.abdulkarimg.com/am/) for original Amharic writing and translations of English posts, linked both ways, with its own interface, feed and search. Dates give the Ethiopian calendar and the Gregorian (`ጥቅምት 21 ቀን 2019 ዓ.ም. · 31 Oct 2026`); Amharic is set in Noto Serif Ethiopic beside Literata. See [Writing in Amharic](#writing-in-amharic).
 - **Margins that work.** Tufte-style side notes and footnote copies in the right margin, a sticky contents list in the left; both collapse gracefully on phones and work without JavaScript.
+- **A course, not just a feed.** `/start` lays out the whole argument in order from [`data/course.ts`](data/course.ts); each planned piece links to its post once written and shows as forthcoming until then.
 - **Four kinds of writing.** Essays, Q&A posts (short answer first), notes, and multi-part series.
 - **A glossary.** Inline terms open a definition; every term is collected on `/glossary`, A–Z.
 - **Search.** ⌘K / Ctrl+K / `/` opens a palette backed by [Pagefind](https://pagefind.app): static, grouped by type, includes glossary terms, and finds vocalized Arabic from plain typing. English and Amharic pages each search their own language.
@@ -93,7 +94,7 @@ Posts are MDX files in [`data/blog/`](data/blog). The file name is the URL: `dat
 | `title`                  | yes      | Arabic, ʿ ʾ and ﷺ are fine; they are typeset automatically.                                                  |
 | `date`                   | yes      | `'2026-11-02'`                                                                                               |
 | `type`                   |          | `essay` (default), `qa`, or `note`                                                                           |
-| `category`               |          | `Theology`, `Comparative Religion`, `Questions on Islam`, or `Notes`                                         |
+| `category`               |          | `Foundations`, `Existence of God`, `Truth of Islam`, `Answering Doubts`, or `Notes`                          |
 | `summary`                |          | One or two sentences, shown under the title, in lists, feeds and search                                      |
 | `tags`                   |          | `['tawhid', 'scripture']`                                                                                    |
 | `series`                 |          | `{ name: 'The Names of God', part: 2 }`                                                                      |
@@ -118,7 +119,7 @@ The build stops with a clear message if a Q&A post lacks `question` or `short_an
 title: 'The Names of God in the Qur’an'
 date: '2026-11-02'
 type: essay
-category: Theology
+category: Existence of God
 summary: What it means that God names Himself, and why the names are not interchangeable.
 tags: ['tawhid', 'names-of-god']
 series: { name: 'The Names of God', part: 1 }
@@ -137,7 +138,7 @@ Opening paragraph…
 title: 'Is the Qur’an the same in every copy?'
 date: '2026-11-05'
 type: qa
-category: Questions on Islam
+category: Truth of Islam
 layout: PostSimple
 question: 'Have different versions of the Qur’an existed, and is today’s text the same everywhere?'
 short_answer: 'Two or three sentences that answer directly. The rest of the post gives the reasoning and the sources.'
@@ -170,18 +171,18 @@ Amharic posts are MDX files in [`data/blog/am/`](data/blog/am), served under `/a
 
   ```mdx
   ---
-  title: 'ሙስሊሞች ከነቢዩ ስም በኋላ ለምን ﷺ ይላሉ?'
+  title: 'የጽሑፉ ርዕስ በአማርኛ'
   date: '2026-10-31'
   type: qa
-  category: Questions on Islam
-  translationOf: sample-salawat
+  category: Answering Doubts
+  translationOf: sample-problem-of-evil
   ---
   ```
 
   The two versions then link to each other ("በአማርኛም ያንብቡ" on the English post, "Also in English" on the Amharic one) and are marked as `hreflang` alternates in the page head, the sitemap and the JSON-LD. The build stops if `translationOf` names no English post, or if two posts translate the same one. The link works in either direction, so an English translation of an Amharic original can later name the Amharic slug the same way.
 
-- **Category** stays one of the four English values; it is shown in Amharic. Tags stay as written; Amharic pages show them without links, since tag and subject pages exist in English only.
-- **Scripture** works as in English, and the same rule holds: components show only what you write. Keep the Arabic exactly as published, and for `translation` use a published Amharic translation and name its translator. The sample post ([`data/blog/am/sample-salawat.mdx`](data/blog/am/sample-salawat.mdx)) shows a clearly marked placeholder where that translation is still missing.
+- **Category** stays one of the five English values; it is shown in Amharic. Tags stay as written; Amharic pages show them without links, since tag and subject pages exist in English only.
+- **Scripture** works as in English, and the same rule holds: components show only what you write. Keep the Arabic exactly as published, and for `translation` use a published Amharic translation and name its translator. Where that translation is still missing, put a clearly marked placeholder: **[እዚህ ላይ የታተመ የአማርኛ ትርጉም ይገባል። Insert a published Amharic translation here.]**
 - **Typesetting** is automatic: spaces typed before ። ፣ ፤ ፡ are closed up so a stop never starts a line, and Ethiopic typed into an English post is marked `lang="am"`.
 
 Interface text (navigation, labels, dates, search, the footer, the 404 page) comes from one dictionary per language, [`data/i18n/en.ts`](data/i18n/en.ts) and [`data/i18n/am.ts`](data/i18n/am.ts), with the same keys. Components pick one by the page's language (`dict(lang)`); to change a label, edit it there. Each language has its own root layout (`app/(en)/` and `app/(am)/`) so that every page is served with the right `<html lang>`.

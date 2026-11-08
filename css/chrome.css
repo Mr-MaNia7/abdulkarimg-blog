@@ -1,9 +1,9 @@
 /*
-  Ḥāshiya — site chrome: masthead, mobile menu, search palette, reading
+  Sīmā — site chrome: masthead, mobile menu, search palette, reading
   preferences, colophon footer.
 */
 
-@layer hashiya {
+@layer sima {
   /* ───────────── Masthead ───────────── */
 
   .masthead {

@@ -1,5 +1,5 @@
 /**
- * Ethiopic script (Amharic), shared by the MDX pipeline (lib/rehype-hashiya.ts),
+ * Ethiopic script (Amharic), shared by the MDX pipeline (lib/rehype-sima.ts),
  * plain-string typesetting (lib/typeset.tsx) and the build scripts.
  * Blocks: Ethiopic, Ethiopic Supplement, Ethiopic Extended, Ethiopic Extended-A.
  */

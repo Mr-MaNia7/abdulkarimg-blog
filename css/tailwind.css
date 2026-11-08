@@ -10,7 +10,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
-  Ḥāshiya — Library Edition
+  Sīmā — Library Edition
   Lapis cloth frames white paper; gold is reserved for scripture.
   All sizes are rem/em/ch. px only for hairlines, focus rings and shadows.
 */
@@ -20,7 +20,7 @@
    only when Arabic is on the page; posts with Arabic also preload them. */
 
 @font-face {
-  font-family: 'Hashiya Amiri';
+  font-family: 'Sima Amiri';
   src: url('/fonts/v1/Amiri-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
@@ -30,7 +30,7 @@
 }
 
 @font-face {
-  font-family: 'Hashiya Amiri Quran';
+  font-family: 'Sima Amiri Quran';
   src: url('/fonts/v1/AmiriQuran.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
@@ -52,7 +52,7 @@
    - unicode-range: fetched only when Ethiopic is on the page. */
 
 @font-face {
-  font-family: 'Hashiya Ethiopic';
+  font-family: 'Sima Ethiopic';
   src: url('/fonts/v1/NotoSerifEthiopic.woff2') format('woff2');
   font-weight: 400 700;
   font-style: normal;
@@ -65,7 +65,7 @@
 }
 
 @font-face {
-  font-family: 'Hashiya Ethiopic Sans';
+  font-family: 'Sima Ethiopic Sans';
   src: url('/fonts/v1/NotoSansEthiopic.woff2') format('woff2');
   font-weight: 400 600;
   font-style: normal;
@@ -82,7 +82,7 @@
    English pages fetch only this. Built by scripts/fonts/ethiopic.py, which
    prints this unicode-range; rerun it when those strings change. */
 @font-face {
-  font-family: 'Hashiya Ethiopic Labels';
+  font-family: 'Sima Ethiopic Labels';
   src: url('/fonts/v1/NotoSansEthiopic-labels.woff2') format('woff2');
   font-weight: 400 600;
   font-style: normal;
@@ -136,19 +136,19 @@
      Amharic, ﷺ and stray Arabic always resolve (their unicode-range keeps them
      from loading where they are not used). */
   --stack-serif:
-    var(--font-literata), 'Hashiya Ethiopic', 'Hashiya Amiri', 'Iowan Old Style', Georgia, serif;
+    var(--font-literata), 'Sima Ethiopic', 'Sima Amiri', 'Iowan Old Style', Georgia, serif;
   --stack-sans:
-    var(--font-commissioner), 'Hashiya Ethiopic Labels', 'Hashiya Ethiopic Sans', 'Hashiya Amiri',
+    var(--font-commissioner), 'Sima Ethiopic Labels', 'Sima Ethiopic Sans', 'Sima Amiri',
     ui-sans-serif, system-ui, sans-serif;
   --stack-mono:
-    var(--font-source-code-pro), 'Hashiya Ethiopic Labels', 'Hashiya Ethiopic Sans', ui-monospace,
+    var(--font-source-code-pro), 'Sima Ethiopic Labels', 'Sima Ethiopic Sans', ui-monospace,
     'SFMono-Regular', Menlo, monospace;
-  --stack-ethiopic: 'Hashiya Ethiopic', 'Noto Serif Ethiopic', 'Abyssinica SIL', serif;
+  --stack-ethiopic: 'Sima Ethiopic', 'Noto Serif Ethiopic', 'Abyssinica SIL', serif;
 
   /* Amharic text: a more open line for the taller syllables (DESIGN.md, Typography). */
   --leading-ethiopic: 1.85;
-  --stack-arabic: 'Hashiya Amiri', 'Noto Naskh Arabic', 'Geeza Pro', serif;
-  --stack-quran: 'Hashiya Amiri Quran', 'Hashiya Amiri', 'Geeza Pro', serif;
+  --stack-arabic: 'Sima Amiri', 'Noto Naskh Arabic', 'Geeza Pro', serif;
+  --stack-quran: 'Sima Amiri Quran', 'Sima Amiri', 'Geeza Pro', serif;
 
   /* Reading preferences (set on <html> by the Aa popover). */
   --reading-scale: 1;
