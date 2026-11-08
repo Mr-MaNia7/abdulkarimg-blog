@@ -1,5 +1,5 @@
 /**
- * Build-time Open Graph images and favicons, in the journal's cloth-and-gilt identity.
+ * Build-time Open Graph images and favicons, in the site's cloth-and-gilt identity.
  *
  * Satori lays the cards out and resvg rasterises them. Satori cannot shape
  * Arabic, so every Arabic run (and ﷺ) is shaped here with HarfBuzz and drawn
@@ -315,26 +315,23 @@ function readPosts(dir = 'data/blog') {
 
 /* ───────────── Favicons ───────────── */
 
-function iconNode(size) {
-  return h(
-    'div',
-    {
-      width: size,
-      height: size,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: C.cloth,
-      fontFamily: 'Literata',
-      fontWeight: 600,
-      fontSize: size * 0.64,
-      lineHeight: 1,
-      color: C.gilt,
-    },
-    // Centre the ink, not the box: the dot below makes the glyph bottom-heavy.
-    h('div', { display: 'flex', marginTop: -size * 0.16 }, 'Ḥ')
-  )
-}
+/**
+ * The mark: an eight-pointed star in gilt on the cloth, two squares turned
+ * 45° about a centre dot. Pure geometry, so it is drawn as SVG directly and
+ * stays crisp down to 16px, where a letter blurs.
+ */
+const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="${C.cloth}"/>
+  <g fill="none" stroke="${C.gilt}" stroke-width="30" stroke-linejoin="miter">
+    <rect x="146" y="146" width="220" height="220"/>
+    <rect x="146" y="146" width="220" height="220" transform="rotate(45 256 256)"/>
+  </g>
+  <circle cx="256" cy="256" r="34" fill="${C.gilt}"/>
+</svg>
+`
+
+const iconPng = (size) =>
+  new Resvg(ICON_SVG, { fitTo: { mode: 'width', value: size } }).render().asPng()
 
 /** A .ico holding one PNG, the format every browser accepts. */
 function ico(pngBytes, size) {
@@ -363,14 +360,11 @@ async function icons() {
     'icon-512.png': 512,
   }
   for (const [name, size] of Object.entries(sizes)) {
-    writeFileSync(path.join(dir, name), await png(iconNode(size), size, size))
+    writeFileSync(path.join(dir, name), iconPng(size))
   }
-  writeFileSync(path.join(dir, 'favicon.ico'), ico(await png(iconNode(32), 32, 32), 32))
-  // Vector favicon: the same Ḥ, from Satori's own SVG output.
-  writeFileSync(
-    path.join(dir, 'icon.svg'),
-    await satori(iconNode(64), { width: 64, height: 64, fonts })
-  )
+  writeFileSync(path.join(dir, 'favicon.ico'), ico(iconPng(32), 32))
+  // Vector favicon: the same drawing the PNGs are made from.
+  writeFileSync(path.join(dir, 'icon.svg'), ICON_SVG)
   writeFileSync(
     path.join(dir, 'site.webmanifest'),
     JSON.stringify(
