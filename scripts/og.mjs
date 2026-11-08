@@ -13,6 +13,7 @@
  *   node scripts/og.mjs           → public/og/*.png (one per post + default),
  *                                   Amharic posts and default under public/og/am/
  *   node scripts/og.mjs --icons   → also regenerate public/static/favicons/*
+ *   node scripts/og.mjs --brand   → only the social-media kit, in assets/brand/
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, statSync } from 'fs'
 import path from 'path'
@@ -320,15 +321,19 @@ function readPosts(dir = 'data/blog') {
  * 45° about a centre dot. Pure geometry, so it is drawn as SVG directly and
  * stays crisp down to 16px, where a letter blurs.
  */
-const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="${C.cloth}"/>
-  <g fill="none" stroke="${C.gilt}" stroke-width="30" stroke-linejoin="miter">
+/** The star alone, in `color`, optionally on a square of `bg`. */
+const starSvg = (
+  color,
+  bg
+) => `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 512 512">
+  ${bg ? `<rect width="512" height="512" fill="${bg}"/>\n  ` : ''}<g fill="none" stroke="${color}" stroke-width="30" stroke-linejoin="miter">
     <rect x="146" y="146" width="220" height="220"/>
     <rect x="146" y="146" width="220" height="220" transform="rotate(45 256 256)"/>
   </g>
-  <circle cx="256" cy="256" r="34" fill="${C.gilt}"/>
+  <circle cx="256" cy="256" r="34" fill="${color}"/>
 </svg>
 `
+const ICON_SVG = starSvg(C.gilt, C.cloth)
 
 const iconPng = (size) =>
   new Resvg(ICON_SVG, { fitTo: { mode: 'width', value: size } }).render().asPng()
@@ -386,9 +391,223 @@ async function icons() {
   console.log(`Favicons → ${dir}`)
 }
 
+/* ───────────── Brand kit for social media ───────────── */
+
+/**
+ * The star's drawing reaches 177 of 256 units from the centre (the mitred
+ * corners), so the star fills 69% of its box. Sizes below are of the box.
+ */
+const starImg = (size, color = C.gilt) => ({
+  src: `data:image/svg+xml;base64,${Buffer.from(starSvg(color)).toString('base64')}`,
+  width: size,
+  height: size,
+})
+
+const TAGLINE = 'A systematic case for Islam'
+
+/** Star, then Sīmā over سيماء: the horizontal lockup. */
+const lockup = (scale, color = C.gilt) =>
+  h(
+    'div',
+    { display: 'flex', alignItems: 'center' },
+    img(starImg(150 * scale, color), { marginRight: 22 * scale }),
+    h(
+      'div',
+      // Arabic reads from the right, so it ends where the Latin ends.
+      { display: 'flex', flexDirection: 'column', alignItems: 'flex-end' },
+      h(
+        'div',
+        {
+          fontFamily: 'Literata',
+          fontWeight: 600,
+          fontSize: 112 * scale,
+          color,
+          letterSpacing: '-0.02em',
+          lineHeight: 1,
+        },
+        'Sīmā'
+      ),
+      img(arabicImage('سيماء', 52 * scale, color), { marginTop: -4 * scale })
+    )
+  )
+
+/** A canvas: cloth with the cover's double frame, or bare (transparent). */
+function canvas(width, height, { framed = true, bg = C.cloth, inset = 28 } = {}, ...children) {
+  const rule = (d, color) =>
+    h('div', {
+      position: 'absolute',
+      top: d,
+      left: d,
+      right: d,
+      bottom: d,
+      border: `${Math.max(1, Math.round(width / 1200))}px solid ${color}`,
+    })
+  return h(
+    'div',
+    {
+      width,
+      height,
+      display: 'flex',
+      position: 'relative',
+      alignItems: 'center',
+      justifyContent: 'center',
+      ...(bg ? { background: bg } : {}),
+    },
+    ...(framed ? [rule(inset, C.frame), rule(inset + inset / 3, C.frameInner)] : []),
+    ...children
+  )
+}
+
+const tagline = (size, extra = {}) =>
+  h('div', { fontFamily: 'Literata', fontSize: size, color: C.muted, ...extra }, TAGLINE)
+const host = (size) =>
+  h(
+    'div',
+    { fontFamily: 'Source Code Pro', fontSize: size, color: C.gilt },
+    new URL(siteMetadata.siteUrl).host
+  )
+
+async function brand() {
+  const dir = 'assets/brand'
+  rmSync(dir, { recursive: true, force: true })
+  mkdirSync(dir, { recursive: true })
+  const write = async (name, node, width, height) => {
+    const svg = await satori(node, { width, height, fonts })
+    if (name.endsWith('.svg')) writeFileSync(path.join(dir, name), svg)
+    else
+      writeFileSync(
+        path.join(dir, name),
+        new Resvg(svg, { fitTo: { mode: 'width', value: width } }).render().asPng()
+      )
+  }
+
+  // The mark, as vectors and large rasters.
+  writeFileSync(path.join(dir, 'mark.svg'), ICON_SVG)
+  writeFileSync(path.join(dir, 'mark-gilt.svg'), starSvg(C.gilt))
+  writeFileSync(path.join(dir, 'mark-cloth.svg'), starSvg(C.cloth))
+  const raster = (svg, size) =>
+    new Resvg(svg, { fitTo: { mode: 'width', value: size } }).render().asPng()
+  writeFileSync(path.join(dir, 'mark-2048.png'), raster(ICON_SVG, 2048))
+  writeFileSync(path.join(dir, 'mark-gilt-2048.png'), raster(starSvg(C.gilt), 2048))
+  writeFileSync(path.join(dir, 'mark-cloth-2048.png'), raster(starSvg(C.cloth), 2048))
+
+  // Profile picture: the star kept well inside the circle every platform crops to.
+  const P = 1080
+  await write('profile-1080.png', canvas(P, P, { framed: false }, img(starImg(P * 0.8))), P, P)
+
+  // Wordmark lockups: on cloth, and bare for placing on other backgrounds.
+  await write('lockup.svg', canvas(1040, 440, { framed: false }, lockup(1.6)), 1040, 440)
+  await write('lockup.png', canvas(1040, 440, { framed: false }, lockup(1.6)), 1040, 440)
+  await write(
+    'lockup-gilt.png',
+    canvas(1040, 440, { framed: false, bg: null }, lockup(1.6)),
+    1040,
+    440
+  )
+  await write(
+    'lockup-cloth.png',
+    canvas(1040, 440, { framed: false, bg: null }, lockup(1.6, C.cloth)),
+    1040,
+    440
+  )
+
+  // X / Twitter header (1500×500). The avatar covers the bottom-left, so the
+  // lockup sits right of centre and the corner stays empty.
+  await write(
+    'header-x-1500x500.png',
+    canvas(
+      1500,
+      500,
+      { inset: 24 },
+      h(
+        'div',
+        {
+          position: 'absolute',
+          right: 120,
+          top: 0,
+          bottom: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'flex-end',
+        },
+        lockup(1.05),
+        tagline(30, { marginTop: 22 })
+      )
+    ),
+    1500,
+    500
+  )
+
+  // LinkedIn / Facebook-style wide cover (1584×396), centred.
+  await write(
+    'header-wide-1584x396.png',
+    canvas(
+      1584,
+      396,
+      { inset: 22 },
+      h(
+        'div',
+        { display: 'flex', alignItems: 'center' },
+        lockup(0.9),
+        h('div', {
+          width: 1,
+          height: 150,
+          background: C.frame,
+          marginLeft: 56,
+          marginRight: 56,
+        }),
+        h(
+          'div',
+          { display: 'flex', flexDirection: 'column' },
+          tagline(32),
+          h('div', { display: 'flex', marginTop: 14 }, host(22))
+        )
+      )
+    ),
+    1584,
+    396
+  )
+
+  // Square post (Instagram, Telegram, WhatsApp): the stacked lockup.
+  await write(
+    'post-1080.png',
+    canvas(
+      P,
+      P,
+      { inset: 40 },
+      h(
+        'div',
+        { display: 'flex', flexDirection: 'column', alignItems: 'center' },
+        img(starImg(300)),
+        h(
+          'div',
+          {
+            marginTop: 26,
+            fontFamily: 'Literata',
+            fontWeight: 600,
+            fontSize: 150,
+            color: C.gilt,
+            letterSpacing: '-0.02em',
+            lineHeight: 1,
+          },
+          'Sīmā'
+        ),
+        img(arabicImage('سيماء', 70, C.gilt), { marginTop: 0 }),
+        tagline(40, { marginTop: 40 }),
+        h('div', { display: 'flex', marginTop: 70 }, host(28))
+      )
+    ),
+    P,
+    P
+  )
+  console.log(`Brand kit → ${dir}`)
+}
+
 /* ───────────── Run ───────────── */
 
 async function main() {
+  if (process.argv.includes('--brand')) return brand()
   rmSync(OUT, { recursive: true, force: true })
   mkdirSync(OUT, { recursive: true })
   writeFileSync(path.join(OUT, 'default.png'), await png(defaultCard()))

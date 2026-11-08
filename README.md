@@ -81,6 +81,7 @@ Search reads the index from the last build, so run `yarn build` once before tryi
 | `yarn lint`                         | ESLint (fixes what it can)                                                 |
 | `yarn tsc --noEmit`                 | Type-check                                                                 |
 | `yarn icons`                        | Regenerate favicons and the web manifest                                   |
+| `yarn brand`                        | Regenerate the social-media brand kit in `assets/brand/`                   |
 | `yarn analyze`                      | Bundle analysis                                                            |
 
 ## Writing

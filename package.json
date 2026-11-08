@@ -10,6 +10,7 @@
     "serve": "next start",
     "analyze": "cross-env ANALYZE=true next build",
     "icons": "node ./scripts/og.mjs --icons",
+    "brand": "node ./scripts/og.mjs --brand",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
     "prepare": "husky"
   },
