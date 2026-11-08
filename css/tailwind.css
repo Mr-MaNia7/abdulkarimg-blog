@@ -280,7 +280,8 @@ html[data-reading-font='sans'] {
   --tracking-display: -0.025em;
   --tracking-caps: 0.14em;
 
-  --container-measure: 68ch;
+  /* About 70 characters of Literata a line, the comfortable range for long reading. */
+  --container-measure: 60ch;
   --container-page: 84rem;
 
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);

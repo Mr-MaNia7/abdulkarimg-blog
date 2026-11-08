@@ -82,7 +82,7 @@ rounded:
   card: '3px'
   pill: '999px'
 spacing:
-  measure: '68ch'
+  measure: '60ch'
   page: '84rem'
   gutter-sm: '1.25rem'
   gutter-md: '2rem'
@@ -167,14 +167,15 @@ Every text pair passes WCAG 2.2 AA in both themes (ink 15.9 / 13.9, faint ≥ 4.
   - **Punctuation:** ። ፣ ፤ ፡ sit against the word before them (space typed before a stop is closed up at build time), with a space after.
   - **Dates:** Ethiopian calendar first, then the Gregorian: `ጥቅምት 21 ቀን 2019 ዓ.ም. · 31 Oct 2026`.
   - Faces load only where Ethiopic appears (unicode-range); Amharic pages preload the serif. English pages carry only a 2 kB subset for the links into Amharic.
-- Fluid scale (`clamp(rem + vw)`, never `vw` alone). Measure 68ch, body line-height 1.7. Headings balance; paragraphs `text-wrap: pretty`.
+- Fluid scale (`clamp(rem + vw)`, never `vw` alone). Measure 60ch of the reading face (about 70 characters a line; 68ch of Literata ran to 80), body line-height 1.7. From 100rem the body steps up to 1.4rem, and the column, measured in ch, grows with it. Headings balance; paragraphs `text-wrap: pretty`.
 - Transliteration uses full diacritics. ʿ and ʾ are tightened by −0.12em (Literata draws them with wide side bearings). Straight quotes become typographic quotes at build time.
 - Sentence case everywhere. No eyebrow labels above headings.
 
 ## Layout
 
 - One page frame: max 84rem, equal gutters 1.25 / 2 / 2.5rem.
-- Reading pages: a 68ch column; from 64rem a right margin (15rem notes + 3rem gap) for side notes and footnote copies; from 80rem a left margin (13rem) for the sticky contents.
+- Reading pages: a 60ch column on the page's axis. From 80rem the page is margin, text, margin (15rem each, 3rem gaps, the margins giving up width first): contents on the left, side notes and footnote copies on the right. Between 64rem and 80rem only a post with notes keeps a right margin; one without stays centred.
+- Contents: a closed disclosure (a drawn chevron and "Contents"), sticky in the left margin from 80rem and above the text below it, so the margin stays quiet until the reader asks. Native `<details>`, so it works without JavaScript; open, the section in view is marked in lapis.
 - Index pages: a centred 56rem column, an intro block closed by a strong rule, then hairline-separated lists.
 - The home page opens on the full-width cloth cover (the stamped frame inset on all four sides), then the featured essay, Latest, an optional surface band of older questions, and the subjects. Nothing appears twice: the questions band shows only questions Latest does not, and is left out when there are none; subjects with no pieces are left off the home page. Section spacing `clamp(3rem, 2rem + 3.5vw, 5.5rem)`.
 - All sizes in rem/em/ch; px only for hairlines, focus rings and shadows.

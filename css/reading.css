@@ -93,6 +93,9 @@
 
   .post {
     padding-block: clamp(2rem, 1.5rem + 2vw, 3.5rem) 5rem;
+    /* The reader's chosen face and size, so the column, measured in ch here,
+       is exactly as wide as the text inside it. */
+    font-family: var(--font-reading);
     font-size: calc(var(--text-body) * var(--reading-scale));
   }
 
@@ -101,29 +104,40 @@
   }
 
   .post-simple .post-main {
-    max-inline-size: 68ch;
+    max-inline-size: var(--container-measure);
     margin-inline: auto;
   }
 
   .post-margins .post-main {
-    max-inline-size: 68ch;
+    max-inline-size: var(--container-measure);
     margin-inline: auto;
   }
 
-  /* Margin for notes on the right. */
-  @media (min-width: 64rem) {
-    .post-margins .post-main {
+  /*
+    Between 64rem and 80rem only the right margin fits. It is kept for posts
+    that have side notes or footnotes to put there; a post without them
+    stays centred instead of hugging the left edge.
+  */
+  @media (64rem <= width < 80rem) {
+    .post-margins:has(.sidenote, .margin-note) .post-main {
       box-sizing: content-box;
-      max-inline-size: 68ch;
+      max-inline-size: var(--container-measure);
+      margin-inline: 0;
       padding-inline-end: calc(var(--note-gap) + var(--note-width));
     }
   }
 
-  /* Contents on the left as well. */
+  /*
+    From 80rem: margin, text, margin. The text column sits on the page's axis;
+    the left margin holds the contents, the right one the notes. The margins
+    give up width first, so the text keeps its full measure.
+  */
   @media (min-width: 80rem) {
     .post-margins {
       display: grid;
-      grid-template-columns: var(--toc-width) auto;
+      grid-template-columns:
+        minmax(0, var(--note-width)) min(var(--container-measure), 100%)
+        minmax(0, var(--note-width));
       column-gap: var(--note-gap);
       justify-content: center;
     }
@@ -131,6 +145,7 @@
     .post-margins .post-main {
       grid-column: 2;
       grid-row: 1;
+      max-inline-size: none;
       margin-inline: 0;
     }
 
@@ -142,6 +157,17 @@
 
     .post-margins .toc-inline {
       display: none;
+    }
+  }
+
+  /*
+    Very wide screens are read from further away: the text grows a step, and
+    the column (measured in ch) grows with it. Continuous with the body size
+    at 100rem, so nothing jumps.
+  */
+  @media (min-width: 100rem) {
+    .post {
+      --text-body: clamp(1.25rem, 0.25rem + 1vw, 1.4rem);
     }
   }
 
@@ -228,16 +254,63 @@
     font-size: var(--text-ui);
   }
 
-  .toc-heading {
-    margin: 0 0 0.8rem;
+  /* The disclosure that opens the contents, in the margin and above the text. */
+  .toc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding-block: 0.3rem;
     font-size: var(--text-meta);
     font-weight: 600;
     color: var(--ink-muted);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .toc-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  /* A drawn chevron: points along the line closed, down when open. */
+  .toc-toggle::before {
+    inline-size: 0.42em;
+    block-size: 0.42em;
+    border-block-end: 1.5px solid currentColor;
+    border-inline-end: 1.5px solid currentColor;
+    content: '';
+    transform: translateX(-0.1em) rotate(-45deg);
+  }
+
+  :dir(rtl) .toc-toggle::before {
+    transform: translateX(0.1em) rotate(135deg);
+  }
+
+  details[open] > .toc-toggle::before {
+    transform: translateY(-0.12em) rotate(45deg);
+  }
+
+  .toc-toggle:hover {
+    color: var(--ink);
+  }
+
+  details[open] > .toc-toggle {
+    margin-block-end: 0.6rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .toc-toggle,
+    .toc-toggle::before {
+      transition:
+        color 160ms var(--ease-out-quint),
+        transform 200ms var(--ease-out-quint);
+    }
   }
 
   .toc-margin {
     position: sticky;
     inset-block-start: 6rem;
+    inline-size: min(100%, var(--toc-width));
     max-block-size: calc(100svh - 8rem);
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -282,16 +355,6 @@
     margin-block: 0 2.25rem;
     padding-block: 0.8rem;
     border-block: 1px solid var(--border-subtle);
-  }
-
-  .toc-inline summary {
-    margin: 0;
-    cursor: pointer;
-    list-style-position: inside;
-  }
-
-  .toc-inline[open] summary {
-    margin-block-end: 0.6rem;
   }
 
   /* ───────────── Body apparatus ───────────── */

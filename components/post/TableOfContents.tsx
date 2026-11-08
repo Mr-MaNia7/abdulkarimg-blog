@@ -23,27 +23,31 @@ export function TocList({ toc }: { toc: TocItem[] }) {
 
 const enough = (toc: TocItem[]) => toc.filter((t) => t.depth <= 3).length >= 2
 
-/** Wide screens: sticky in the left margin, with the current section marked. */
+/**
+ * Wide screens: sticky in the left margin, closed until the reader opens it,
+ * so the margin stays quiet beside the text. A native disclosure, so it opens
+ * without JavaScript; open, the section being read is marked.
+ */
 export default function TableOfContents({ toc, lang }: { toc: TocItem[]; lang?: string }) {
   if (!enough(toc)) return null
+  const label = dict(lang).post.contents
   return (
-    <nav className="toc toc-margin" aria-labelledby="toc-heading">
-      {/* A label, not a heading: this box precedes the post's h1 in the document. */}
-      <p id="toc-heading" className="toc-heading">
-        {dict(lang).post.contents}
-      </p>
-      <TocList toc={toc} />
+    <nav className="toc toc-margin" aria-label={label}>
+      <details className="toc-panel">
+        <summary className="toc-toggle">{label}</summary>
+        <TocList toc={toc} />
+      </details>
       <TocHighlighter />
     </nav>
   )
 }
 
-/** Narrow screens: a disclosure at the top of the text. */
+/** Narrow screens: the same disclosure, at the top of the text. */
 export function TocInline({ toc, lang }: { toc: TocItem[]; lang?: string }) {
   if (!enough(toc)) return null
   return (
     <details className="toc toc-inline" data-pagefind-ignore="all">
-      <summary className="toc-heading">{dict(lang).post.contents}</summary>
+      <summary className="toc-toggle">{dict(lang).post.contents}</summary>
       <TocList toc={toc} />
     </details>
   )
