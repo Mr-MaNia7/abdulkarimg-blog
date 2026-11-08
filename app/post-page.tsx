@@ -19,6 +19,7 @@ import { getRelated, getSeries, getTranslations } from '@/lib/posts'
 import { absolute, ldScript, ogImage, postJsonLd, postUrl } from '@/lib/jsonld'
 import { hasEthiopic } from '@/lib/ethiopic'
 import SectionContainer from '@/components/SectionContainer'
+import { EMPTY_PARAM, exportParams } from '@/lib/static-params'
 
 /**
  * One post page for every language: app/(en)/blog/[...slug] serves English
@@ -38,9 +39,12 @@ const findPost = (lang: Lang, slug: string) =>
   allBlogs.find((p) => p.lang === lang && p.slug === slug)
 
 export const postStaticParams = (lang: Lang) =>
-  allBlogs
-    .filter((p) => p.lang === lang)
-    .map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
+  exportParams(
+    allBlogs
+      .filter((p) => p.lang === lang)
+      .map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) })),
+    { slug: [EMPTY_PARAM] }
+  )
 
 export async function postMetadata(lang: Lang, props: Params): Promise<Metadata | undefined> {
   const params = await props.params

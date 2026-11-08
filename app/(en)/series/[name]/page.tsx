@@ -7,12 +7,17 @@ import { plural, seriesList } from '@/lib/content'
 import { formatDate, TYPE_LABEL } from '@/lib/posts'
 import { typeset } from '@/lib/typeset'
 import { genPageMetadata } from 'app/seo'
+import { EMPTY_PARAM, exportParams } from '@/lib/static-params'
 
 type Props = { params: Promise<{ name: string }> }
 
 const find = (s: string) => seriesList().find((x) => x.slug === decodeURI(s))
 
-export const generateStaticParams = async () => seriesList().map((s) => ({ name: s.slug }))
+export const generateStaticParams = async () =>
+  exportParams(
+    seriesList().map((s) => ({ name: s.slug })),
+    { name: EMPTY_PARAM }
+  )
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const s = find((await props.params).name)

@@ -76,7 +76,7 @@ const course: CoursePart[] = [
           {
             title: 'Ibn Sīnā: the argument from contingency',
             summary: 'From the bare fact that something exists to a Necessary Existent.',
-            slug: 'sample-contingency',
+            slug: 'the-logic-of-existence',
           },
           {
             title: 'al-Ghazālī: the argument from origination',

@@ -8,12 +8,17 @@ import YearArchive from '@/components/index/YearArchive'
 import siteMetadata from '@/data/siteMetadata'
 import { countLine, posts, tagCounts } from '@/lib/content'
 import { genPageMetadata } from 'app/seo'
+import { EMPTY_PARAM, exportParams } from '@/lib/static-params'
 
 type Props = { params: Promise<{ tag: string }> }
 
 const find = (s: string) => tagCounts().find((t) => t.slug === decodeURI(s))
 
-export const generateStaticParams = async () => tagCounts().map((t) => ({ tag: t.slug }))
+export const generateStaticParams = async () =>
+  exportParams(
+    tagCounts().map((t) => ({ tag: t.slug })),
+    { tag: EMPTY_PARAM }
+  )
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const tag = find((await props.params).tag)

@@ -7,12 +7,17 @@ import YearArchive from '@/components/index/YearArchive'
 import { categories, countLine } from '@/lib/content'
 import { genPageMetadata } from 'app/seo'
 import siteMetadata from '@/data/siteMetadata'
+import { EMPTY_PARAM, exportParams } from '@/lib/static-params'
 
 type Props = { params: Promise<{ category: string }> }
 
 const find = (s: string) => categories.find((c) => c.slug === decodeURI(s))
 
-export const generateStaticParams = async () => categories.map((c) => ({ category: c.slug }))
+export const generateStaticParams = async () =>
+  exportParams(
+    categories.map((c) => ({ category: c.slug })),
+    { category: EMPTY_PARAM }
+  )
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const c = find((await props.params).category)

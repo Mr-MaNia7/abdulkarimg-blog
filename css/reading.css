@@ -1160,4 +1160,116 @@
   :is(.latest-title, .archive-title, .related-title):lang(am) {
     line-height: 1.45;
   }
+
+  /* ───────────── Argument figures: a diagram of an argument's steps ───────────── */
+
+  .argument-figure {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: center;
+    margin-block: 2rem;
+    padding: 1.5rem 1rem;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface);
+    font-family: var(--stack-sans);
+    font-size: var(--text-ui);
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  .argument-figure figcaption,
+  .af-leads {
+    margin: 0;
+    font-family: var(--stack-mono);
+    font-size: var(--text-meta);
+    color: var(--ink-muted);
+  }
+
+  .af-node {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--ink);
+    background: var(--bg);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .af-final {
+    border: 2px solid var(--accent);
+    color: var(--accent);
+  }
+
+  .af-final small {
+    display: block;
+    font-weight: 400;
+    font-size: var(--text-meta);
+  }
+
+  .af-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0.75rem;
+    inline-size: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .af-options li {
+    display: grid;
+    gap: 0.3rem;
+    padding: 0.6rem 0.5rem;
+    border: 1px solid var(--border-strong);
+    background: var(--bg);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .af-verdict {
+    font-family: var(--stack-mono);
+    font-size: var(--text-meta);
+    font-weight: 400;
+    color: var(--ink-faint);
+  }
+
+  .af-set {
+    display: grid;
+    gap: 0.75rem;
+    inline-size: 100%;
+    padding: 1.25rem 1rem 1rem;
+    border: 1px dashed var(--ink-muted);
+    background: var(--bg);
+  }
+
+  .af-set-label {
+    margin: 0;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .af-items {
+    margin: 0;
+    color: var(--ink);
+  }
+
+  /* Monospace spreads Ethiopic too wide; Amharic labels use the sans face. */
+  :lang(am) .argument-figure figcaption,
+  :lang(am) .af-leads,
+  :lang(am) .af-verdict {
+    font-family: var(--stack-sans);
+  }
+
+  /* MDX may wrap a line of text in <p>; inside a figure it is just a line. */
+  .argument-figure p {
+    margin: 0;
+  }
+
+  .af-set ul {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-muted);
+  }
 }
